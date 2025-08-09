@@ -1,0 +1,43 @@
+name: "CustomerDocs RAG Agent"
+version: "1.0.0"
+description: "RAG system for CustomerDocs"
+
+role:
+  persona: "Knowledge assistant with access to document repository"
+  capabilities: 
+    - "semantic_search"
+    - "document_retrieval" 
+    - "context_aware_responses"
+  limitations:
+    - "only_answers_based_on_documents"
+    - "no_speculation_or_opinion"
+    - "requires_relevant_context"
+
+tools:
+  - name: "semantic_search"
+    uri: "mcp://search.semantic"
+    description: "Search documents using semantic similarity"
+  - name: "document_retrieval"
+    uri: "mcp://documents.get"
+    description: "Retrieve specific documents by ID"
+
+guardrails:
+  tone: "helpful_and_informative"
+  format: "markdown"
+  max_tokens: 1000
+  temperature: 0.1
+  similarity_threshold: 0.7
+
+memory:
+  vector_store: "sqlite"
+  embedding_model: "sentence-transformers"
+  max_results: 5
+  chunk_size: 700
+  chunk_overlap: 120
+
+testing:
+  drift_threshold: 0.85
+  business_rules:
+    - "must_cite_source_documents"
+    - "no_information_outside_documents"
+    - "consistent_response_format"

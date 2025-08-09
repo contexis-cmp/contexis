@@ -1,0 +1,52 @@
+environment: development
+
+# Database Configuration
+database:
+  provider: sqlite
+  path: ./data/development.db
+  pool_size: 10
+
+# AI Provider Configuration
+providers:
+  openai:
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini
+    temperature: 0.1
+    max_tokens: 1000
+  
+  anthropic:
+    api_key: ${ANTHROPIC_API_KEY}
+    model: claude-3-sonnet-20240229
+    temperature: 0.1
+    max_tokens: 1000
+
+# Embeddings Configuration
+embeddings:
+  provider: openai
+  model: text-embedding-3-small
+  dimensions: 1536
+
+# Vector Database Configuration
+vector_db:
+  provider: chroma
+  path: ./data/embeddings
+  collection_name: development_knowledge
+
+# Testing Configuration
+testing:
+  drift_threshold: 0.85
+  similarity_threshold: 0.8
+  max_test_duration: 300s
+
+# Logging Configuration
+logging:
+  level: debug
+  format: json
+  output: stdout
+
+# Development Features
+features:
+  hot_reload: true
+  debug_mode: true
+  mock_providers: false
+  enable_telemetry: false 

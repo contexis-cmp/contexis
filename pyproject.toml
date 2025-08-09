@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contexis"
+version = "0.1.0"
+description = "Context-Memory-Prompt (CMP) Framework for AI Applications"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Contexis Team", email = "team@contexis.dev"}
+]
+keywords = ["ai", "framework", "rag", "llm", "prompt-engineering"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.4.0",
+    "PyYAML>=6.0",
+    "click>=8.0.0",
+    "rich>=13.0.0",
+    "openai>=1.0.0",
+    "anthropic>=0.7.0",
+    "sentence-transformers>=2.2.0",
+    "chromadb>=0.4.0",
+    "numpy>=1.24.0",
+    "tenacity>=8.2.0",
+    "structlog>=23.0.0",
+    "cryptography>=41.0.0",
+    "bleach>=6.0.0",
+    "aiofiles>=23.0.0",
+    "psycopg2-binary>=2.9.0",
+    "redis>=4.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=23.7.0",
+    "isort>=5.12.0",
+    "mypy>=1.5.0",
+    "ruff>=0.0.287",
+    "pre-commit>=3.0.0",
+]
+test = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.11.0",
+    "pytest-benchmark>=4.0.0",
+    "hypothesis>=6.82.0",
+]
+docs = [
+    "sphinx>=6.0.0",
+    "sphinx-rtd-theme>=1.2.0",
+]
+
+[project.scripts]
+ctx = "contexis.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/contexis/cmp"
+Documentation = "https://docs.contexis.dev"
+Repository = "https://github.com/contexis/cmp"
+"Bug Tracker" = "https://github.com/contexis/cmp/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.ruff]
+select = ["E", "F", "W", "I", "N", "UP", "S", "B", "A", "C4", "PT"]
+line-length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short" 

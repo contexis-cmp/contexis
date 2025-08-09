@@ -1,0 +1,34 @@
+name: "Customer Support Agent"
+version: "1.0.0"
+description: "Handles customer inquiries with company knowledge"
+
+role:
+  persona: "Professional, helpful customer service representative"
+  capabilities: ["answer_questions", "escalate_issues", "process_returns"]
+  limitations: ["no_refunds_over_policy", "no_personal_data_sharing"]
+
+tools:
+  - name: "knowledge_search"  
+    uri: "mcp://search.knowledge_base"
+    description: "Search company knowledge for customer questions"
+  - name: "order_lookup"
+    uri: "mcp://database.orders"
+    description: "Look up customer order information"
+
+guardrails:
+  tone: "professional"
+  format: "json"
+  max_tokens: 500
+  temperature: 0.1
+  
+memory:
+  episodic: true
+  max_history: 10
+  privacy: "user_isolated"
+
+testing:
+  drift_threshold: 0.85
+  business_rules:
+    - "must_include_policy_references"
+    - "no_pricing_speculation"
+    - "always_verify_order_before_processing" 

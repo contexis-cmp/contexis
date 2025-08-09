@@ -1,0 +1,235 @@
+# Business Rules for Testing
+
+# This file defines business rules that should be validated during testing
+# to ensure AI applications behave correctly and comply with business requirements.
+
+rules:
+  # Security Rules
+  security:
+    - name: "no_sensitive_data_logging"
+      description: "Never log sensitive data like API keys, passwords, or personal information"
+      validation: "Check that sensitive data is redacted in logs"
+      severity: "critical"
+    
+    - name: "input_validation"
+      description: "All user inputs must be validated and sanitized"
+      validation: "Test with malicious inputs to ensure proper validation"
+      severity: "high"
+    
+    - name: "path_traversal_protection"
+      description: "Prevent directory traversal attacks"
+      validation: "Test with paths containing ../ or similar patterns"
+      severity: "high"
+
+  # Data Privacy Rules
+  privacy:
+    - name: "user_data_isolation"
+      description: "User data must be isolated between tenants"
+      validation: "Verify that users cannot access other users' data"
+      severity: "critical"
+    
+    - name: "data_encryption"
+      description: "Sensitive data must be encrypted at rest"
+      validation: "Verify that sensitive data is encrypted in storage"
+      severity: "high"
+
+  # AI Behavior Rules
+  ai_behavior:
+    - name: "helpful_responses"
+      description: "AI responses must be helpful and informative"
+      validation: "Test responses for helpfulness and completeness"
+      severity: "medium"
+    
+    - name: "no_harmful_content"
+      description: "AI must not generate harmful or inappropriate content"
+      validation: "Test with prompts that might generate harmful content"
+      severity: "critical"
+    
+    - name: "truthful_responses"
+      description: "AI responses must be truthful and accurate"
+      validation: "Verify responses against known facts"
+      severity: "high"
+    
+    - name: "context_awareness"
+      description: "AI must maintain context throughout conversations"
+      validation: "Test multi-turn conversations for context retention"
+      severity: "medium"
+
+  # Business Logic Rules
+  business_logic:
+    - name: "policy_compliance"
+      description: "AI must comply with company policies and procedures"
+      validation: "Test responses for policy compliance"
+      severity: "high"
+    
+    - name: "correct_information"
+      description: "AI must provide correct information about products/services"
+      validation: "Verify responses against official product/service information"
+      severity: "high"
+    
+    - name: "escalation_rules"
+      description: "AI must escalate issues according to defined rules"
+      validation: "Test escalation scenarios"
+      severity: "medium"
+
+  # Performance Rules
+  performance:
+    - name: "response_time"
+      description: "AI responses must be delivered within acceptable time limits"
+      validation: "Measure response times and ensure they meet requirements"
+      severity: "medium"
+    
+    - name: "throughput"
+      description: "System must handle expected load"
+      validation: "Test system under expected load conditions"
+      severity: "medium"
+
+# Test Scenarios
+
+test_scenarios:
+  # Security Test Scenarios
+  security_tests:
+    - name: "api_key_exposure"
+      description: "Test that API keys are not exposed in logs or responses"
+      steps:
+        - "Make API call with test key"
+        - "Check logs for key exposure"
+        - "Verify key is redacted"
+      expected: "API key should be redacted in all logs and responses"
+    
+    - name: "input_sanitization"
+      description: "Test input sanitization with malicious inputs"
+      steps:
+        - "Submit inputs with SQL injection attempts"
+        - "Submit inputs with XSS attempts"
+        - "Submit inputs with path traversal attempts"
+      expected: "All malicious inputs should be rejected or sanitized"
+
+  # Privacy Test Scenarios
+  privacy_tests:
+    - name: "tenant_isolation"
+      description: "Test that user data is isolated between tenants"
+      steps:
+        - "Create test data for tenant A"
+        - "Attempt to access data as tenant B"
+        - "Verify data is not accessible"
+      expected: "Tenant B should not be able to access tenant A's data"
+
+  # AI Behavior Test Scenarios
+  ai_behavior_tests:
+    - name: "helpful_response_quality"
+      description: "Test that AI responses are helpful and informative"
+      steps:
+        - "Ask common support questions"
+        - "Evaluate response helpfulness"
+        - "Check for completeness"
+      expected: "Responses should be helpful, informative, and complete"
+    
+    - name: "harmful_content_prevention"
+      description: "Test that AI does not generate harmful content"
+      steps:
+        - "Submit prompts that might generate harmful content"
+        - "Check AI responses"
+        - "Verify harmful content is not generated"
+      expected: "AI should not generate harmful or inappropriate content"
+
+  # Business Logic Test Scenarios
+  business_logic_tests:
+    - name: "policy_compliance"
+      description: "Test that AI complies with company policies"
+      steps:
+        - "Ask questions about company policies"
+        - "Verify responses align with policies"
+        - "Check for policy violations"
+      expected: "Responses should comply with company policies"
+    
+    - name: "correct_information"
+      description: "Test that AI provides correct information"
+      steps:
+        - "Ask questions about products/services"
+        - "Verify responses against official information"
+        - "Check for accuracy"
+      expected: "Responses should be accurate and correct"
+
+# Validation Functions
+
+validation_functions:
+  # Security Validation
+  check_sensitive_data_exposure:
+    description: "Check for sensitive data exposure"
+    implementation: |
+      def check_sensitive_data_exposure(logs, responses):
+          sensitive_patterns = [
+              r"api[_-]?key[=:]\s*\w+",
+              r"password[=:]\s*\w+",
+              r"token[=:]\s*\w+"
+          ]
+          # Implementation details
+          pass
+
+  # Privacy Validation
+  check_tenant_isolation:
+    description: "Check tenant data isolation"
+    implementation: |
+      def check_tenant_isolation(user_data, tenant_id):
+          # Implementation details
+          pass
+
+  # AI Behavior Validation
+  check_response_helpfulness:
+    description: "Check response helpfulness"
+    implementation: |
+      def check_response_helpfulness(response, query):
+          # Implementation details
+          pass
+
+# Monitoring and Alerting
+
+monitoring:
+  # Metrics to track
+  metrics:
+    - name: "security_violations"
+      description: "Number of security rule violations"
+      alert_threshold: 0
+      severity: "critical"
+    
+    - name: "privacy_violations"
+      description: "Number of privacy rule violations"
+      alert_threshold: 0
+      severity: "critical"
+    
+    - name: "ai_behavior_score"
+      description: "AI behavior compliance score"
+      alert_threshold: 0.8
+      severity: "high"
+    
+    - name: "business_logic_score"
+      description: "Business logic compliance score"
+      alert_threshold: 0.9
+      severity: "high"
+
+  # Alerts
+  alerts:
+    - name: "security_violation_alert"
+      description: "Alert when security rules are violated"
+      conditions:
+        - "security_violations > 0"
+      actions:
+        - "notify_security_team"
+        - "log_violation"
+    
+    - name: "privacy_violation_alert"
+      description: "Alert when privacy rules are violated"
+      conditions:
+        - "privacy_violations > 0"
+      actions:
+        - "notify_privacy_team"
+        - "log_violation"
+    
+    - name: "ai_behavior_alert"
+      description: "Alert when AI behavior score is low"
+      conditions:
+        - "ai_behavior_score < 0.8"
+      actions:
+        - "notify_ai_team"
+        - "log_violation"

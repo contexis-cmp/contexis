@@ -1,0 +1,47 @@
+# Drift Detection Tests for CustomerDocs RAG System
+
+test_cases:
+  - name: "basic_search_functionality"
+    input: "What is the main topic?"
+    expected_similarity: 0.85
+    required_keywords: ["sample", "document"]
+    forbidden_phrases: ["I don't know", "no information"]
+    
+  - name: "specific_information_retrieval"
+    input: "How do I use this system?"
+    expected_similarity: 0.80
+    required_keywords: ["usage", "documents", "format"]
+    
+  - name: "no_results_handling"
+    input: "completely unrelated query that should not match"
+    expected_similarity: 0.30
+    required_response: "couldn't find"
+    
+  - name: "response_format_consistency"
+    input: "What is the key information?"
+    expected_format: "markdown"
+    required_sections: ["User Query", "Response", "Sources"]
+    forbidden_sections: ["I apologize", "I'm not sure"]
+
+drift_thresholds:
+  similarity_threshold: 0.85
+  response_time_threshold: 2000  # milliseconds
+  token_count_threshold: 1000
+
+business_rules:
+  - name: "must_cite_sources"
+    description: "All responses must include source citations"
+    validation: "response_contains_sources"
+    
+  - name: "no_speculation"
+    description: "Responses should not speculate beyond document content"
+    validation: "no_speculative_phrases"
+    
+  - name: "consistent_format"
+    description: "Responses should follow consistent markdown format"
+    validation: "markdown_format_check"
+
+performance_benchmarks:
+  search_response_time: 1000  # milliseconds
+  embedding_generation_time: 500  # milliseconds
+  memory_usage: 512  # MB

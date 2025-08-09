@@ -1,0 +1,19 @@
+# Memory configuration for CustomerDocs RAG system
+vector_store:
+  type: "sqlite"
+  path: "./memory/CustomerDocs/vector_store.db"
+  
+embedding_model:
+  name: "sentence-transformers"
+  dimensions: 384
+  max_length: 512
+
+document_processing:
+  chunk_size: 700
+  chunk_overlap: 120
+  supported_formats: ["txt", "md", "pdf", "docx"]
+  
+indexing:
+  batch_size: 100
+  parallel_workers: 4
+  similarity_metric: "cosine"
