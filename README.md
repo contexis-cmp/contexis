@@ -5,7 +5,7 @@ A Rails-inspired framework for building reproducible AI applications with archit
 [![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org)
 [![Python Version](https://img.shields.io/badge/Python-3.8+-green.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/contexis/cmp/actions)
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/contexis-cmp/contexis/actions)
 
 ## Overview
 
@@ -27,8 +27,8 @@ The framework provides a dual-language approach:
 
 ```bash
 # Clone the repository
-git clone https://github.com/contexis/cmp.git
-cd cmp
+git clone https://github.com/contexis-cmp/contexis.git
+cd contexis
 
 # Install the framework
 make install
@@ -250,7 +250,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ```bash
 # Clone and setup
-git clone https://github.com/contexis/cmp.git
+git clone https://github.com/contexis-cmp/contexis.git
 cd cmp
 make setup
 
