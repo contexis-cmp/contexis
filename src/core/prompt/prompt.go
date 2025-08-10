@@ -2,6 +2,8 @@ package prompt
 
 import (
 	"bytes"
+    "crypto/sha256"
+    "encoding/hex"
 	"encoding/json"
 	"fmt"
 	"text/template"
@@ -118,8 +120,8 @@ func (p *Prompt) GetSHA() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	// TODO: Implement proper SHA256 hashing
-	return fmt.Sprintf("sha256:%x", data), nil
+    hash := sha256.Sum256(data)
+    return fmt.Sprintf("sha256:%s", hex.EncodeToString(hash[:] )), nil
 }
 
 // Example templates for common use cases

@@ -25,6 +25,8 @@ func init() {
 	// Add subcommands
 	rootCmd.AddCommand(commands.InitCmd)
 	rootCmd.AddCommand(commands.GenerateCmd)
+    // Context command with runtime ops
+    rootCmd.AddCommand(commands.GetContextCommand(""))
 	rootCmd.AddCommand(generateCmd)
 	rootCmd.AddCommand(testCmd)
 	rootCmd.AddCommand(deployCmd)
