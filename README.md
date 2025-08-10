@@ -25,13 +25,53 @@ The framework provides a dual-language approach:
 
 ### Installation
 
+#### Option 1: Automatic Installation (Recommended)
 ```bash
 # Clone the repository
 git clone https://github.com/contexis-cmp/contexis.git
 cd contexis
 
-# Install the framework
-make install
+# Run the installation script (automatically handles PATH setup)
+./scripts/install.sh
+
+# Restart your terminal or source your shell config
+source ~/.bashrc  # or ~/.zshrc
+
+# Verify installation
+ctx version
+```
+
+#### Option 2: Manual Local Installation
+```bash
+# Clone the repository
+git clone https://github.com/contexis-cmp/contexis.git
+cd contexis
+
+# Install to user's local directory (no sudo required)
+make install-local
+
+# Add to your PATH (choose your shell)
+# For bash/zsh, add to ~/.bashrc or ~/.zshrc:
+export PATH="$HOME/.local/bin:$PATH"
+
+# For fish, add to ~/.config/fish/config.fish:
+set -gx PATH $HOME/.local/bin $PATH
+
+# Reload your shell or source the profile
+source ~/.bashrc  # or ~/.zshrc
+
+# Verify installation
+ctx version
+```
+
+#### Option 2: System Installation (requires sudo)
+```bash
+# Clone the repository
+git clone https://github.com/contexis-cmp/contexis.git
+cd contexis
+
+# Install system-wide (requires sudo)
+sudo make install
 
 # Verify installation
 ctx version

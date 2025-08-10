@@ -83,6 +83,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Configuration examples and customization options
   - Testing and deployment instructions
   - Comprehensive API documentation and examples
+  - Installation guides with local installation support
+
+- **Installation & Deployment**:
+  - Local installation support without sudo requirements
+  - Automatic PATH configuration for different shells
+  - Installation script with colored output and validation
+  - Fallback installation options for different environments
+  - Comprehensive installation testing and validation
 
 ### Changed
 - **Repository Structure**: Updated to use correct GitHub repository URL `github.com/contexis-cmp/contexis`
@@ -121,6 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `docs/testing_summary.md` - Testing implementation summary
 - `WORKFLOW_GENERATOR_SUMMARY.md` - Workflow generator implementation summary
 - `PHASE1_CLEANUP_SUMMARY.md` - Phase 1 cleanup and quality summary
+- `scripts/install.sh` - Local installation script with automatic PATH setup
 
 
 

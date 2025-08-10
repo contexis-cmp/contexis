@@ -1,6 +1,6 @@
 # Contexis CMP Framework Makefile
 
-.PHONY: help build test clean install dev docs
+.PHONY: help build test clean install install-local dev docs
 
 # Default target
 help:
@@ -10,7 +10,8 @@ help:
 	@echo "  make build     - Build the Go CLI and Python packages"
 	@echo "  make test      - Run all tests (Go and Python)"
 	@echo "  make clean     - Clean build artifacts"
-	@echo "  make install   - Install the CLI tool"
+	@echo "  make install   - Install the CLI tool (system-wide if possible, local if not)"
+	@echo "  make install-local - Install the CLI tool to user's local directory"
 	@echo "  make dev       - Start development server"
 	@echo ""
 	@echo "Documentation:"
@@ -97,11 +98,43 @@ clean:
 	find . -type d -name "__pycache__" -delete
 	@echo "✓ Cleaned successfully"
 
-# Install the CLI tool
+# Install the CLI tool (system-wide if possible, local if not)
 install: build
 	@echo "Installing CLI tool..."
-	cp bin/ctx /usr/local/bin/
-	@echo "✓ CLI installed to /usr/local/bin/ctx"
+	@if [ -w /usr/local/bin ]; then \
+		cp bin/ctx /usr/local/bin/; \
+		echo "✓ CLI installed to /usr/local/bin/ctx"; \
+	else \
+		echo "Installing to user's local bin directory..."; \
+		mkdir -p $(HOME)/.local/bin; \
+		cp bin/ctx $(HOME)/.local/bin/; \
+		echo "✓ CLI installed to $(HOME)/.local/bin/ctx"; \
+		echo ""; \
+		echo "To use the CLI, add the following to your shell profile:"; \
+		echo "export PATH=\"$(HOME)/.local/bin:\$$PATH\""; \
+		echo ""; \
+		echo "For bash/zsh, add to ~/.bashrc or ~/.zshrc:"; \
+		echo "export PATH=\"$(HOME)/.local/bin:\$$PATH\""; \
+		echo ""; \
+		echo "For fish, add to ~/.config/fish/config.fish:"; \
+		echo "set -gx PATH $(HOME)/.local/bin \$PATH"; \
+	fi
+
+# Install the CLI tool to user's local directory only
+install-local: build
+	@echo "Installing CLI tool to user's local directory..."
+	mkdir -p $(HOME)/.local/bin
+	cp bin/ctx $(HOME)/.local/bin/
+	@echo "✓ CLI installed to $(HOME)/.local/bin/ctx"
+	@echo ""
+	@echo "To use the CLI, add the following to your shell profile:"
+	@echo "export PATH=\"$(HOME)/.local/bin:\$$PATH\""
+	@echo ""
+	@echo "For bash/zsh, add to ~/.bashrc or ~/.zshrc:"
+	@echo "export PATH=\"$(HOME)/.local/bin:\$$PATH\""
+	@echo ""
+	@echo "For fish, add to ~/.config/fish/config.fish:"
+	@echo "set -gx PATH $(HOME)/.local/bin \$PATH"
 
 # Start development server
 dev:
