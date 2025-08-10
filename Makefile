@@ -150,7 +150,7 @@ security:
 # Build Docker image
 docker:
 	@echo "Building Docker image..."
-	docker build -t contexis/cmp:latest .
+	docker build -t contexis-cmp/contexis:latest .
 	@echo "✓ Docker image built"
 
 # Create release

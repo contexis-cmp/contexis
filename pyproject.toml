@@ -68,10 +68,10 @@ docs = [
 ctx = "contexis.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/contexis/cmp"
+Homepage = "https://github.com/contexis-cmp/contexis"
 Documentation = "https://docs.contexis.dev"
-Repository = "https://github.com/contexis/cmp"
-"Bug Tracker" = "https://github.com/contexis/cmp/issues"
+Repository = "https://github.com/contexis-cmp/contexis"
+"Bug Tracker" = "https://github.com/contexis-cmp/contexis/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

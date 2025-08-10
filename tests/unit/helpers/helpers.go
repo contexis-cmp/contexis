@@ -8,22 +8,22 @@ import (
 	"testing"
 	"time"
 
+	"github.com/contexis-cmp/contexis/src/cli/commands"
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/commands"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // TestContext provides a test context with logging
 func TestContext(t *testing.T) context.Context {
 	ctx := context.Background()
-	
+
 	// Initialize test logger
 	if err := logger.InitLogger("debug", "console"); err != nil {
 		t.Fatalf("Failed to initialize test logger: %v", err)
 	}
-	
+
 	return ctx
 }
 
@@ -36,28 +36,28 @@ func TestLogger(t *testing.T) *zap.Logger {
 func CreateTempDir(t *testing.T) string {
 	tempDir, err := os.MkdirTemp("", "cmp_test_*")
 	require.NoError(t, err, "Failed to create temp directory")
-	
+
 	t.Cleanup(func() {
 		os.RemoveAll(tempDir)
 	})
-	
+
 	return tempDir
 }
 
 // ChangeToTempDir changes to a temporary directory and returns cleanup function
 func ChangeToTempDir(t *testing.T) (string, func()) {
 	tempDir := CreateTempDir(t)
-	
+
 	originalDir, err := os.Getwd()
 	require.NoError(t, err, "Failed to get current directory")
-	
+
 	err = os.Chdir(tempDir)
 	require.NoError(t, err, "Failed to change to temp directory")
-	
+
 	cleanup := func() {
 		os.Chdir(originalDir)
 	}
-	
+
 	return tempDir, cleanup
 }
 
@@ -91,7 +91,7 @@ func AssertFileContent(t *testing.T, path, expectedContent string) {
 func CreateTestFile(t *testing.T, path, content string) {
 	err := os.MkdirAll(filepath.Dir(path), 0755)
 	require.NoError(t, err, "Failed to create directory for test file")
-	
+
 	err = os.WriteFile(path, []byte(content), 0644)
 	require.NoError(t, err, "Failed to create test file")
 }
@@ -116,7 +116,7 @@ type TestCase struct {
 	Input       interface{}
 	Expected    interface{}
 	ExpectError bool
-	Description  string
+	Description string
 }
 
 // RunTestCases runs a slice of test cases
@@ -125,9 +125,9 @@ func RunTestCases[T any, U any](t *testing.T, testCases []TestCase, testFunc fun
 		t.Run(tc.Name, func(t *testing.T) {
 			input, ok := tc.Input.(T)
 			require.True(t, ok, "Invalid input type for test case: %s", tc.Name)
-			
+
 			result, err := testFunc(input)
-			
+
 			if tc.ExpectError {
 				assert.Error(t, err, tc.Description)
 			} else {
@@ -148,7 +148,7 @@ func JoinStrings(strs []string, sep string) string {
 	if len(strs) == 1 {
 		return strs[0]
 	}
-	
+
 	result := strs[0]
 	for i := 1; i < len(strs); i++ {
 		result += sep + strs[i]
@@ -178,6 +178,18 @@ func (tf *TestFixtures) ValidAgentNames() []string {
 		"test_agent",
 		"agent-123",
 		"MyAgent",
+	}
+}
+
+// ValidWorkflowNames returns a list of valid workflow names for testing
+func (tf *TestFixtures) ValidWorkflowNames() []string {
+	return []string{
+		"ContentPipeline",
+		"DataProcessing",
+		"MLTraining",
+		"test_workflow",
+		"workflow-123",
+		"MyWorkflow",
 	}
 }
 
@@ -239,45 +251,45 @@ func (tf *TestFixtures) InvalidMemoryTypes() []string {
 func (tf *TestFixtures) ValidAgentConfigs() []commands.AgentConfig {
 	return []commands.AgentConfig{
 		{
-			Name:        "TestAgent1",
-			Tools:       []string{"web_search", "database"},
-			Memory:      "episodic",
-			Description: "Test agent 1",
-			Version:     "1.0.0",
-			Persona:     "Professional assistant",
-			Capabilities: []string{"conversation", "tool_usage"},
-			Limitations: []string{"no_personal_data"},
-			BusinessRules: []string{"always_helpful"},
-			BaselineDate: time.Now().Format("2006-01-02"),
-			AdminEmail:  "test@example.com",
-			Tone:        "professional",
-			Format:      "json",
-			MaxTokens:   500,
-			Temperature: 0.1,
-			MemoryType:  "episodic",
-			MaxHistory:  10,
-			Privacy:     "user_isolated",
+			Name:           "TestAgent1",
+			Tools:          []string{"web_search", "database"},
+			Memory:         "episodic",
+			Description:    "Test agent 1",
+			Version:        "1.0.0",
+			Persona:        "Professional assistant",
+			Capabilities:   []string{"conversation", "tool_usage"},
+			Limitations:    []string{"no_personal_data"},
+			BusinessRules:  []string{"always_helpful"},
+			BaselineDate:   time.Now().Format("2006-01-02"),
+			AdminEmail:     "test@example.com",
+			Tone:           "professional",
+			Format:         "json",
+			MaxTokens:      500,
+			Temperature:    0.1,
+			MemoryType:     "episodic",
+			MaxHistory:     10,
+			Privacy:        "user_isolated",
 			DriftThreshold: 0.85,
 		},
 		{
-			Name:        "TestAgent2",
-			Tools:       []string{},
-			Memory:      "none",
-			Description: "Test agent 2",
-			Version:     "1.0.0",
-			Persona:     "Simple assistant",
-			Capabilities: []string{"conversation"},
-			Limitations: []string{"no_personal_data"},
-			BusinessRules: []string{"always_helpful"},
-			BaselineDate: time.Now().Format("2006-01-02"),
-			AdminEmail:  "test@example.com",
-			Tone:        "friendly",
-			Format:      "text",
-			MaxTokens:   300,
-			Temperature: 0.2,
-			MemoryType:  "none",
-			MaxHistory:  0,
-			Privacy:     "user_isolated",
+			Name:           "TestAgent2",
+			Tools:          []string{},
+			Memory:         "none",
+			Description:    "Test agent 2",
+			Version:        "1.0.0",
+			Persona:        "Simple assistant",
+			Capabilities:   []string{"conversation"},
+			Limitations:    []string{"no_personal_data"},
+			BusinessRules:  []string{"always_helpful"},
+			BaselineDate:   time.Now().Format("2006-01-02"),
+			AdminEmail:     "test@example.com",
+			Tone:           "friendly",
+			Format:         "text",
+			MaxTokens:      300,
+			Temperature:    0.2,
+			MemoryType:     "none",
+			MaxHistory:     0,
+			Privacy:        "user_isolated",
 			DriftThreshold: 0.8,
 		},
 	}
@@ -354,7 +366,7 @@ func (tu *TestUtils) CreateTestProjectStructure(t *testing.T, basePath string) {
 		"templates/rag",
 		"templates/workflow",
 	}
-	
+
 	for _, dir := range dirs {
 		path := filepath.Join(basePath, dir)
 		err := os.MkdirAll(path, 0755)
@@ -372,7 +384,7 @@ role:
   persona: "{{ .Persona }}"
   capabilities: {{ .Capabilities }}
   limitations: {{ .Limitations }}`,
-		
+
 		"templates/agent/agent_response.md": `# Agent Response Template
 ## Conversation Context
 - User ID: [USER_ID]
@@ -381,23 +393,23 @@ role:
 - **Tone**: Professional and helpful
 - **Format**: JSON
 - **Max Tokens**: 500`,
-		
+
 		"templates/agent/agent_behavior.yaml": `# Agent Behavior Test Configuration
 agent_name: "{{ .Name }}"
 test_version: "{{ .Version }}"
 description: "{{ .Description }}"`,
-		
+
 		"templates/agent/requirements.txt": `# CMP Agent Tools Requirements
 requests>=2.31.0
 urllib3>=2.0.0`,
-		
+
 		"templates/agent/web_search.py": `#!/usr/bin/env python3
 """
 Web Search Tool for CMP Agents
 """
 import requests
 import logging`,
-		
+
 		"templates/agent/database.py": `#!/usr/bin/env python3
 """
 Database Tool for CMP Agents
@@ -405,12 +417,12 @@ Database Tool for CMP Agents
 import sqlite3
 import logging`,
 	}
-	
+
 	for path, content := range templates {
 		fullPath := filepath.Join(basePath, path)
 		err := os.MkdirAll(filepath.Dir(fullPath), 0755)
 		require.NoError(t, err, "Failed to create directory for template: %s", fullPath)
-		
+
 		err = os.WriteFile(fullPath, []byte(content), 0644)
 		require.NoError(t, err, "Failed to create template file: %s", fullPath)
 	}
@@ -436,10 +448,10 @@ func (tu *TestUtils) AssertFileStructure(t *testing.T, basePath string, expected
 func (tu *TestUtils) AssertTemplateContent(t *testing.T, content string, expectedVariables []string) {
 	// Check that template variables are present
 	for _, variable := range expectedVariables {
-		assert.Contains(t, content, "{{ ."+variable+" }}", 
+		assert.Contains(t, content, "{{ ."+variable+" }}",
 			"Template should contain variable: %s", variable)
 	}
-	
+
 	// Check that template is properly formatted
 	assert.NotContains(t, content, "{{{", "Template should not contain malformed variables")
 	assert.NotContains(t, content, "}}}", "Template should not contain malformed variables")
@@ -448,10 +460,10 @@ func (tu *TestUtils) AssertTemplateContent(t *testing.T, content string, expecte
 // AssertGeneratedContent checks if generated content is valid
 func (tu *TestUtils) AssertGeneratedContent(t *testing.T, content string, expectedContent []string) {
 	for _, expected := range expectedContent {
-		assert.Contains(t, content, expected, 
+		assert.Contains(t, content, expected,
 			"Generated content should contain: %s", expected)
 	}
-	
+
 	// Check that template variables are processed
 	assert.NotContains(t, content, "{{ .", "Generated content should not contain unprocessed template variables")
 	assert.NotContains(t, content, "}}", "Generated content should not contain unprocessed template variables")
@@ -495,14 +507,14 @@ func (tu *TestUtils) ValidatePythonContent(t *testing.T, content string) {
 func (tu *TestUtils) CountFilesInDirectory(t *testing.T, dirPath string) int {
 	entries, err := os.ReadDir(dirPath)
 	require.NoError(t, err, "Failed to read directory: %s", dirPath)
-	
+
 	count := 0
 	for _, entry := range entries {
 		if !entry.IsDir() {
 			count++
 		}
 	}
-	
+
 	return count
 }
 
@@ -510,14 +522,14 @@ func (tu *TestUtils) CountFilesInDirectory(t *testing.T, dirPath string) int {
 func (tu *TestUtils) CountDirectoriesInDirectory(t *testing.T, dirPath string) int {
 	entries, err := os.ReadDir(dirPath)
 	require.NoError(t, err, "Failed to read directory: %s", dirPath)
-	
+
 	count := 0
 	for _, entry := range entries {
 		if entry.IsDir() {
 			count++
 		}
 	}
-	
+
 	return count
 }
 
@@ -531,9 +543,9 @@ func (tu *TestUtils) GetFileContent(t *testing.T, filePath string) string {
 // AssertFileContains checks if file contains expected content
 func (tu *TestUtils) AssertFileContains(t *testing.T, filePath string, expectedContent []string) {
 	content := tu.GetFileContent(t, filePath)
-	
+
 	for _, expected := range expectedContent {
-		assert.Contains(t, content, expected, 
+		assert.Contains(t, content, expected,
 			"File %s should contain: %s", filePath, expected)
 	}
 }
@@ -541,9 +553,9 @@ func (tu *TestUtils) AssertFileContains(t *testing.T, filePath string, expectedC
 // AssertFileNotContains checks if file does not contain unexpected content
 func (tu *TestUtils) AssertFileNotContains(t *testing.T, filePath string, unexpectedContent []string) {
 	content := tu.GetFileContent(t, filePath)
-	
+
 	for _, unexpected := range unexpectedContent {
-		assert.NotContains(t, content, unexpected, 
+		assert.NotContains(t, content, unexpected,
 			"File %s should not contain: %s", filePath, unexpected)
 	}
 }
@@ -563,7 +575,7 @@ func (tu *TestUtils) ValidateAgentName(t *testing.T, name string) {
 func (tu *TestUtils) ValidateToolName(t *testing.T, name string) {
 	// Tool name validation rules
 	validTools := []string{"web_search", "database", "api", "file_system", "email"}
-	
+
 	assert.NotEmpty(t, name, "Tool name should not be empty")
 	assert.Contains(t, validTools, name, "Tool name should be valid: %s", name)
 }
@@ -572,7 +584,7 @@ func (tu *TestUtils) ValidateToolName(t *testing.T, name string) {
 func (tu *TestUtils) ValidateMemoryType(t *testing.T, memoryType string) {
 	// Memory type validation rules
 	validTypes := []string{"episodic", "none"}
-	
+
 	assert.NotEmpty(t, memoryType, "Memory type should not be empty")
 	assert.Contains(t, validTypes, memoryType, "Memory type should be valid: %s", memoryType)
 }
@@ -588,4 +600,30 @@ func SplitString(s, sep string) []string {
 // TrimSpace removes leading and trailing whitespace
 func TrimSpace(s string) string {
 	return strings.TrimSpace(s)
+}
+
+// ValidateWorkflowName validates workflow name format
+func (tu *TestUtils) ValidateWorkflowName(t *testing.T, name string) {
+	// Workflow name validation rules
+	assert.NotEmpty(t, name, "Workflow name should not be empty")
+	assert.True(t, len(name) >= 2, "Workflow name should be at least 2 characters")
+	assert.False(t, strings.Contains(name, " "), "Workflow name should not contain spaces")
+	assert.False(t, strings.Contains(name, "/"), "Workflow name should not contain slashes")
+	assert.False(t, strings.Contains(name, "\\"), "Workflow name should not contain backslashes")
+	// Check for special characters (excluding hyphens and underscores)
+	for _, char := range name {
+		if !((char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || (char >= '0' && char <= '9') || char == '-' || char == '_') {
+			t.Errorf("Workflow name should not contain special characters")
+			return
+		}
+	}
+}
+
+// ValidateStepType validates step type format
+func (tu *TestUtils) ValidateStepType(t *testing.T, stepType string) {
+	// Step type validation rules
+	validTypes := []string{"research", "write", "review", "extract", "transform", "load", "analyze", "generate", "validate", "deploy"}
+
+	assert.NotEmpty(t, stepType, "Step type should not be empty")
+	assert.Contains(t, validTypes, stepType, "Step type should be valid: %s", stepType)
 }

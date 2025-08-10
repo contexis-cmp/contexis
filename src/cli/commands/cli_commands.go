@@ -12,11 +12,11 @@ func GetRootCommand() *cobra.Command {
 		Short: "Contexis CMP Framework CLI",
 		Long:  `A comprehensive CLI for the Context-Memory-Prompt (CMP) framework.`,
 	}
-	
+
 	// Add subcommands
 	rootCmd.AddCommand(GetGenerateCommand())
 	rootCmd.AddCommand(GetVersionCommand())
-	
+
 	return rootCmd
 }
 
@@ -27,12 +27,12 @@ func GetGenerateCommand() *cobra.Command {
 		Short: "Generate CMP components",
 		Long:  `Generate RAG systems, agents, and workflows using CMP templates.`,
 	}
-	
+
 	// Add subcommands
 	generateCmd.AddCommand(GetAgentCommand())
 	generateCmd.AddCommand(GetRAGCommand())
 	generateCmd.AddCommand(GetWorkflowCommand())
-	
+
 	return generateCmd
 }
 
@@ -47,21 +47,21 @@ func GetAgentCommand() *cobra.Command {
 			name := args[0]
 			tools, _ := cmd.Flags().GetString("tools")
 			memory, _ := cmd.Flags().GetString("memory")
-			
+
 			// Validate inputs
 			if name == "" {
 				return fmt.Errorf("agent name is required")
 			}
-			
+
 			// Generate agent
 			return GenerateAgent(cmd.Context(), name, tools, memory)
 		},
 	}
-	
+
 	// Add flags
 	agentCmd.Flags().StringP("tools", "t", "", "Comma-separated list of tools (web_search,database,api,file_system,email)")
 	agentCmd.Flags().StringP("memory", "m", "episodic", "Memory type (episodic,none)")
-	
+
 	return agentCmd
 }
 
@@ -78,7 +78,7 @@ func GetRAGCommand() *cobra.Command {
 			return fmt.Errorf("RAG generation not yet implemented")
 		},
 	}
-	
+
 	return ragCmd
 }
 
@@ -90,12 +90,22 @@ func GetWorkflowCommand() *cobra.Command {
 		Long:  `Generate a multi-step AI workflow.`,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			_ = args[0] // name parameter
-			// TODO: Implement workflow generation
-			return fmt.Errorf("workflow generation not yet implemented")
+			name := args[0]
+			steps, _ := cmd.Flags().GetString("steps")
+
+			// Validate inputs
+			if name == "" {
+				return fmt.Errorf("workflow name is required")
+			}
+
+			// Generate workflow
+			return GenerateWorkflow(cmd.Context(), name, steps)
 		},
 	}
-	
+
+	// Add flags
+	workflowCmd.Flags().StringP("steps", "s", "", "Comma-separated list of steps (research,write,review,extract,transform,load,analyze,generate,validate,deploy)")
+
 	return workflowCmd
 }
 
@@ -108,6 +118,6 @@ func GetVersionCommand() *cobra.Command {
 			fmt.Println("Contexis CMP Framework v0.1.0")
 		},
 	}
-	
+
 	return versionCmd
 }

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/contexis-cmp/contexis/src/cli/config"
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
-	"github.com/contexis/cmp/src/cli/config"
 )
 
 var GenerateCmd = &cobra.Command{
@@ -85,7 +85,7 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	case "agent":
 		return GenerateAgent(ctx, name, tools, memory)
 	case "workflow":
-		return generateWorkflow(ctx, name, steps)
+		return GenerateWorkflow(ctx, name, steps)
 	default:
 		return fmt.Errorf("generator type '%s' not implemented yet", generatorType)
 	}

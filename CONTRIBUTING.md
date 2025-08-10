@@ -39,8 +39,8 @@ Contexis follows a **Context-Memory-Prompt (CMP)** architecture that treats AI c
 
 ```bash
 # Clone the repository
-git clone https://github.com/contexis/cmp.git
-cd cmp
+git clone https://github.com/contexis-cmp/contexis.git
+cd contexis
 
 # Install dependencies
 make setup
@@ -55,9 +55,9 @@ ctx version
 
 1. **Fork and Clone**
    ```bash
-   git fork https://github.com/contexis/cmp.git
-   git clone https://github.com/YOUR_USERNAME/cmp.git
-   cd cmp
+   git fork https://github.com/contexis-cmp/contexis.git
+   git clone https://github.com/YOUR_USERNAME/contexis.git
+cd contexis
    ```
 
 2. **Create Feature Branch**

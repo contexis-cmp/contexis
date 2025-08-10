@@ -8,30 +8,30 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // AgentConfig holds configuration for agent generation
 type AgentConfig struct {
-	Name        string
-	Tools       []string
-	Memory      string
-	Description string
-	Version     string
-	Persona     string
-	Capabilities []string
-	Limitations []string
-	BusinessRules []string
-	BaselineDate string
-	AdminEmail  string
-	Tone        string
-	Format      string
-	MaxTokens   int
-	Temperature float64
-	MemoryType  string
-	MaxHistory  int
-	Privacy     string
+	Name           string
+	Tools          []string
+	Memory         string
+	Description    string
+	Version        string
+	Persona        string
+	Capabilities   []string
+	Limitations    []string
+	BusinessRules  []string
+	BaselineDate   string
+	AdminEmail     string
+	Tone           string
+	Format         string
+	MaxTokens      int
+	Temperature    float64
+	MemoryType     string
+	MaxHistory     int
+	Privacy        string
 	DriftThreshold float64
 }
 
@@ -67,24 +67,24 @@ func GenerateAgent(ctx context.Context, name, tools, memory string) error {
 	}
 
 	config := AgentConfig{
-		Name:        name,
-		Tools:       toolList,
-		Memory:      memory,
-		Description: fmt.Sprintf("Conversational agent for %s", name),
-		Version:     "1.0.0",
-		Persona:     "Professional, helpful conversational assistant",
-		Capabilities: []string{"conversation", "tool_usage", "memory_retention", "context_awareness"},
-		Limitations: []string{"no_personal_data", "no_harmful_content", "no_unauthorized_access"},
-		BusinessRules: []string{"always_helpful", "professional_tone", "tool_security", "memory_privacy"},
-		BaselineDate: time.Now().Format("2006-01-02"),
-		AdminEmail:  "admin@example.com",
-		Tone:        "professional",
-		Format:      "json",
-		MaxTokens:   500,
-		Temperature: 0.1,
-		MemoryType:  memory,
-		MaxHistory:  10,
-		Privacy:     "user_isolated",
+		Name:           name,
+		Tools:          toolList,
+		Memory:         memory,
+		Description:    fmt.Sprintf("Conversational agent for %s", name),
+		Version:        "1.0.0",
+		Persona:        "Professional, helpful conversational assistant",
+		Capabilities:   []string{"conversation", "tool_usage", "memory_retention", "context_awareness"},
+		Limitations:    []string{"no_personal_data", "no_harmful_content", "no_unauthorized_access"},
+		BusinessRules:  []string{"always_helpful", "professional_tone", "tool_security", "memory_privacy"},
+		BaselineDate:   time.Now().Format("2006-01-02"),
+		AdminEmail:     "admin@example.com",
+		Tone:           "professional",
+		Format:         "json",
+		MaxTokens:      500,
+		Temperature:    0.1,
+		MemoryType:     memory,
+		MaxHistory:     10,
+		Privacy:        "user_isolated",
 		DriftThreshold: 0.85,
 	}
 
@@ -313,11 +313,11 @@ func copyToolTemplate(ctx context.Context, toolName, agentName string) error {
 
 	// Define tool template mappings
 	toolTemplates := map[string]string{
-		"web_search": "templates/agent/web_search.py",
-		"database":   "templates/agent/database.py",
-		"api":        "templates/agent/api.py",
+		"web_search":  "templates/agent/web_search.py",
+		"database":    "templates/agent/database.py",
+		"api":         "templates/agent/api.py",
 		"file_system": "templates/agent/file_system.py",
-		"email":      "templates/agent/email.py",
+		"email":       "templates/agent/email.py",
 	}
 
 	templatePath, exists := toolTemplates[toolName]

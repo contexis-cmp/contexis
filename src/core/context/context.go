@@ -9,26 +9,26 @@ import (
 // Context represents the declarative instructions and agent roles
 // in the CMP framework
 type Context struct {
-	Name        string            `json:"name" yaml:"name"`
-	Version     string            `json:"version" yaml:"version"`
-	Description string            `json:"description,omitempty" yaml:"description,omitempty"`
-	
-	Role        Role              `json:"role" yaml:"role"`
-	Tools       []Tool            `json:"tools,omitempty" yaml:"tools,omitempty"`
-	Guardrails  Guardrails        `json:"guardrails,omitempty" yaml:"guardrails,omitempty"`
-	Memory      MemoryConfig      `json:"memory,omitempty" yaml:"memory,omitempty"`
-	Testing     TestingConfig     `json:"testing,omitempty" yaml:"testing,omitempty"`
-	
-	CreatedAt   time.Time         `json:"created_at" yaml:"created_at"`
-	UpdatedAt   time.Time         `json:"updated_at" yaml:"updated_at"`
-	Metadata    map[string]string `json:"metadata,omitempty" yaml:"metadata,omitempty"`
+	Name        string `json:"name" yaml:"name"`
+	Version     string `json:"version" yaml:"version"`
+	Description string `json:"description,omitempty" yaml:"description,omitempty"`
+
+	Role       Role          `json:"role" yaml:"role"`
+	Tools      []Tool        `json:"tools,omitempty" yaml:"tools,omitempty"`
+	Guardrails Guardrails    `json:"guardrails,omitempty" yaml:"guardrails,omitempty"`
+	Memory     MemoryConfig  `json:"memory,omitempty" yaml:"memory,omitempty"`
+	Testing    TestingConfig `json:"testing,omitempty" yaml:"testing,omitempty"`
+
+	CreatedAt time.Time         `json:"created_at" yaml:"created_at"`
+	UpdatedAt time.Time         `json:"updated_at" yaml:"updated_at"`
+	Metadata  map[string]string `json:"metadata,omitempty" yaml:"metadata,omitempty"`
 }
 
 // Role defines the agent's persona and capabilities
 type Role struct {
-	Persona     string   `json:"persona" yaml:"persona"`
+	Persona      string   `json:"persona" yaml:"persona"`
 	Capabilities []string `json:"capabilities" yaml:"capabilities"`
-	Limitations []string `json:"limitations" yaml:"limitations"`
+	Limitations  []string `json:"limitations" yaml:"limitations"`
 }
 
 // Tool represents an external function or integration
@@ -40,9 +40,9 @@ type Tool struct {
 
 // Guardrails define behavioral constraints
 type Guardrails struct {
-	Tone       string `json:"tone,omitempty" yaml:"tone,omitempty"`
-	Format     string `json:"format,omitempty" yaml:"format,omitempty"`
-	MaxTokens  int    `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty"`
+	Tone        string  `json:"tone,omitempty" yaml:"tone,omitempty"`
+	Format      string  `json:"format,omitempty" yaml:"format,omitempty"`
+	MaxTokens   int     `json:"max_tokens,omitempty" yaml:"max_tokens,omitempty"`
 	Temperature float64 `json:"temperature,omitempty" yaml:"temperature,omitempty"`
 }
 
@@ -109,4 +109,4 @@ func (c *Context) GetSHA() (string, error) {
 	}
 	// TODO: Implement proper SHA256 hashing
 	return fmt.Sprintf("sha256:%x", data), nil
-} 
+}

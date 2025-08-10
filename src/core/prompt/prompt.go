@@ -10,17 +10,17 @@ import (
 
 // Prompt represents pure templates hydrated at runtime in the CMP framework
 type Prompt struct {
-	Name        string            `json:"name" yaml:"name"`
-	Version     string            `json:"version" yaml:"version"`
-	Description string            `json:"description,omitempty" yaml:"description,omitempty"`
-	
-	Template    string            `json:"template" yaml:"template"`
-	Variables   []Variable        `json:"variables,omitempty" yaml:"variables,omitempty"`
-	Config      PromptConfig      `json:"config" yaml:"config"`
-	
-	CreatedAt   time.Time         `json:"created_at" yaml:"created_at"`
-	UpdatedAt   time.Time         `json:"updated_at" yaml:"updated_at"`
-	Metadata    map[string]string `json:"metadata,omitempty" yaml:"metadata,omitempty"`
+	Name        string `json:"name" yaml:"name"`
+	Version     string `json:"version" yaml:"version"`
+	Description string `json:"description,omitempty" yaml:"description,omitempty"`
+
+	Template  string       `json:"template" yaml:"template"`
+	Variables []Variable   `json:"variables,omitempty" yaml:"variables,omitempty"`
+	Config    PromptConfig `json:"config" yaml:"config"`
+
+	CreatedAt time.Time         `json:"created_at" yaml:"created_at"`
+	UpdatedAt time.Time         `json:"updated_at" yaml:"updated_at"`
+	Metadata  map[string]string `json:"metadata,omitempty" yaml:"metadata,omitempty"`
 }
 
 // Variable defines a template variable
@@ -64,12 +64,12 @@ func (p *Prompt) Render(data map[string]interface{}) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to parse template: %w", err)
 	}
-	
+
 	var buf bytes.Buffer
 	if err := tmpl.Execute(&buf, data); err != nil {
 		return "", fmt.Errorf("failed to render template: %w", err)
 	}
-	
+
 	return buf.String(), nil
 }
 
@@ -163,4 +163,4 @@ Instructions: {{.instructions}}
 Output format: {{.output_format}}
 
 Result:`
-) 
+)

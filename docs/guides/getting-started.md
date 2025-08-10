@@ -16,8 +16,8 @@ Before you begin, make sure you have the following installed:
 
 ```bash
 # Clone the repository
-git clone https://github.com/contexis/cmp.git
-cd cmp
+git clone https://github.com/contexis-cmp/contexis.git
+cd contexis
 
 # Install the CLI tool
 make install
@@ -296,8 +296,8 @@ This policy is designed to ensure customer satisfaction while maintaining the qu
 ### Getting Help
 
 - **Documentation**: [docs.contexis.dev](https://docs.contexis.dev)
-- **Issues**: [GitHub Issues](https://github.com/contexis/cmp/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/contexis/cmp/discussions)
+- **Issues**: [GitHub Issues](https://github.com/contexis-cmp/contexis/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/contexis-cmp/contexis/discussions)
 - **Community**: [Discord](https://discord.gg/contexis)
 
 ## Advanced Features

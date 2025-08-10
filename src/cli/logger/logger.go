@@ -63,17 +63,17 @@ func GetLogger() *zap.Logger {
 // WithContext returns a logger with context fields
 func WithContext(ctx context.Context) *zap.Logger {
 	logger := GetLogger()
-	
+
 	// Add request ID if available
 	if requestID := getRequestID(ctx); requestID != "" {
 		logger = logger.With(zap.String("request_id", requestID))
 	}
-	
+
 	// Add tenant ID if available
 	if tenantID := getTenantID(ctx); tenantID != "" {
 		logger = logger.With(zap.String("tenant_id", tenantID))
 	}
-	
+
 	return logger
 }
 
@@ -109,9 +109,9 @@ func LogOperation(ctx context.Context, operation string, fields ...zap.Field) fu
 	logger := WithContext(ctx).With(
 		append(fields, zap.String("operation", operation))...,
 	)
-	
+
 	logger.Info("operation started")
-	
+
 	start := time.Now()
 	return func() {
 		duration := time.Since(start)

@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // RAGConfig holds configuration for RAG system generation

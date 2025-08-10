@@ -6,8 +6,8 @@ import (
 	"os"
 	"text/template"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // generateRAGTests creates test configuration for drift detection
@@ -16,7 +16,7 @@ func generateRAGTests(ctx context.Context, config RAGConfig) error {
 
 	// Create drift detection test configuration
 	testConfigPath := fmt.Sprintf("tests/%s/rag_drift_test.yaml", config.Name)
-	
+
 	testConfigTemplate := `# Drift Detection Tests for {{.Name}} RAG System
 
 test_cases:
@@ -86,7 +86,7 @@ performance_benchmarks:
 
 	// Create Python test script
 	testScriptPath := fmt.Sprintf("tests/%s/test_rag.py", config.Name)
-	
+
 	testScriptTemplate := `#!/usr/bin/env python3
 """
 Test script for {{.Name}} RAG system

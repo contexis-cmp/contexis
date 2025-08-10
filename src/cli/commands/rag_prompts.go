@@ -6,8 +6,8 @@ import (
 	"os"
 	"text/template"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // generateRAGPrompts creates prompt templates for RAG responses
@@ -16,7 +16,7 @@ func generateRAGPrompts(ctx context.Context, config RAGConfig) error {
 
 	// Create search response prompt
 	searchPromptPath := fmt.Sprintf("prompts/%s/search_response.md", config.Name)
-	
+
 	searchPromptTemplate := `# {{.Name}} Search Response
 
 **User Query:** {{.UserQuery}}
@@ -96,7 +96,7 @@ Based on the retrieved documents, here is the answer to your question:
 
 	// Create no results prompt
 	noResultsPromptPath := fmt.Sprintf("prompts/%s/no_results.md", config.Name)
-	
+
 	noResultsPrompt := `# No Results Found
 
 **User Query:** {{.UserQuery}}

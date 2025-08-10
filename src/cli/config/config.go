@@ -7,27 +7,27 @@ import (
 	"regexp"
 	"strings"
 
-	"gopkg.in/yaml.v3"
 	"github.com/go-playground/validator/v10"
+	"gopkg.in/yaml.v3"
 )
 
 // ContextConfig represents a CMP context configuration
 type ContextConfig struct {
-	Name        string            `yaml:"name" validate:"required"`
-	Version     string            `yaml:"version" validate:"required,semver"`
-	Description string            `yaml:"description"`
-	Role        RoleConfig        `yaml:"role" validate:"required"`
-	Tools       []ToolConfig      `yaml:"tools" validate:"dive"`
-	Guardrails  GuardrailConfig   `yaml:"guardrails"`
-	Memory      MemoryConfig      `yaml:"memory"`
-	Testing     TestingConfig     `yaml:"testing"`
+	Name        string          `yaml:"name" validate:"required"`
+	Version     string          `yaml:"version" validate:"required,semver"`
+	Description string          `yaml:"description"`
+	Role        RoleConfig      `yaml:"role" validate:"required"`
+	Tools       []ToolConfig    `yaml:"tools" validate:"dive"`
+	Guardrails  GuardrailConfig `yaml:"guardrails"`
+	Memory      MemoryConfig    `yaml:"memory"`
+	Testing     TestingConfig   `yaml:"testing"`
 }
 
 // RoleConfig defines the agent's role and capabilities
 type RoleConfig struct {
-	Persona     string   `yaml:"persona" validate:"required"`
+	Persona      string   `yaml:"persona" validate:"required"`
 	Capabilities []string `yaml:"capabilities" validate:"required,min=1"`
-	Limitations []string `yaml:"limitations"`
+	Limitations  []string `yaml:"limitations"`
 }
 
 // ToolConfig defines an MCP tool
@@ -60,14 +60,14 @@ type TestingConfig struct {
 
 // EnvironmentConfig represents environment-specific settings
 type EnvironmentConfig struct {
-	Environment string                 `yaml:"environment" validate:"required"`
-	Database    DatabaseConfig         `yaml:"database" validate:"required"`
+	Environment string                    `yaml:"environment" validate:"required"`
+	Database    DatabaseConfig            `yaml:"database" validate:"required"`
 	Providers   map[string]ProviderConfig `yaml:"providers"`
-	Embeddings  EmbeddingConfig        `yaml:"embeddings" validate:"required"`
-	VectorDB    VectorDBConfig         `yaml:"vector_db" validate:"required"`
-	Testing     TestingConfig          `yaml:"testing"`
-	Logging     LoggingConfig          `yaml:"logging"`
-	Features    FeatureConfig          `yaml:"features"`
+	Embeddings  EmbeddingConfig           `yaml:"embeddings" validate:"required"`
+	VectorDB    VectorDBConfig            `yaml:"vector_db" validate:"required"`
+	Testing     TestingConfig             `yaml:"testing"`
+	Logging     LoggingConfig             `yaml:"logging"`
+	Features    FeatureConfig             `yaml:"features"`
 }
 
 // DatabaseConfig defines database settings
@@ -117,9 +117,9 @@ type LoggingConfig struct {
 
 // FeatureConfig defines feature flags
 type FeatureConfig struct {
-	HotReload      bool `yaml:"hot_reload"`
-	DebugMode      bool `yaml:"debug_mode"`
-	MockProviders  bool `yaml:"mock_providers"`
+	HotReload       bool `yaml:"hot_reload"`
+	DebugMode       bool `yaml:"debug_mode"`
+	MockProviders   bool `yaml:"mock_providers"`
 	EnableTelemetry bool `yaml:"enable_telemetry"`
 }
 
@@ -129,17 +129,17 @@ func LoadContext(path string) (*ContextConfig, error) {
 	if err != nil {
 		return nil, fmt.Errorf("read context file: %w", err)
 	}
-	
+
 	var config ContextConfig
 	if err := yaml.Unmarshal(data, &config); err != nil {
 		return nil, fmt.Errorf("parse context: %w", err)
 	}
-	
+
 	validate := validator.New()
 	if err := validate.Struct(&config); err != nil {
 		return nil, fmt.Errorf("validate context: %w", err)
 	}
-	
+
 	return &config, nil
 }
 
@@ -149,17 +149,17 @@ func LoadEnvironment(path string) (*EnvironmentConfig, error) {
 	if err != nil {
 		return nil, fmt.Errorf("read environment file: %w", err)
 	}
-	
+
 	var config EnvironmentConfig
 	if err := yaml.Unmarshal(data, &config); err != nil {
 		return nil, fmt.Errorf("parse environment: %w", err)
 	}
-	
+
 	validate := validator.New()
 	if err := validate.Struct(&config); err != nil {
 		return nil, fmt.Errorf("validate environment: %w", err)
 	}
-	
+
 	return &config, nil
 }
 
@@ -168,12 +168,12 @@ func ValidateProjectName(name string) error {
 	if len(name) == 0 || len(name) > 50 {
 		return fmt.Errorf("project name must be 1-50 characters")
 	}
-	
+
 	// Only allow alphanumeric, hyphens, and underscores
 	if !regexp.MustCompile(`^[a-zA-Z0-9-_]+$`).MatchString(name) {
 		return fmt.Errorf("project name contains invalid characters (only a-z, A-Z, 0-9, -, _ allowed)")
 	}
-	
+
 	// Prevent common dangerous names
 	dangerousNames := []string{"config", "system", "admin", "root", "etc", "var", "tmp"}
 	for _, dangerous := range dangerousNames {
@@ -181,25 +181,25 @@ func ValidateProjectName(name string) error {
 			return fmt.Errorf("project name '%s' is not allowed", name)
 		}
 	}
-	
+
 	return nil
 }
 
 // SafeJoin safely joins paths to prevent directory traversal attacks
 func SafeJoin(base, path string) (string, error) {
 	full := filepath.Join(base, filepath.Clean(path))
-	
+
 	if !strings.HasPrefix(full, base) {
 		return "", fmt.Errorf("path escapes base directory")
 	}
-	
+
 	return full, nil
 }
 
 // RedactSensitiveData removes sensitive information from logs
 func RedactSensitiveData(data map[string]interface{}) map[string]interface{} {
 	sensitiveKeys := []string{"api_key", "password", "token", "secret"}
-	
+
 	redacted := make(map[string]interface{})
 	for k, v := range data {
 		isSensitive := false
@@ -209,7 +209,7 @@ func RedactSensitiveData(data map[string]interface{}) map[string]interface{} {
 				break
 			}
 		}
-		
+
 		if isSensitive {
 			if str, ok := v.(string); ok {
 				if len(str) > 8 {
@@ -224,6 +224,6 @@ func RedactSensitiveData(data map[string]interface{}) map[string]interface{} {
 			redacted[k] = v
 		}
 	}
-	
+
 	return redacted
 }

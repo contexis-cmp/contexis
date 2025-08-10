@@ -638,7 +638,7 @@ import (
     "context"
     "log"
     
-    "github.com/contexis/cmp-go-sdk"
+    "github.com/contexis-cmp/contexis-go-sdk"
 )
 
 func main() {

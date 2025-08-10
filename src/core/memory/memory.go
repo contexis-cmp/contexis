@@ -8,36 +8,36 @@ import (
 
 // Memory represents versioned knowledge stores in the CMP framework
 type Memory struct {
-	Name        string            `json:"name" yaml:"name"`
-	Version     string            `json:"version" yaml:"version"`
-	Type        string            `json:"type" yaml:"type"` // "vector", "episodic", "semantic"
-	Description string            `json:"description,omitempty" yaml:"description,omitempty"`
-	
-	Content     []MemoryItem      `json:"content" yaml:"content"`
-	Schema      MemorySchema      `json:"schema,omitempty" yaml:"schema,omitempty"`
-	Config      MemoryConfig      `json:"config" yaml:"config"`
-	
-	CreatedAt   time.Time         `json:"created_at" yaml:"created_at"`
-	UpdatedAt   time.Time         `json:"updated_at" yaml:"updated_at"`
-	Metadata    map[string]string `json:"metadata,omitempty" yaml:"metadata,omitempty"`
+	Name        string `json:"name" yaml:"name"`
+	Version     string `json:"version" yaml:"version"`
+	Type        string `json:"type" yaml:"type"` // "vector", "episodic", "semantic"
+	Description string `json:"description,omitempty" yaml:"description,omitempty"`
+
+	Content []MemoryItem `json:"content" yaml:"content"`
+	Schema  MemorySchema `json:"schema,omitempty" yaml:"schema,omitempty"`
+	Config  MemoryConfig `json:"config" yaml:"config"`
+
+	CreatedAt time.Time         `json:"created_at" yaml:"created_at"`
+	UpdatedAt time.Time         `json:"updated_at" yaml:"updated_at"`
+	Metadata  map[string]string `json:"metadata,omitempty" yaml:"metadata,omitempty"`
 }
 
 // MemoryItem represents a single piece of knowledge
 type MemoryItem struct {
-	ID          string                 `json:"id" yaml:"id"`
-	Content     string                 `json:"content" yaml:"content"`
-	Type        string                 `json:"type" yaml:"type"` // "text", "document", "conversation"
-	Embedding   []float64              `json:"embedding,omitempty" yaml:"embedding,omitempty"`
-	Metadata    map[string]interface{} `json:"metadata,omitempty" yaml:"metadata,omitempty"`
-	CreatedAt   time.Time              `json:"created_at" yaml:"created_at"`
-	UpdatedAt   time.Time              `json:"updated_at" yaml:"updated_at"`
+	ID        string                 `json:"id" yaml:"id"`
+	Content   string                 `json:"content" yaml:"content"`
+	Type      string                 `json:"type" yaml:"type"` // "text", "document", "conversation"
+	Embedding []float64              `json:"embedding,omitempty" yaml:"embedding,omitempty"`
+	Metadata  map[string]interface{} `json:"metadata,omitempty" yaml:"metadata,omitempty"`
+	CreatedAt time.Time              `json:"created_at" yaml:"created_at"`
+	UpdatedAt time.Time              `json:"updated_at" yaml:"updated_at"`
 }
 
 // MemorySchema defines the structure of memory items
 type MemorySchema struct {
-	Fields      []SchemaField `json:"fields" yaml:"fields"`
-	Required    []string      `json:"required,omitempty" yaml:"required,omitempty"`
-	Indexes     []string      `json:"indexes,omitempty" yaml:"indexes,omitempty"`
+	Fields   []SchemaField `json:"fields" yaml:"fields"`
+	Required []string      `json:"required,omitempty" yaml:"required,omitempty"`
+	Indexes  []string      `json:"indexes,omitempty" yaml:"indexes,omitempty"`
 }
 
 // SchemaField defines a field in the memory schema
@@ -50,12 +50,12 @@ type SchemaField struct {
 
 // MemoryConfig defines memory behavior and storage
 type MemoryConfig struct {
-	Provider    string            `json:"provider" yaml:"provider"` // "sqlite", "postgres", "chroma", "pinecone"
-	Embeddings  string            `json:"embeddings" yaml:"embeddings"` // "openai", "sentence-transformers"
-	ChunkSize   int               `json:"chunk_size" yaml:"chunk_size"`
-	Overlap     int               `json:"overlap" yaml:"overlap"`
-	MaxTokens   int               `json:"max_tokens" yaml:"max_tokens"`
-	Settings    map[string]string `json:"settings,omitempty" yaml:"settings,omitempty"`
+	Provider   string            `json:"provider" yaml:"provider"`     // "sqlite", "postgres", "chroma", "pinecone"
+	Embeddings string            `json:"embeddings" yaml:"embeddings"` // "openai", "sentence-transformers"
+	ChunkSize  int               `json:"chunk_size" yaml:"chunk_size"`
+	Overlap    int               `json:"overlap" yaml:"overlap"`
+	MaxTokens  int               `json:"max_tokens" yaml:"max_tokens"`
+	Settings   map[string]string `json:"settings,omitempty" yaml:"settings,omitempty"`
 }
 
 // New creates a new Memory with default values
@@ -140,4 +140,4 @@ func (m *Memory) GetSHA() (string, error) {
 	}
 	// TODO: Implement proper SHA256 hashing
 	return fmt.Sprintf("sha256:%x", data), nil
-} 
+}

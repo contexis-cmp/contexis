@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/contexis-cmp/contexis/src/cli/commands"
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/commands"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 var rootCmd = &cobra.Command{
@@ -37,12 +37,12 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to initialize logger: %v\n", err)
 		os.Exit(1)
 	}
-	
+
 	log := logger.GetLogger()
-	
+
 	// Create context with request ID
 	ctx := context.WithValue(context.Background(), "request_id", generateRequestID())
-	
+
 	if err := rootCmd.ExecuteContext(ctx); err != nil {
 		log.Error("command execution failed", zap.Error(err))
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -54,8 +54,6 @@ func main() {
 func generateRequestID() string {
 	return fmt.Sprintf("req_%d", os.Getpid())
 }
-
-
 
 var generateCmd = &cobra.Command{
 	Use:   "generate [type] [name]",
@@ -94,4 +92,4 @@ var versionCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Contexis CMP Framework v0.1.0")
 	},
-} 
+}

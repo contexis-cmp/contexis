@@ -312,7 +312,7 @@ spec:
     spec:
       containers:
       - name: contexis
-        image: contexis/cmp:latest
+        image: contexis-cmp/contexis:latest
         ports:
         - containerPort: 8080
 ```

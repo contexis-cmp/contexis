@@ -6,8 +6,8 @@ import (
 	"os"
 	"text/template"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // generateRAGContext creates the RAG agent context file
@@ -15,7 +15,7 @@ func generateRAGContext(ctx context.Context, config RAGConfig) error {
 	log := logger.WithContext(ctx)
 
 	contextPath := fmt.Sprintf("contexts/%s/rag_agent.ctx", config.Name)
-	
+
 	contextTemplate := `name: "{{.Name}} RAG Agent"
 version: "{{.Version}}"
 description: "{{.Description}}"

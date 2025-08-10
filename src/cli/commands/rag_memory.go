@@ -6,8 +6,8 @@ import (
 	"os"
 	"text/template"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // generateRAGMemory creates memory store configuration and structure
@@ -16,7 +16,7 @@ func generateRAGMemory(ctx context.Context, config RAGConfig) error {
 
 	// Create memory configuration
 	memoryConfigPath := fmt.Sprintf("memory/%s/memory_config.yaml", config.Name)
-	
+
 	memoryConfigTemplate := `# Memory configuration for {{.Name}} RAG system
 vector_store:
   type: "{{.DBType}}"

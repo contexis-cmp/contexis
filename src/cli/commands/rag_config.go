@@ -6,8 +6,8 @@ import (
 	"os"
 	"text/template"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // generateRAGConfig creates additional configuration files
@@ -16,7 +16,7 @@ func generateRAGConfig(ctx context.Context, config RAGConfig) error {
 
 	// Create requirements.txt for Python dependencies
 	requirementsPath := fmt.Sprintf("tools/%s/requirements.txt", config.Name)
-	
+
 	requirements := `# Python dependencies for {{.Name}} RAG system
 sentence-transformers>=2.2.0
 chromadb>=0.4.0
@@ -44,7 +44,7 @@ numpy>=1.24.0
 
 	// Create README for the RAG system
 	readmePath := fmt.Sprintf("contexts/%s/README.md", config.Name)
-	
+
 	readmeTemplate := `# {{.Name}} RAG System
 
 A knowledge-based retrieval system generated with CMP Framework.

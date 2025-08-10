@@ -6,8 +6,8 @@ import (
 	"os"
 	"text/template"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 // generateRAGTools creates the semantic search implementation
@@ -16,7 +16,7 @@ func generateRAGTools(ctx context.Context, config RAGConfig) error {
 
 	// Create semantic search tool
 	searchToolPath := fmt.Sprintf("tools/%s/semantic_search.py", config.Name)
-	
+
 	searchToolTemplate := `#!/usr/bin/env python3
 """
 Semantic Search Tool for {{.Name}} RAG System

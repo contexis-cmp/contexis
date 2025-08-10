@@ -251,7 +251,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ```bash
 # Clone and setup
 git clone https://github.com/contexis-cmp/contexis.git
-cd cmp
+cd contexis
 make setup
 
 # Run tests

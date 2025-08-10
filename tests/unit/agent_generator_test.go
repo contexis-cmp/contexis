@@ -3,10 +3,10 @@ package unit
 import (
 	"testing"
 
+	"github.com/contexis-cmp/contexis/src/cli/commands"
+	"github.com/contexis-cmp/contexis/tests/unit/helpers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
-	"github.com/contexis/cmp/src/cli/commands"
-	"github.com/contexis/cmp/tests/unit/helpers"
 )
 
 // AgentGeneratorTestSuite provides a test suite for agent generator functionality
@@ -25,11 +25,11 @@ func (suite *AgentGeneratorTestSuite) SetupSuite() {
 // TestAgentConfigValidation tests agent configuration validation
 func (suite *AgentGeneratorTestSuite) TestAgentConfigValidation() {
 	t := suite.T()
-	
+
 	// Test valid configurations
 	validTools := suite.helpers.ValidTools()
 	validMemoryTypes := suite.helpers.ValidMemoryTypes()
-	
+
 	for _, tools := range validTools {
 		for _, memory := range validMemoryTypes {
 			t.Run("valid_"+memory+"_"+helpers.JoinStrings(tools, "_"), func(t *testing.T) {
@@ -38,18 +38,18 @@ func (suite *AgentGeneratorTestSuite) TestAgentConfigValidation() {
 			})
 		}
 	}
-	
+
 	// Test invalid configurations
 	invalidTools := suite.helpers.InvalidTools()
 	invalidMemoryTypes := suite.helpers.InvalidMemoryTypes()
-	
+
 	for _, tools := range invalidTools {
 		t.Run("invalid_tools_"+helpers.JoinStrings(tools, "_"), func(t *testing.T) {
 			err := commands.ValidateAgentConfig(tools, "episodic")
 			assert.Error(t, err, "Invalid tools should fail validation")
 		})
 	}
-	
+
 	for _, memory := range invalidMemoryTypes {
 		t.Run("invalid_memory_"+memory, func(t *testing.T) {
 			err := commands.ValidateAgentConfig([]string{"web_search"}, memory)
@@ -61,9 +61,9 @@ func (suite *AgentGeneratorTestSuite) TestAgentConfigValidation() {
 // TestAgentConfigCreation tests agent configuration creation
 func (suite *AgentGeneratorTestSuite) TestAgentConfigCreation() {
 	t := suite.T()
-	
+
 	validConfigs := suite.helpers.ValidAgentConfigs()
-	
+
 	for _, config := range validConfigs {
 		t.Run("config_"+config.Name, func(t *testing.T) {
 			// Test config fields
@@ -93,19 +93,19 @@ func (suite *AgentGeneratorTestSuite) TestAgentConfigCreation() {
 // TestToolStructure tests tool structure validation
 func (suite *AgentGeneratorTestSuite) TestToolStructure() {
 	t := suite.T()
-	
+
 	validTools := suite.helpers.ValidToolDefinitions()
-	
+
 	for _, tool := range validTools {
 		t.Run("tool_"+tool.Name, func(t *testing.T) {
 			// Test tool fields
 			assert.NotEmpty(t, tool.Name, "Tool name should not be empty")
 			assert.NotEmpty(t, tool.URI, "Tool URI should not be empty")
 			assert.NotEmpty(t, tool.Description, "Tool description should not be empty")
-			
+
 			// Validate tool name
 			suite.utils.ValidateToolName(t, tool.Name)
-			
+
 			// Validate URI format
 			assert.Contains(t, tool.URI, "mcp://", "Tool URI should use MCP protocol")
 		})
@@ -115,7 +115,7 @@ func (suite *AgentGeneratorTestSuite) TestToolStructure() {
 // TestAgentNameValidation tests agent name validation
 func (suite *AgentGeneratorTestSuite) TestAgentNameValidation() {
 	t := suite.T()
-	
+
 	// Test valid agent names
 	validNames := suite.helpers.ValidAgentNames()
 	for _, name := range validNames {
@@ -123,7 +123,7 @@ func (suite *AgentGeneratorTestSuite) TestAgentNameValidation() {
 			suite.utils.ValidateAgentName(t, name)
 		})
 	}
-	
+
 	// Test invalid agent names
 	invalidNames := suite.helpers.InvalidAgentNames()
 	for _, name := range invalidNames {
@@ -139,7 +139,7 @@ func (suite *AgentGeneratorTestSuite) TestAgentNameValidation() {
 // TestMemoryTypeValidation tests memory type validation
 func (suite *AgentGeneratorTestSuite) TestMemoryTypeValidation() {
 	t := suite.T()
-	
+
 	// Test valid memory types
 	validTypes := suite.helpers.ValidMemoryTypes()
 	for _, memoryType := range validTypes {
@@ -147,7 +147,7 @@ func (suite *AgentGeneratorTestSuite) TestMemoryTypeValidation() {
 			suite.utils.ValidateMemoryType(t, memoryType)
 		})
 	}
-	
+
 	// Test invalid memory types
 	invalidTypes := suite.helpers.InvalidMemoryTypes()
 	for _, memoryType := range invalidTypes {
@@ -163,29 +163,29 @@ func (suite *AgentGeneratorTestSuite) TestMemoryTypeValidation() {
 // TestAgentConfigDefaults tests default configuration values
 func (suite *AgentGeneratorTestSuite) TestAgentConfigDefaults() {
 	t := suite.T()
-	
+
 	config := commands.AgentConfig{
-		Name:        "TestAgent",
-		Tools:       []string{"web_search"},
-		Memory:      "episodic",
-		Description: "Test agent",
-		Version:     "1.0.0",
-		Persona:     "Professional assistant",
-		Capabilities: []string{"conversation"},
-		Limitations: []string{"no_personal_data"},
-		BusinessRules: []string{"always_helpful"},
-		BaselineDate: "2024-01-01",
-		AdminEmail:  "test@example.com",
-		Tone:        "professional",
-		Format:      "json",
-		MaxTokens:   500,
-		Temperature: 0.1,
-		MemoryType:  "episodic",
-		MaxHistory:  10,
-		Privacy:     "user_isolated",
+		Name:           "TestAgent",
+		Tools:          []string{"web_search"},
+		Memory:         "episodic",
+		Description:    "Test agent",
+		Version:        "1.0.0",
+		Persona:        "Professional assistant",
+		Capabilities:   []string{"conversation"},
+		Limitations:    []string{"no_personal_data"},
+		BusinessRules:  []string{"always_helpful"},
+		BaselineDate:   "2024-01-01",
+		AdminEmail:     "test@example.com",
+		Tone:           "professional",
+		Format:         "json",
+		MaxTokens:      500,
+		Temperature:    0.1,
+		MemoryType:     "episodic",
+		MaxHistory:     10,
+		Privacy:        "user_isolated",
 		DriftThreshold: 0.85,
 	}
-	
+
 	// Test default values
 	assert.Equal(t, "json", config.Format, "Default format should be JSON")
 	assert.Equal(t, 500, config.MaxTokens, "Default max tokens should be 500")
@@ -198,19 +198,19 @@ func (suite *AgentGeneratorTestSuite) TestAgentConfigDefaults() {
 // TestAgentConfigValidationEdgeCases tests edge cases for configuration validation
 func (suite *AgentGeneratorTestSuite) TestAgentConfigValidationEdgeCases() {
 	t := suite.T()
-	
+
 	// Test empty tools
 	err := commands.ValidateAgentConfig([]string{}, "episodic")
 	assert.NoError(t, err, "Empty tools should be valid")
-	
+
 	// Test nil tools
 	err = commands.ValidateAgentConfig(nil, "episodic")
 	assert.NoError(t, err, "Nil tools should be valid")
-	
+
 	// Test mixed valid/invalid tools
 	err = commands.ValidateAgentConfig([]string{"web_search", "invalid_tool"}, "episodic")
 	assert.Error(t, err, "Mixed valid/invalid tools should fail validation")
-	
+
 	// Test duplicate tools
 	err = commands.ValidateAgentConfig([]string{"web_search", "web_search"}, "episodic")
 	assert.NoError(t, err, "Duplicate tools should be valid (though not ideal)")
@@ -219,22 +219,22 @@ func (suite *AgentGeneratorTestSuite) TestAgentConfigValidationEdgeCases() {
 // TestAgentConfigBusinessRules tests business rules validation
 func (suite *AgentGeneratorTestSuite) TestAgentConfigBusinessRules() {
 	t := suite.T()
-	
+
 	configs := suite.helpers.ValidAgentConfigs()
-	
+
 	for _, config := range configs {
 		t.Run("business_rules_"+config.Name, func(t *testing.T) {
 			// Test required business rules
 			requiredRules := []string{"always_helpful"}
 			for _, rule := range requiredRules {
-				assert.Contains(t, config.BusinessRules, rule, 
+				assert.Contains(t, config.BusinessRules, rule,
 					"Agent should have required business rule: %s", rule)
 			}
-			
+
 			// Test business rules format
 			for _, rule := range config.BusinessRules {
 				assert.NotEmpty(t, rule, "Business rule should not be empty")
-				assert.False(t, helpers.ContainsWhitespace(rule), 
+				assert.False(t, helpers.ContainsWhitespace(rule),
 					"Business rule should not contain whitespace: %s", rule)
 			}
 		})
@@ -244,22 +244,22 @@ func (suite *AgentGeneratorTestSuite) TestAgentConfigBusinessRules() {
 // TestAgentConfigCapabilities tests capabilities validation
 func (suite *AgentGeneratorTestSuite) TestAgentConfigCapabilities() {
 	t := suite.T()
-	
+
 	configs := suite.helpers.ValidAgentConfigs()
-	
+
 	for _, config := range configs {
 		t.Run("capabilities_"+config.Name, func(t *testing.T) {
 			// Test required capabilities
 			requiredCapabilities := []string{"conversation"}
 			for _, capability := range requiredCapabilities {
-				assert.Contains(t, config.Capabilities, capability, 
+				assert.Contains(t, config.Capabilities, capability,
 					"Agent should have required capability: %s", capability)
 			}
-			
+
 			// Test capabilities format
 			for _, capability := range config.Capabilities {
 				assert.NotEmpty(t, capability, "Capability should not be empty")
-				assert.False(t, helpers.ContainsWhitespace(capability), 
+				assert.False(t, helpers.ContainsWhitespace(capability),
 					"Capability should not contain whitespace: %s", capability)
 			}
 		})
@@ -269,22 +269,22 @@ func (suite *AgentGeneratorTestSuite) TestAgentConfigCapabilities() {
 // TestAgentConfigLimitations tests limitations validation
 func (suite *AgentGeneratorTestSuite) TestAgentConfigLimitations() {
 	t := suite.T()
-	
+
 	configs := suite.helpers.ValidAgentConfigs()
-	
+
 	for _, config := range configs {
 		t.Run("limitations_"+config.Name, func(t *testing.T) {
 			// Test required limitations
 			requiredLimitations := []string{"no_personal_data"}
 			for _, limitation := range requiredLimitations {
-				assert.Contains(t, config.Limitations, limitation, 
+				assert.Contains(t, config.Limitations, limitation,
 					"Agent should have required limitation: %s", limitation)
 			}
-			
+
 			// Test limitations format
 			for _, limitation := range config.Limitations {
 				assert.NotEmpty(t, limitation, "Limitation should not be empty")
-				assert.False(t, helpers.ContainsWhitespace(limitation), 
+				assert.False(t, helpers.ContainsWhitespace(limitation),
 					"Limitation should not contain whitespace: %s", limitation)
 			}
 		})
@@ -294,21 +294,21 @@ func (suite *AgentGeneratorTestSuite) TestAgentConfigLimitations() {
 // TestAgentConfigSecurity tests security-related configuration
 func (suite *AgentGeneratorTestSuite) TestAgentConfigSecurity() {
 	t := suite.T()
-	
+
 	configs := suite.helpers.ValidAgentConfigs()
-	
+
 	for _, config := range configs {
 		t.Run("security_"+config.Name, func(t *testing.T) {
 			// Test privacy settings
-			assert.Equal(t, "user_isolated", config.Privacy, 
+			assert.Equal(t, "user_isolated", config.Privacy,
 				"Privacy should be user_isolated for security")
-			
+
 			// Test admin email format
-			assert.Contains(t, config.AdminEmail, "@", 
+			assert.Contains(t, config.AdminEmail, "@",
 				"Admin email should be valid format")
-			
+
 			// Test drift threshold security
-			assert.GreaterOrEqual(t, config.DriftThreshold, 0.8, 
+			assert.GreaterOrEqual(t, config.DriftThreshold, 0.8,
 				"Drift threshold should be >= 0.8 for security")
 		})
 	}

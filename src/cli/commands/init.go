@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/contexis-cmp/contexis/src/cli/config"
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
-	"github.com/contexis/cmp/src/cli/config"
-	"github.com/contexis/cmp/src/cli/logger"
 )
 
 var InitCmd = &cobra.Command{
@@ -39,21 +39,21 @@ type ProjectConfig struct {
 func runInit(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 	projectName := args[0]
-	
+
 	// Initialize logger
 	if err := logger.InitLogger("info", "json"); err != nil {
 		return fmt.Errorf("failed to initialize logger: %w", err)
 	}
-	
+
 	log := logger.WithContext(ctx).With(
 		zap.String("project_name", projectName),
 		zap.String("operation", "init"),
 	)
-	
+
 	// Log operation start
-	defer logger.LogOperation(ctx, "project_init", 
+	defer logger.LogOperation(ctx, "project_init",
 		zap.String("project_name", projectName))()
-	
+
 	// Validate project name
 	if err := validateProjectName(projectName); err != nil {
 		log.Error("project name validation failed", zap.Error(err))
@@ -128,7 +128,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create scripts: %w", err)
 	}
 
-	log.Info("project created successfully", 
+	log.Info("project created successfully",
 		zap.String("project_path", projectPath),
 		zap.String("project_name", projectName))
 
@@ -549,4 +549,3 @@ ENVIRONMENT=development`
 func getCurrentTimestamp() string {
 	return time.Now().UTC().Format(time.RFC3339)
 }
-
