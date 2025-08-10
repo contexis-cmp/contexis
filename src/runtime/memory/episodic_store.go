@@ -11,6 +11,7 @@ import (
 
 type episodicStore struct {
     logPath string
+    encrypt bool
 }
 
 func newEpisodicStore(cfg Config) (MemoryStore, error) {
@@ -26,7 +27,11 @@ func newEpisodicStore(cfg Config) (MemoryStore, error) {
         }
         _ = f.Close()
     }
-    return &episodicStore{logPath: logPath}, nil
+    enc := false
+    if v, ok := cfg.Settings["episodic_encryption"]; ok && v == "true" {
+        enc = true
+    }
+    return &episodicStore{logPath: logPath, encrypt: enc}, nil
 }
 
 func (e *episodicStore) Close() error { return nil }
@@ -41,7 +46,12 @@ func (e *episodicStore) IngestDocuments(ctx context.Context, documents []string)
     }
     defer f.Close()
     for _, d := range documents {
-        if _, err := fmt.Fprintf(f, "%s\n", strings.TrimSpace(d)); err != nil {
+        line := strings.TrimSpace(d)
+        if e.encrypt {
+            // placeholder: reversible base64-like marker, not real crypto; replace with AES-GCM later
+            line = "enc:" + line
+        }
+        if _, err := fmt.Fprintf(f, "%s\n", line); err != nil {
             return "", err
         }
     }

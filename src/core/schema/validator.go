@@ -3,7 +3,10 @@ package schema
 import (
     "encoding/json"
     "fmt"
+    "os"
+    "path/filepath"
 
+    "github.com/xeipuuv/gojsonschema"
     "gopkg.in/yaml.v3"
 )
 
@@ -15,22 +18,37 @@ func ValidateContextYAML(yamlBytes []byte) error {
     if err := yaml.Unmarshal(yamlBytes, &m); err != nil {
         return fmt.Errorf("invalid YAML: %w", err)
     }
-
-    // name (string)
-    if v, ok := m["name"].(string); !ok || v == "" {
-        return fmt.Errorf("field 'name' is required and must be a non-empty string")
+    // Load schema relative to project root if possible
+    schemaPath := filepath.Join("src", "core", "schema", "context_schema.json")
+    if _, err := os.Stat(schemaPath); err != nil {
+        // fallback: basic checks if schema missing
+        if v, ok := m["name"].(string); !ok || v == "" {
+            return fmt.Errorf("field 'name' is required and must be a non-empty string")
+        }
+        if v, ok := m["version"].(string); !ok || v == "" {
+            return fmt.Errorf("field 'version' is required and must be a non-empty string")
+        }
+        role, ok := m["role"].(map[string]interface{})
+        if !ok {
+            return fmt.Errorf("field 'role' is required and must be an object")
+        }
+        if v, ok := role["persona"].(string); !ok || v == "" {
+            return fmt.Errorf("field 'role.persona' is required and must be a non-empty string")
+        }
+        return nil
     }
-    // version (string)
-    if v, ok := m["version"].(string); !ok || v == "" {
-        return fmt.Errorf("field 'version' is required and must be a non-empty string")
-    }
-    // role.persona (string)
-    role, ok := m["role"].(map[string]interface{})
-    if !ok {
-        return fmt.Errorf("field 'role' is required and must be an object")
-    }
-    if v, ok := role["persona"].(string); !ok || v == "" {
-        return fmt.Errorf("field 'role.persona' is required and must be a non-empty string")
+    sl := gojsonschema.NewReferenceLoader("file://" + schemaPath)
+    // convert YAML to JSON for validation
+    by, err := json.Marshal(m)
+    if err != nil { return err }
+    dl := gojsonschema.NewBytesLoader(by)
+    res, err := gojsonschema.Validate(sl, dl)
+    if err != nil { return fmt.Errorf("schema validation error: %w", err) }
+    if !res.Valid() {
+        if len(res.Errors()) > 0 {
+            return fmt.Errorf("schema invalid: %s", res.Errors()[0].String())
+        }
+        return fmt.Errorf("schema invalid")
     }
     return nil
 }

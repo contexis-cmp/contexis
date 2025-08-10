@@ -20,6 +20,8 @@ type Config struct {
 
 // NewStore creates a MemoryStore based on config.
 func NewStore(cfg Config) (MemoryStore, error) {
+    // Merge component memory_config.yaml if present
+    _ = LoadComponentMemoryConfig(&cfg)
     switch strings.ToLower(cfg.Provider) {
     case "sqlite":
         return newSQLiteVectorStore(cfg)

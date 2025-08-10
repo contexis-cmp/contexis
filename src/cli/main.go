@@ -29,6 +29,8 @@ func init() {
     rootCmd.AddCommand(commands.GetContextCommand(""))
     // Memory command
     rootCmd.AddCommand(commands.GetMemoryCommand())
+    // Prompt command
+    rootCmd.AddCommand(commands.GetPromptCommand())
 	rootCmd.AddCommand(generateCmd)
 	rootCmd.AddCommand(testCmd)
 	rootCmd.AddCommand(deployCmd)
