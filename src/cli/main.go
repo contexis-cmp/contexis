@@ -27,6 +27,8 @@ func init() {
 	rootCmd.AddCommand(commands.GenerateCmd)
     // Context command with runtime ops
     rootCmd.AddCommand(commands.GetContextCommand(""))
+    // Memory command
+    rootCmd.AddCommand(commands.GetMemoryCommand())
 	rootCmd.AddCommand(generateCmd)
 	rootCmd.AddCommand(testCmd)
 	rootCmd.AddCommand(deployCmd)
