@@ -25,16 +25,20 @@ func init() {
 	// Add subcommands
 	rootCmd.AddCommand(commands.InitCmd)
 	rootCmd.AddCommand(commands.GenerateCmd)
-    // Context command with runtime ops
-    rootCmd.AddCommand(commands.GetContextCommand(""))
-    // Memory command
-    rootCmd.AddCommand(commands.GetMemoryCommand())
-    // Prompt command
-    rootCmd.AddCommand(commands.GetPromptCommand())
+	// Context command with runtime ops
+	rootCmd.AddCommand(commands.GetContextCommand(""))
+	// Memory command
+	rootCmd.AddCommand(commands.GetMemoryCommand())
+	// Prompt command
+	rootCmd.AddCommand(commands.GetPromptCommand())
+	// Lock command
+	rootCmd.AddCommand(commands.GetLockCommand())
+	rootCmd.AddCommand(commands.GetPromptLintCommand())
 	rootCmd.AddCommand(generateCmd)
 	rootCmd.AddCommand(testCmd)
 	rootCmd.AddCommand(deployCmd)
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(commands.GetServeCommand())
 }
 
 func main() {

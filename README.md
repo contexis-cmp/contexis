@@ -87,14 +87,20 @@ cd my-ai-app
 # Generate a RAG system
 ctx generate rag CustomerDocs --db=sqlite --embeddings=openai
 
-# Add your knowledge base
-ctx memory add --file=./docs/company_policies.md
+# Ingest documents into memory (one per line)
+printf "Returns are accepted within 30 days.\nShipping takes 3-5 business days." > docs.txt
+ctx memory ingest --provider=sqlite --component=CustomerDocs --input=docs.txt
 
-# Test the system
-ctx test
+# Search the knowledge base
+ctx memory search --provider=sqlite --component=CustomerDocs --query="return policy" --top-k=3
 
-# Run a query
-ctx run query "What is your return policy?"
+# Render a prompt template
+ctx prompt render --component=CustomerDocs --template=search_response.md --data='{"UserQuery":"return policy"}'
+
+# Serve a simple API (optional)
+ctx serve --addr :8000
+# curl -X POST http://localhost:8000/api/v1/chat -H 'Content-Type: application/json' \
+#   -d '{"context":"SupportBot","component":"SupportBot","query":"return policy","top_k":3,"data":{"user_input":"Hi"}}'
 ```
 
 ## 🏗️ Core Architecture
@@ -148,38 +154,39 @@ my-ai-app/
 - **Provider Agnostic:** Switch between AI models without code changes
 - **Scalable Architecture:** From prototypes to production systems
 
-### 🔌 Rich Integrations
-- **Vector Databases:** ChromaDB, Pinecone, Weaviate
-- **AI Providers:** OpenAI, Anthropic, Cohere, Local models
-- **Databases:** PostgreSQL, SQLite, Redis
-- **Deployment:** Docker, Kubernetes, Cloud platforms
+### 🔌 Runtime Engine (Phase 2)
+- **Context Service:** Tenant-aware resolution, inheritance/merge, schema validation
+- **Memory Service:** Pluggable providers (file-backed vector store, episodic logs)
+- **Prompt Engine:** Template loading, includes, format validation, simple token trimming
+- **Guardrails:** Capability validation, format/max_tokens enforcement
+- **HTTP Server:** Minimal `/api/v1/chat` endpoint for local experimentation
 
 ## 🛠️ Available Commands
 
 ```bash
 # Project Management
-ctx init <project-name>           # Create new CMP project
-ctx generate <type> <name>        # Generate components
-ctx build [--environment=prod]    # Build for deployment
+ctx init <project-name>                   # Create new CMP project
+ctx generate rag|agent|workflow <name>    # Generate components
+
+# Context Operations
+ctx context validate <name> [--tenant=<id>]   # Validate a .ctx file
+ctx context reload                            # Clear runtime context cache
 
 # Memory Operations
-ctx memory add --file=<path>      # Add documents to memory
-ctx memory update --force         # Update embeddings
-ctx memory search <query>         # Search knowledge base
+ctx memory ingest --provider=sqlite|episodic --component=<Comp> [--tenant=<id>] --input=<file>
+ctx memory search --provider=sqlite|episodic --component=<Comp> [--tenant=<id>] --query=<q> [--top-k=5]
+ctx memory optimize --provider=sqlite|episodic --component=<Comp> [--tenant=<id>]
 
-# Testing & Validation
-ctx test                          # Run all tests
-ctx test --drift                 # Drift detection only
-ctx test --correctness           # Business logic tests
+# Prompt Operations
+ctx prompt render --component=<Comp> --template=<path> --data='{"k":"v"}'
+ctx prompt validate --format=json|markdown|text --input=<file>
+ctx prompt-lint --component=<Comp>
 
-# Deployment
-ctx deploy --target=docker       # Deploy to Docker
-ctx deploy --target=kubernetes   # Deploy to K8s
-ctx logs --level=debug          # View application logs
+# Reproducibility
+ctx lock generate                         # Write context.lock.json
 
-# Development
-ctx dev                          # Start development server
-ctx validate                     # Validate framework
+# Server
+ctx serve --addr :8000                    # Start HTTP server
 ```
 
 ## 📚 Examples
@@ -256,11 +263,11 @@ Ensures business logic compliance:
 ctx test --correctness --rules=./tests/business_rules.yaml
 ```
 
-### Performance Testing
-Validates response times and quality:
+### Runtime Package Tests
+Run targeted tests for runtime packages:
 
 ```bash
-ctx test --performance --max-latency=2s
+go test ./src/runtime/context ./src/runtime/memory ./src/runtime/prompt ./src/runtime/guardrails -v
 ```
 
 ## 🚀 Deployment

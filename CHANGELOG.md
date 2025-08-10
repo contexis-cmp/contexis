@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Phase 2 Runtime Engine features:
+  - Context Management System: tenant-aware resolution, inheritance/merge, JSON Schema validation; CLI `ctx context validate|reload`
+  - Memory Management System: file-backed vector store ("sqlite") and episodic logs; CLI `ctx memory ingest|search|optimize`; component `memory_config.yaml` loader and encryption toggle
+  - Prompt Management System: prompt engine with includes, helpers, format validation, simple token trimming; CLI `ctx prompt render|validate`, `ctx prompt-lint`
+  - Guardrails: capability validation and format/max_tokens enforcement
+  - Reproducibility: `ctx lock generate` producing `context.lock.json`
+  - HTTP Server: `ctx serve` with `/api/v1/chat` endpoint for local experimentation
 - **Complete Phase 1 Implementation**: All three core generators fully implemented
   - **RAG Generator**: Knowledge-based retrieval system generator
     - `ctx generate rag <name> --db=<type> --embeddings=<model>` command
@@ -93,6 +100,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive installation testing and validation
 
 ### Changed
+- README updated with new runtime commands and examples
+- Added dependency `github.com/xeipuuv/gojsonschema` for schema validation
 - **Repository Structure**: Updated to use correct GitHub repository URL `github.com/contexis-cmp/contexis`
 - **Module Path**: Updated Go module path to match repository structure
 - **Import Paths**: All Go files updated with correct import paths
@@ -279,9 +288,9 @@ ctx generate workflow ContentPipeline --steps=research,write,review
 - [x] **Week 3**: Workflow Generator Implementation ✅
 
 ### Phase 2: Runtime Engine (Weeks 4-6)
-- [ ] **Week 4**: Context Management System
-- [ ] **Week 5**: Memory Management System
-- [ ] **Week 6**: Prompt Management System
+- [x] **Week 4**: Context Management System
+- [x] **Week 5**: Memory Management System
+- [x] **Week 6**: Prompt Management System
 
 ### Phase 3: Testing & Quality Assurance (Weeks 7-8)
 - [ ] **Week 7**: Drift Detection System
