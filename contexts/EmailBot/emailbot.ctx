@@ -1,0 +1,43 @@
+name: "EmailBot"
+version: "1.0.0"
+description: "Conversational agent for EmailBot"
+
+role:
+  persona: "Professional, helpful conversational assistant"
+  capabilities: [conversation tool_usage memory_retention context_awareness]
+  limitations: [no_personal_data no_harmful_content no_unauthorized_access]
+
+tools:
+
+  - name: "email"
+    uri: "mcp://email.send"
+    description: "Send and read emails"
+
+  - name: "api"
+    uri: "mcp://api.call"
+    description: "Make API calls to external services"
+
+
+guardrails:
+  tone: "professional"
+  format: "json"
+  max_tokens: 500
+  temperature: 0.1
+  
+memory:
+  type: "episodic"
+  max_history: 10
+  privacy: "user_isolated"
+
+testing:
+  drift_threshold: 0.85
+  business_rules:
+
+    - "always_helpful"
+
+    - "professional_tone"
+
+    - "tool_security"
+
+    - "memory_privacy"
+

@@ -36,10 +36,55 @@ build:
 
 # Run tests
 test:
-	@echo "Running tests..."
-	go test ./...
-	python -m pytest tests/ -v
+	@echo "Running all tests..."
+	go test ./tests/unit/... -v
+	go test ./tests/integration/... -v
+	go test ./tests/e2e/... -v
 	@echo "✓ All tests passed"
+
+# Run unit tests only
+test-unit:
+	@echo "Running unit tests..."
+	go test ./tests/unit/... -v -coverprofile=tests/coverage/unit.out
+	@echo "✓ Unit tests passed"
+
+# Run integration tests only
+test-integration:
+	@echo "Running integration tests..."
+	go test ./tests/integration/... -v -coverprofile=tests/coverage/integration.out
+	@echo "✓ Integration tests passed"
+
+# Run e2e tests only
+test-e2e:
+	@echo "Running end-to-end tests..."
+	go test ./tests/e2e/... -v -coverprofile=tests/coverage/e2e.out
+	@echo "✓ E2E tests passed"
+
+# Run tests with coverage
+test-coverage:
+	@echo "Running tests with coverage..."
+	mkdir -p tests/coverage
+	go test ./tests/... -v -coverprofile=tests/coverage/all.out -covermode=atomic
+	go tool cover -html=tests/coverage/all.out -o tests/coverage/coverage.html
+	@echo "✓ Coverage report generated at tests/coverage/coverage.html"
+
+# Run performance tests
+test-performance:
+	@echo "Running performance tests..."
+	go test ./tests/... -v -tags=performance
+	@echo "✓ Performance tests passed"
+
+# Run security tests
+test-security:
+	@echo "Running security tests..."
+	go test ./tests/... -v -tags=security
+	@echo "✓ Security tests passed"
+
+# Run specific test category
+test-category:
+	@echo "Running $(CATEGORY) tests..."
+	go test ./tests/... -v -run $(CATEGORY)
+	@echo "✓ $(CATEGORY) tests passed"
 
 # Clean build artifacts
 clean:

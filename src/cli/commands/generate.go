@@ -83,7 +83,7 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	case "rag":
 		return generateRAG(ctx, name, dbType, embeddings)
 	case "agent":
-		return generateAgent(ctx, name, tools, memory)
+		return GenerateAgent(ctx, name, tools, memory)
 	case "workflow":
 		return generateWorkflow(ctx, name, steps)
 	default:

@@ -1,0 +1,33 @@
+name: "{{ .Name }}"
+version: "1.0.0"
+description: "{{ .Description }}"
+
+role:
+  persona: "{{ .Persona }}"
+  capabilities: {{ .Capabilities }}
+  limitations: {{ .Limitations }}
+
+tools:
+{{ range .Tools }}
+  - name: "{{ .Name }}"
+    uri: "{{ .URI }}"
+    description: "{{ .Description }}"
+{{ end }}
+
+guardrails:
+  tone: "{{ .Tone }}"
+  format: "{{ .Format }}"
+  max_tokens: {{ .MaxTokens }}
+  temperature: {{ .Temperature }}
+  
+memory:
+  type: "{{ .MemoryType }}"
+  max_history: {{ .MaxHistory }}
+  privacy: "{{ .Privacy }}"
+
+testing:
+  drift_threshold: {{ .DriftThreshold }}
+  business_rules:
+{{ range .BusinessRules }}
+    - "{{ . }}"
+{{ end }}

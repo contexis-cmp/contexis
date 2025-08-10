@@ -1,0 +1,120 @@
+# CMP Framework Test Configuration
+
+# Test Suite Configuration
+test_suites:
+  unit:
+    enabled: true
+    timeout: 30s
+    parallel: true
+    coverage_threshold: 80
+    
+  integration:
+    enabled: true
+    timeout: 120s
+    parallel: false
+    coverage_threshold: 70
+    
+  e2e:
+    enabled: true
+    timeout: 300s
+    parallel: false
+    coverage_threshold: 60
+    
+  performance:
+    enabled: false
+    timeout: 600s
+    parallel: false
+    
+  security:
+    enabled: true
+    timeout: 60s
+    parallel: false
+
+# Test Categories
+test_categories:
+  - name: "agent_generator"
+    description: "Tests for agent generation functionality"
+    suites: ["unit", "integration"]
+    
+  - name: "cli_commands"
+    description: "Tests for CLI command functionality"
+    suites: ["unit", "integration"]
+    
+  - name: "rag_generator"
+    description: "Tests for RAG generation functionality"
+    suites: ["unit", "integration"]
+    
+  - name: "workflow_generator"
+    description: "Tests for workflow generation functionality"
+    suites: ["unit", "integration"]
+    
+  - name: "core_components"
+    description: "Tests for core CMP components"
+    suites: ["unit", "integration"]
+    
+  - name: "security"
+    description: "Security and privacy tests"
+    suites: ["security"]
+    
+  - name: "performance"
+    description: "Performance and load tests"
+    suites: ["performance", "e2e"]
+
+# Test Data Configuration
+test_data:
+  fixtures_dir: "tests/unit/fixtures"
+  temp_dir: "tests/temp"
+  cleanup_after: true
+  
+# Coverage Configuration
+coverage:
+  enabled: true
+  output_format: "html"
+  output_dir: "tests/coverage"
+  exclude_patterns:
+    - "*/vendor/*"
+    - "*/testdata/*"
+    - "*/mocks/*"
+    - "*/examples/*"
+
+# Reporting Configuration
+reporting:
+  enabled: true
+  output_format: ["text", "json", "html"]
+  output_dir: "tests/reports"
+  include_failures: true
+  include_skipped: true
+
+# Environment Configuration
+environments:
+  test:
+    variables:
+      CMP_ENV: "test"
+      CMP_LOG_LEVEL: "debug"
+      CMP_TEMP_DIR: "tests/temp"
+      
+  integration:
+    variables:
+      CMP_ENV: "integration"
+      CMP_LOG_LEVEL: "info"
+      CMP_TEMP_DIR: "tests/temp"
+
+# Test Timeouts
+timeouts:
+  short: 5s
+  medium: 30s
+  long: 120s
+  very_long: 300s
+
+# Test Retries
+retries:
+  enabled: true
+  max_attempts: 3
+  backoff_multiplier: 2.0
+  initial_delay: 1s
+
+# Parallel Execution
+parallel:
+  enabled: true
+  max_workers: 4
+  test_timeout: 30s
