@@ -308,10 +308,10 @@ ctx generate workflow ContentPipeline --steps=research,write,review
 
 ## Roadmap
 
-### Phase 1: Core Generators (Weeks 1-3) ✅ COMPLETED
-- [x] **Week 1**: RAG Generator Implementation ✅
-- [x] **Week 2**: Agent Generator Implementation ✅
-- [x] **Week 3**: Workflow Generator Implementation ✅
+### Phase 1: Core Generators (Weeks 1-3)  COMPLETED
+- [x] **Week 1**: RAG Generator Implementation 
+- [x] **Week 2**: Agent Generator Implementation 
+- [x] **Week 3**: Workflow Generator Implementation 
 
 ### Phase 2: Runtime Engine (Weeks 4-6)
 - [x] **Week 4**: Context Management System

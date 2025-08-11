@@ -402,4 +402,4 @@ The CMP architecture provides a solid foundation for building reproducible, secu
 
 ---
 
-**Contexis** - Bringing architectural discipline to AI applications 🚀
+**Contexis** - Bringing architectural discipline to AI applications 

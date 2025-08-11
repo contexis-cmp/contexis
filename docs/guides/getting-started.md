@@ -356,10 +356,10 @@ ctx test --performance --max-latency=2s
 
 Congratulations! You've successfully created your first AI application with Contexis. You now have:
 
-- ✅ A working customer support chatbot
-- ✅ Knowledge base with company policies
-- ✅ Professional response templates
-- ✅ Testing and monitoring setup
+-  A working customer support chatbot
+-  Knowledge base with company policies
+-  Professional response templates
+-  Testing and monitoring setup
 
 Continue exploring the framework to unlock its full potential for building reliable, secure, and scalable AI applications.
 

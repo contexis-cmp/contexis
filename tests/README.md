@@ -2,7 +2,7 @@
 
 This directory contains comprehensive tests for the CMP (Context-Memory-Prompt) framework, following Test-Driven Development (TDD) principles.
 
-## 🏗️ Test Architecture
+## ️ Test Architecture
 
 ### Test Structure
 ```
@@ -31,7 +31,7 @@ tests/
 4. **Performance Tests**: Test system performance under load
 5. **Security Tests**: Test security and privacy features
 
-## 🚀 Running Tests
+##  Running Tests
 
 ### Prerequisites
 ```bash
@@ -83,7 +83,7 @@ go test ./tests/unit/agent_generator_test.go -v
 go test ./tests/unit/ -v -run TestAgentConfigValidation
 ```
 
-## 📋 Test Coverage Requirements
+##  Test Coverage Requirements
 
 ### Minimum Coverage Targets
 - **Unit Tests**: 80% coverage
@@ -97,7 +97,7 @@ Coverage reports are generated in `tests/coverage/`:
 - `integration.out` - Integration test coverage data
 - `e2e.out` - E2E test coverage data
 
-## 🧪 Test-Driven Development (TDD) Workflow
+##  Test-Driven Development (TDD) Workflow
 
 ### 1. Write Failing Test (Red)
 ```go
@@ -126,7 +126,7 @@ func NewFeature() string {
 ### 4. Repeat
 Continue the cycle for each new feature or bug fix.
 
-## 🔧 Test Utilities and Helpers
+##  Test Utilities and Helpers
 
 ### TestFixtures
 Provides common test data:
@@ -155,7 +155,7 @@ helpers.AssertFileExists(t, filePath)
 helpers.AssertFileContent(t, filePath, expectedContent)
 ```
 
-## 📊 Test Configuration
+##  Test Configuration
 
 ### Test Configuration File
 Tests are configured via `tests/test_config.yaml`:
@@ -176,7 +176,7 @@ CMP_LOG_LEVEL=debug       # Log level for tests
 CMP_TEMP_DIR=tests/temp   # Temporary directory
 ```
 
-## 🎯 Test Categories
+##  Test Categories
 
 ### Agent Generator Tests
 - **Unit Tests**: Test individual agent generation functions
@@ -203,7 +203,7 @@ CMP_TEMP_DIR=tests/temp   # Temporary directory
 - **Memory Usage**: Test memory consumption
 - **Response Time**: Test response latency
 
-## 🐛 Debugging Tests
+##  Debugging Tests
 
 ### Verbose Output
 ```bash
@@ -229,7 +229,7 @@ logger := helpers.TestLogger(t)
 logger.Info("Test step completed", zap.String("step", "validation"))
 ```
 
-## 📈 Continuous Integration
+##  Continuous Integration
 
 ### CI/CD Pipeline
 Tests are automatically run in CI/CD:
@@ -244,7 +244,7 @@ Test results are published to:
 - Coverage reports in HTML format
 - Performance benchmarks
 
-## 🔍 Best Practices
+##  Best Practices
 
 ### Test Naming
 - Use descriptive test names: `TestAgentConfigValidation`
@@ -271,7 +271,7 @@ Test results are published to:
 - Verify error messages
 - Test edge cases and boundary conditions
 
-## 🚨 Common Issues
+##  Common Issues
 
 ### Import Path Issues
 If you encounter import path issues:
@@ -312,14 +312,14 @@ open tests/coverage/coverage.html
 # Focus on critical paths first
 ```
 
-## 📚 Additional Resources
+##  Additional Resources
 
 - [Go Testing Package](https://golang.org/pkg/testing/)
 - [Testify Documentation](https://github.com/stretchr/testify)
 - [Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development)
 - [Go Testing Best Practices](https://golang.org/doc/tutorial/testing)
 
-## 🤝 Contributing
+##  Contributing
 
 When adding new tests:
 1. Follow TDD principles

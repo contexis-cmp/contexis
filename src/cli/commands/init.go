@@ -132,9 +132,9 @@ func runInit(cmd *cobra.Command, args []string) error {
 		zap.String("project_path", projectPath),
 		zap.String("project_name", projectName))
 
-	fmt.Printf("✅ Successfully created CMP project: %s\n", projectName)
-	fmt.Printf("📁 Project structure created at: %s\n", projectPath)
-	fmt.Printf("\n🚀 Next steps:\n")
+	fmt.Printf(" Successfully created CMP project: %s\n", projectName)
+	fmt.Printf(" Project structure created at: %s\n", projectPath)
+	fmt.Printf("\n Next steps:\n")
 	fmt.Printf("  cd %s\n", projectName)
 	fmt.Printf("  ctx generate rag MyFirstRAG --db=sqlite --embeddings=openai\n")
 	fmt.Printf("  ctx test\n")

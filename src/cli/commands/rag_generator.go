@@ -103,9 +103,9 @@ func generateRAG(ctx context.Context, name, dbType, embeddings string) error {
 		zap.String("name", name),
 		zap.String("path", fmt.Sprintf("contexts/%s", name)))
 
-	fmt.Printf("✅ Successfully generated RAG system: %s\n", name)
-	fmt.Printf("📁 RAG components created in: contexts/%s/\n", name)
-	fmt.Printf("\n🚀 Next steps:\n")
+	fmt.Printf(" Successfully generated RAG system: %s\n", name)
+	fmt.Printf(" RAG components created in: contexts/%s/\n", name)
+	fmt.Printf("\n Next steps:\n")
 	fmt.Printf("  # Add documents to your knowledge base\n")
 	fmt.Printf("  cp your-documents/* memory/%s/documents/\n", name)
 	fmt.Printf("  \n")

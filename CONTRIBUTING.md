@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to Contexis! This document provides guidelines and information for contributors.
 
-## 🎯 Development Philosophy
+##  Development Philosophy
 
 Contexis follows a **Context-Memory-Prompt (CMP)** architecture that treats AI components as version-controlled, first-class citizens. We believe in:
 
@@ -11,7 +11,7 @@ Contexis follows a **Context-Memory-Prompt (CMP)** architecture that treats AI c
 - **Security First**: Security and privacy are non-negotiable
 - **Developer Experience**: Tools should be intuitive and powerful
 
-## 🏗️ Architecture Overview
+## ️ Architecture Overview
 
 ### Core Components
 
@@ -26,7 +26,7 @@ Contexis follows a **Context-Memory-Prompt (CMP)** architecture that treats AI c
 - **YAML**: Configuration files
 - **JSON**: Data interchange and locking
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -89,7 +89,7 @@ cd contexis
    # Create PR on GitHub
    ```
 
-## 📝 Coding Standards
+##  Coding Standards
 
 ### Go Standards
 
@@ -171,7 +171,7 @@ func SafeJoin(base, path string) (string, error) {
 }
 ```
 
-## 🧪 Testing Guidelines
+##  Testing Guidelines
 
 ### Test Structure
 
@@ -207,7 +207,7 @@ make test-coverage
 make test-performance
 ```
 
-## 📚 Documentation Standards
+##  Documentation Standards
 
 ### Documentation Structure
 
@@ -234,7 +234,7 @@ docs/
 - **Guides**: Step-by-step tutorials
 - **Technical docs**: Architecture and design decisions
 
-## 🔄 Pull Request Process
+##  Pull Request Process
 
 ### PR Requirements
 
@@ -273,7 +273,7 @@ Brief description of the changes
 - [ ] Guides updated
 ```
 
-## 🏷️ Versioning
+## ️ Versioning
 
 We follow [Semantic Versioning](https://semver.org/) (SemVer):
 
@@ -281,7 +281,7 @@ We follow [Semantic Versioning](https://semver.org/) (SemVer):
 - **MINOR**: New features, backward compatible
 - **PATCH**: Bug fixes, backward compatible
 
-## 🚀 Release Process
+##  Release Process
 
 1. **Feature Freeze**: Stop adding new features
 2. **Testing**: Comprehensive testing on staging
@@ -289,7 +289,7 @@ We follow [Semantic Versioning](https://semver.org/) (SemVer):
 4. **Release**: Tag and release
 5. **Announcement**: Communicate changes
 
-## 🤝 Community Guidelines
+##  Community Guidelines
 
 ### Code of Conduct
 
@@ -304,7 +304,7 @@ We follow [Semantic Versioning](https://semver.org/) (SemVer):
 - **Discussions**: Use GitHub discussions for questions
 - **Security**: Email security@contexis.dev for security issues
 
-## 🎯 Contribution Areas
+##  Contribution Areas
 
 ### Priority Areas
 
@@ -321,17 +321,17 @@ We follow [Semantic Versioning](https://semver.org/) (SemVer):
 - Bug fixes
 - Small feature improvements
 
-## 📞 Getting Help
+##  Getting Help
 
 - **Documentation**: Check the docs first
 - **Issues**: Search existing issues
 - **Discussions**: Ask questions in discussions
 - **Email**: contact@contexis.dev
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 Thank you for contributing to Contexis! Your contributions help make AI applications more reliable, secure, and accessible.
 
 ---
 
-**Contexis** - Bringing architectural discipline to AI applications 🚀
+**Contexis** - Bringing architectural discipline to AI applications 

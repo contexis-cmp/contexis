@@ -14,6 +14,9 @@ ingress:
   className: nginx
   host: contexis.local
 
+security:
+  authEnabled: false
+
 resources:
   limits:
     cpu: 500m

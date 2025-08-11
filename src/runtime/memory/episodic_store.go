@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+    "time"
 	"strings"
 )
 
 type episodicStore struct {
 	logPath string
-	encrypt bool
+    encrypt bool
 }
 
 func newEpisodicStore(cfg Config) (MemoryStore, error) {
@@ -45,16 +46,32 @@ func (e *episodicStore) IngestDocuments(ctx context.Context, documents []string)
 		return "", err
 	}
 	defer f.Close()
-	for _, d := range documents {
-		line := strings.TrimSpace(d)
-		if e.encrypt {
-			// placeholder: reversible base64-like marker, not real crypto; replace with AES-GCM later
-			line = "enc:" + line
-		}
-		if _, err := fmt.Fprintf(f, "%s\n", line); err != nil {
-			return "", err
-		}
-	}
+    if e.encrypt {
+        // Encrypt entire batch as one record to keep ordering; store as binary blob per line (base64 not used here)
+        keyProvider := securityKeyProvider()
+        key, kerr := keyProvider()
+        if kerr != nil {
+            return "", kerr
+        }
+        payload := strings.Join(documents, "\n")
+        ciphertext, cerr := encryptBytes(key, []byte(payload))
+        if cerr != nil {
+            return "", cerr
+        }
+        if _, err := f.Write(ciphertext); err != nil {
+            return "", err
+        }
+        if _, err := f.Write([]byte("\n")); err != nil {
+            return "", err
+        }
+    } else {
+        for _, d := range documents {
+            line := strings.TrimSpace(d)
+            if _, err := fmt.Fprintf(f, "%s\n", line); err != nil {
+                return "", err
+            }
+        }
+    }
 	// version based on content and count; simple timestamp-less hash via contentSHA
 	return contentSHA(documents, "episodic"), nil
 }
@@ -69,11 +86,31 @@ func (e *episodicStore) Search(ctx context.Context, query string, topK int) ([]S
 		return nil, err
 	}
 	defer file.Close()
-	scanner := bufio.NewScanner(file)
+    scanner := bufio.NewScanner(file)
 	results := make([]SearchResult, 0, topK)
 	idx := 0
 	for scanner.Scan() {
-		line := scanner.Text()
+        line := scanner.Text()
+        if e.encrypt {
+            // Decrypt batch line
+            key, kerr := securityKeyProvider()()
+            if kerr != nil {
+                return nil, kerr
+            }
+            plaintext, derr := decryptBytes(key, []byte(line))
+            if derr != nil {
+                continue
+            }
+            // expand into individual lines for scoring
+            for _, sub := range strings.Split(string(plaintext), "\n") {
+                score := simpleMatchScore(strings.ToLower(sub), q)
+                if score > 0 {
+                    results = append(results, SearchResult{ID: fmt.Sprintf("%d", idx), Content: sub, Score: score})
+                }
+                idx++
+            }
+            continue
+        }
 		score := simpleMatchScore(strings.ToLower(line), q)
 		if score > 0 {
 			results = append(results, SearchResult{ID: fmt.Sprintf("%d", idx), Content: line, Score: score})
@@ -100,8 +137,18 @@ func (e *episodicStore) Search(ctx context.Context, query string, topK int) ([]S
 }
 
 func (e *episodicStore) Optimize(ctx context.Context, _ string) error {
-	// No-op for simple file-backed store
-	return nil
+    // Best-effort fsync for durability
+    f, err := os.OpenFile(e.logPath, os.O_RDWR, 0o644)
+    if err != nil {
+        return err
+    }
+    defer f.Close()
+    if err := f.Sync(); err != nil {
+        return err
+    }
+    // touch file to update mtime
+    now := time.Now()
+    return os.Chtimes(e.logPath, now, now)
 }
 
 func simpleMatchScore(text, query string) float64 {

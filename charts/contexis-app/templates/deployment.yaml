@@ -17,17 +17,29 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "contexis-app.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+          annotations:
+            container.apparmor.security.beta.kubernetes.io/contexis: runtime/default
     spec:
+          securityContext:
+            runAsNonRoot: true
+            fsGroup: 2000
       containers:
         - name: contexis
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: ["serve", "--addr", ":8000"]
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                runAsUser: 1000
           ports:
             - containerPort: 8000
           env:
             - name: CMP_ENV
               value: {{ .Values.env.CMP_ENV | quote }}
+                - name: CMP_AUTH_ENABLED
+                  value: {{ .Values.security.authEnabled | default "false" | quote }}
             - name: HF_MODEL_ID
               valueFrom:
                 secretKeyRef:

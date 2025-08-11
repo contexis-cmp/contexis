@@ -185,10 +185,10 @@ def run_workflow_tests():
     for test_method in test_methods:
         try:
             test_method()
-            print(f"✅ {test_method.__name__}: PASSED")
+            print(f" {test_method.__name__}: PASSED")
             passed += 1
         except Exception as e:
-            print(f"❌ {test_method.__name__}: FAILED - {str(e)}")
+            print(f" {test_method.__name__}: FAILED - {str(e)}")
             failed += 1
     
     print(f"\n=== Test Results ===")

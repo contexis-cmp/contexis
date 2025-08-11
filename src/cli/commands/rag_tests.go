@@ -179,7 +179,7 @@ def run_drift_tests():
     print(f"Total: {results['passed'] + results['failed']}")
     
     for test in results['tests']:
-        status_icon = "✅" if test['status'] == 'PASSED' else "❌"
+        status_icon = "" if test['status'] == 'PASSED' else ""
         print(f"{status_icon} {test['name']}: {test['status']}")
         if 'reason' in test:
             print(f"   Reason: {test['reason']}")

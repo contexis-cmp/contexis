@@ -16,7 +16,7 @@ The framework provides a dual-language approach:
 - **Go CLI** for fast, reliable command-line operations
 - **Python Core** for AI/ML functionality and integrations
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 
@@ -104,7 +104,7 @@ ctx serve --addr :8000
 #   -d '{"context":"SupportBot","component":"SupportBot","query":"return policy","top_k":3,"data":{"user_input":"Hi"}}'
 ```
 
-## 🏗️ Core Architecture
+## ️ Core Architecture
 
 ### CMP Components
 
@@ -133,29 +133,29 @@ my-ai-app/
 └── context.lock.json    # Version locks
 ```
 
-## ✨ Key Features
+##  Key Features
 
-### 🎯 Generator-Driven Development
+###  Generator-Driven Development
 - Scaffold complete AI applications with best practices
 - Pre-built templates for RAG, agents, and workflows
 - Automatic test suite generation
 
-### 🔒 Version Control & Reproducibility
+###  Version Control & Reproducibility
 - Lock all AI components for reproducible deployments
 - Context versioning and drift detection
 - Deterministic AI behavior across environments
 
-### 🧪 Testing & Quality Assurance
+###  Testing & Quality Assurance
 - **Drift Detection:** Automated testing for AI behavior consistency
 - **Correctness Tests:** Business logic validation
 - **Performance Monitoring:** Response time and quality metrics
 
-### 🏢 Enterprise Ready
+###  Enterprise Ready
 - **Multi-Tenancy:** Built-in context isolation
 - **Provider Agnostic:** Switch between AI models without code changes
 - **Scalable Architecture:** From prototypes to production systems
 
-### 🔌 Runtime Engine (Phase 2)
+###  Runtime Engine (Phase 2)
 - **Context Service:** Tenant-aware resolution, inheritance/merge, schema validation
 - **Memory Service:** Pluggable providers (file-backed vector store, episodic logs)
 - **Prompt Engine:** Template loading, includes, format validation, simple token trimming
@@ -163,7 +163,7 @@ my-ai-app/
 - **HTTP Server:** `/api/v1/chat` with health `/healthz`, readiness `/readyz`, version `/version`, metrics `/metrics`
 - **Worker:** `ctx worker` exposes `/healthz` and `/metrics` for background processing
 
-## 🛠️ Available Commands
+## ️ Available Commands
 
 ```bash
 # Project Management
@@ -191,7 +191,7 @@ ctx lock generate                         # Write context.lock.json
 ctx serve --addr :8000                    # Start HTTP server
 ```
 
-## 📚 Examples
+##  Examples
 
 ### RAG System
 ```bash
@@ -208,7 +208,7 @@ ctx generate agent SupportBot --memory=conversation --tools=api
 ctx generate workflow DataProcessor --steps=extract,transform,load
 ```
 
-## 🔧 Configuration
+##  Configuration
 
 ### Environment Setup
 
@@ -249,7 +249,7 @@ constraints:
   - never_share_internal_info
 ```
 
-## 🧪 Testing
+##  Testing
 
 ### Run Go test suites
 ```bash
@@ -279,7 +279,7 @@ ctx test --drift-detection --component CustomerDocs --semantic --junit --update-
 - Go tests: `tests/reports/go_<suite>.txt`, `tests/reports/go_tests.json`, optional `junit-go.xml`
 - Coverage: profiles under `tests/coverage/*.out` (when `--coverage` is used)
 
-## 🚀 Deployment
+##  Deployment
 
 ### Docker Deployment
 ```bash
@@ -315,7 +315,7 @@ export HF_MODEL_ID=meta-llama/Meta-Llama-3.1-8B-Instruct
 ctx hf test-model "Hello from Contexis!"
 ```
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
@@ -337,7 +337,7 @@ make format
 make build
 ```
 
-## 📖 Documentation
+##  Documentation
 
 - [Technical RFC](docs/technical_rfc.md) - Detailed architecture specification
 - [API Reference](docs/api/) - Complete API documentation
@@ -345,11 +345,11 @@ make build
 - [Guides](docs/guides/) - Step-by-step guides
   - [Hugging Face Integration](docs/guides/hugging-face.md)
 
-## 📄 License
+##  License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Inspired by Rails' architectural patterns
 - Built on the shoulders of the AI/ML community
@@ -357,4 +357,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Contexis** - Bringing architectural discipline to AI applications 🚀
+**Contexis** - Bringing architectural discipline to AI applications 

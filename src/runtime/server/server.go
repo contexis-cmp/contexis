@@ -13,6 +13,7 @@ import (
     runtimecontext "github.com/contexis-cmp/contexis/src/runtime/context"
     runtimememory "github.com/contexis-cmp/contexis/src/runtime/memory"
     runtimeprompt "github.com/contexis-cmp/contexis/src/runtime/prompt"
+    runtimesecurity "github.com/contexis-cmp/contexis/src/runtime/security"
     "github.com/prometheus/client_golang/prometheus"
     "github.com/prometheus/client_golang/prometheus/promhttp"
     runtimemodel "github.com/contexis-cmp/contexis/src/runtime/model"
@@ -107,6 +108,11 @@ func NewHandler(root string) http.Handler {
 func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Handler {
     ctxSvc := runtimecontext.NewContextService(root)
     eng := runtimeprompt.NewEngine(root)
+    // Security components (enabled via CMP_AUTH_ENABLED=true)
+    authEnabled := os.Getenv("CMP_AUTH_ENABLED") == "true"
+    keyStore := runtimesecurity.NewAPIKeyStoreFromEnv()
+    rateLimiter := runtimesecurity.NewRateLimiter(10.0/1.0, 5)
+    auditor := runtimesecurity.NewAuditor(runtimesecurity.NewJSONFileSink("audit.log"))
 
     mux := http.NewServeMux()
 
@@ -138,6 +144,62 @@ func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Ha
         if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
             http.Error(w, err.Error(), http.StatusBadRequest)
             return
+        }
+        // Optional authentication & RBAC
+        var principal *runtimesecurity.Principal
+        if authEnabled {
+            p, err := keyStore.Authenticate(r)
+            if err != nil {
+                w.Header().Set("WWW-Authenticate", "Bearer")
+                http.Error(w, "unauthorized", http.StatusUnauthorized)
+                auditor.Record(r.Context(), runtimesecurity.AuditEvent{
+                    Timestamp:  time.Now(),
+                    RequestID:  r.Context().Value("request_id").(string),
+                    TenantID:   req.TenantID,
+                    ActorKeyID: "",
+                    Action:     "chat:invoke",
+                    Resource:   "chat",
+                    Result:     "denied",
+                    Reason:     "auth_failed",
+                })
+                return
+            }
+            principal = p
+            // Rate limiting (per key/tenant/ip)
+            ip := runtimesecurity.ExtractIP(r)
+            if !rateLimiter.Allow(runtimesecurity.LimiterKey{APIKeyID: p.KeyID, TenantID: p.TenantID, IP: ip}, 0) {
+                w.Header().Set("Retry-After", runtimesecurity.RetryAfter())
+                http.Error(w, "rate limit exceeded", http.StatusTooManyRequests)
+                auditor.Record(r.Context(), runtimesecurity.AuditEvent{
+                    Timestamp:  time.Now(),
+                    RequestID:  r.Context().Value("request_id").(string),
+                    TenantID:   req.TenantID,
+                    ActorKeyID: p.KeyID,
+                    Action:     "chat:invoke",
+                    Resource:   "chat",
+                    Result:     "denied",
+                    Reason:     "rate_limited",
+                })
+                return
+            }
+            // RBAC: require chat:execute
+            res := runtimesecurity.Resource{Type: "chat", Name: "chat", Tenant: req.TenantID}
+            if !runtimesecurity.CheckPermission(principal, res, runtimesecurity.ActionExecute) {
+                http.Error(w, "forbidden", http.StatusForbidden)
+                auditor.Record(r.Context(), runtimesecurity.AuditEvent{
+                    Timestamp:  time.Now(),
+                    RequestID:  r.Context().Value("request_id").(string),
+                    TenantID:   req.TenantID,
+                    ActorKeyID: principal.KeyID,
+                    Action:     "chat:invoke",
+                    Resource:   "chat",
+                    Result:     "denied",
+                    Reason:     "rbac",
+                })
+                return
+            }
+            // Bind principal to context
+            r = r.WithContext(runtimesecurity.WithPrincipal(r.Context(), principal))
         }
         ctxModel, err := ctxSvc.ResolveContext(req.TenantID, req.Context)
         if err != nil {

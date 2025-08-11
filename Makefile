@@ -31,9 +31,9 @@ help:
 build:
 	@echo "Building Contexis CMP Framework..."
 	go build -o bin/ctx src/cli/main.go
-	@echo "✓ Go CLI built successfully"
+	@echo " Go CLI built successfully"
 	python -m pip install -e .
-	@echo "✓ Python packages installed"
+	@echo " Python packages installed"
 
 # Run tests
 test:
@@ -41,25 +41,25 @@ test:
 	go test ./tests/unit/... -v
 	go test ./tests/integration/... -v
 	go test ./tests/e2e/... -v
-	@echo "✓ All tests passed"
+	@echo " All tests passed"
 
 # Run unit tests only
 test-unit:
 	@echo "Running unit tests..."
 	go test ./tests/unit/... -v -coverprofile=tests/coverage/unit.out
-	@echo "✓ Unit tests passed"
+	@echo " Unit tests passed"
 
 # Run integration tests only
 test-integration:
 	@echo "Running integration tests..."
 	go test ./tests/integration/... -v -coverprofile=tests/coverage/integration.out
-	@echo "✓ Integration tests passed"
+	@echo " Integration tests passed"
 
 # Run e2e tests only
 test-e2e:
 	@echo "Running end-to-end tests..."
 	go test ./tests/e2e/... -v -coverprofile=tests/coverage/e2e.out
-	@echo "✓ E2E tests passed"
+	@echo " E2E tests passed"
 
 # Run tests with coverage
 test-coverage:
@@ -67,25 +67,25 @@ test-coverage:
 	mkdir -p tests/coverage
 	go test ./tests/... -v -coverprofile=tests/coverage/all.out -covermode=atomic
 	go tool cover -html=tests/coverage/all.out -o tests/coverage/coverage.html
-	@echo "✓ Coverage report generated at tests/coverage/coverage.html"
+	@echo " Coverage report generated at tests/coverage/coverage.html"
 
 # Run performance tests
 test-performance:
 	@echo "Running performance tests..."
 	go test ./tests/... -v -tags=performance
-	@echo "✓ Performance tests passed"
+	@echo " Performance tests passed"
 
 # Run security tests
 test-security:
 	@echo "Running security tests..."
 	go test ./tests/... -v -tags=security
-	@echo "✓ Security tests passed"
+	@echo " Security tests passed"
 
 # Run specific test category
 test-category:
 	@echo "Running $(CATEGORY) tests..."
 	go test ./tests/... -v -run $(CATEGORY)
-	@echo "✓ $(CATEGORY) tests passed"
+	@echo " $(CATEGORY) tests passed"
 
 # Clean build artifacts
 clean:
@@ -96,19 +96,19 @@ clean:
 	rm -rf *.egg-info/
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -delete
-	@echo "✓ Cleaned successfully"
+	@echo " Cleaned successfully"
 
 # Install the CLI tool (system-wide if possible, local if not)
 install: build
 	@echo "Installing CLI tool..."
 	@if [ -w /usr/local/bin ]; then \
 		cp bin/ctx /usr/local/bin/; \
-		echo "✓ CLI installed to /usr/local/bin/ctx"; \
+		echo " CLI installed to /usr/local/bin/ctx"; \
 	else \
 		echo "Installing to user's local bin directory..."; \
 		mkdir -p $(HOME)/.local/bin; \
 		cp bin/ctx $(HOME)/.local/bin/; \
-		echo "✓ CLI installed to $(HOME)/.local/bin/ctx"; \
+		echo " CLI installed to $(HOME)/.local/bin/ctx"; \
 		echo ""; \
 		echo "To use the CLI, add the following to your shell profile:"; \
 		echo "export PATH=\"$(HOME)/.local/bin:\$$PATH\""; \
@@ -125,7 +125,7 @@ install-local: build
 	@echo "Installing CLI tool to user's local directory..."
 	mkdir -p $(HOME)/.local/bin
 	cp bin/ctx $(HOME)/.local/bin/
-	@echo "✓ CLI installed to $(HOME)/.local/bin/ctx"
+	@echo " CLI installed to $(HOME)/.local/bin/ctx"
 	@echo ""
 	@echo "To use the CLI, add the following to your shell profile:"
 	@echo "export PATH=\"$(HOME)/.local/bin:\$$PATH\""
@@ -146,7 +146,7 @@ docs:
 	@echo "Generating documentation..."
 	mkdir -p docs/build
 	sphinx-build -b html docs/ docs/build/html
-	@echo "✓ Documentation generated"
+	@echo " Documentation generated"
 
 # Build examples
 examples:
@@ -154,7 +154,7 @@ examples:
 	cd examples/rag && ctx build
 	cd examples/agent && ctx build
 	cd examples/workflow && ctx build
-	@echo "✓ Examples built"
+	@echo " Examples built"
 
 # Run linting
 lint:
@@ -163,7 +163,7 @@ lint:
 	black --check src/
 	isort --check-only src/
 	flake8 src/
-	@echo "✓ Linting passed"
+	@echo " Linting passed"
 
 # Format code
 format:
@@ -171,38 +171,38 @@ format:
 	gofmt -w src/
 	black src/
 	isort src/
-	@echo "✓ Code formatted"
+	@echo " Code formatted"
 
 # Security checks
 security:
 	@echo "Running security checks..."
 	gosec ./...
 	bandit -r src/
-	@echo "✓ Security checks passed"
+	@echo " Security checks passed"
 
 # Build Docker image
 docker:
 	@echo "Building Docker image..."
 	docker build -t contexis-cmp/contexis:latest .
-	@echo "✓ Docker image built"
+	@echo " Docker image built"
 
 # Create release
 release:
 	@echo "Creating release..."
 	git tag -a v$(shell cat VERSION) -m "Release v$(shell cat VERSION)"
 	git push origin v$(shell cat VERSION)
-	@echo "✓ Release v$(shell cat VERSION) created"
+	@echo " Release v$(shell cat VERSION) created"
 
 # Development setup
 setup:
 	@echo "Setting up development environment..."
 	python -m pip install -r requirements-dev.txt
 	pre-commit install
-	@echo "✓ Development environment ready"
+	@echo " Development environment ready"
 
 # Quick validation
 validate:
 	@echo "Validating framework..."
 	go vet ./...
-	python -c "import contexis; print('✓ Python package valid')"
-	@echo "✓ Framework validation passed" 
+	python -c "import contexis; print(' Python package valid')"
+	@echo " Framework validation passed" 

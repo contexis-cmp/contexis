@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🚀 Installing Contexis CMP Framework..."
+echo " Installing Contexis CMP Framework..."
 
 # Colors for output
 RED='\033[0;31m'
@@ -108,7 +108,7 @@ if [ -f "$LOCAL_BIN/ctx" ]; then
     if "$LOCAL_BIN/ctx" version >/dev/null 2>&1; then
         print_success "CLI tool is working correctly"
         echo ""
-        echo "🎉 Installation completed successfully!"
+        echo " Installation completed successfully!"
         echo ""
         echo "To start using the CLI:"
         echo "1. Restart your terminal or run: source $SHELL_CONFIG"
@@ -128,4 +128,4 @@ else
     exit 1
 fi
 
-print_success "Installation completed! 🚀"
+print_success "Installation completed! "
