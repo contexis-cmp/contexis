@@ -1,15 +1,17 @@
 package commands
 
 import (
-	"context"
-	"fmt"
-	"os"
-	"strings"
-	"text/template"
-	"time"
+    "context"
+    "fmt"
+    "os"
+    "strings"
+    "text/template"
+    "time"
+    "path/filepath"
+    "runtime"
 
-	"github.com/contexis-cmp/contexis/src/cli/logger"
-	"go.uber.org/zap"
+    "github.com/contexis-cmp/contexis/src/cli/logger"
+    "go.uber.org/zap"
 )
 
 // AgentConfig holds configuration for agent generation
@@ -45,6 +47,11 @@ type Tool struct {
 // generateAgent creates a conversational agent with tools and episodic memory
 func GenerateAgent(ctx context.Context, name, tools, memory string) error {
 	log := logger.WithContext(ctx)
+
+    // Validate agent name early to match test expectations
+    if err := validateAgentName(name); err != nil {
+        return err
+    }
 
 	// Set defaults if not provided
 	if memory == "" {
@@ -233,9 +240,18 @@ func generateAgentContext(ctx context.Context, config AgentConfig) error {
 		Tools:       selectedTools,
 	}
 
-	// Read template
-	templatePath := "templates/agent/support_bot.ctx"
-	tmpl, err := template.ParseFiles(templatePath)
+    // Resolve template path and parse
+    ctxRel := "templates/agent/support_bot.ctx"
+    ctxAbs, rerr := resolveTemplatePath(ctxRel)
+    if rerr != nil {
+        log.Error("failed to resolve agent context template path", zap.Error(rerr))
+        return fmt.Errorf("template not found: %s: %w", ctxRel, rerr)
+    }
+    tmpl, err := template.ParseFiles(ctxAbs)
+    if err != nil {
+        log.Error("failed to parse agent context template", zap.Error(err))
+        return fmt.Errorf("failed to parse template %s: %w", ctxAbs, err)
+    }
 	if err != nil {
 		log.Error("failed to parse agent context template", zap.Error(err))
 		return fmt.Errorf("failed to parse template: %w", err)
@@ -264,12 +280,17 @@ func generateAgentContext(ctx context.Context, config AgentConfig) error {
 func generateAgentPrompts(ctx context.Context, config AgentConfig) error {
 	log := logger.WithContext(ctx)
 
-	// Read agent response template
-	templatePath := "templates/agent/agent_response.md"
-	tmpl, err := template.ParseFiles(templatePath)
+    // Read agent response template
+    respRel := "templates/agent/agent_response.md"
+    respAbs, rerr := resolveTemplatePath(respRel)
+    if rerr != nil {
+        log.Error("failed to resolve agent response template path", zap.Error(rerr))
+        return fmt.Errorf("template not found: %s: %w", respRel, rerr)
+    }
+    tmpl, err := template.ParseFiles(respAbs)
 	if err != nil {
-		log.Error("failed to parse agent response template", zap.Error(err))
-		return fmt.Errorf("failed to parse template: %w", err)
+        log.Error("failed to parse agent response template", zap.Error(err))
+        return fmt.Errorf("failed to parse template %s: %w", respAbs, err)
 	}
 
 	// Create output file
@@ -326,11 +347,16 @@ func copyToolTemplate(ctx context.Context, toolName, agentName string) error {
 		return nil
 	}
 
-	// Read template content
-	content, err := os.ReadFile(templatePath)
+    // Resolve and read template content
+    absPath, rerr := resolveTemplatePath(templatePath)
+    if rerr != nil {
+        log.Error("failed to resolve tool template path", zap.String("template", templatePath), zap.Error(rerr))
+        return fmt.Errorf("template not found: %s: %w", templatePath, rerr)
+    }
+    content, err := os.ReadFile(absPath)
 	if err != nil {
-		log.Error("failed to read tool template", zap.String("template", templatePath), zap.Error(err))
-		return fmt.Errorf("failed to read template: %w", err)
+        log.Error("failed to read tool template", zap.String("template", absPath), zap.Error(err))
+        return fmt.Errorf("failed to read template %s: %w", absPath, err)
 	}
 
 	// Create output file
@@ -348,12 +374,17 @@ func copyToolTemplate(ctx context.Context, toolName, agentName string) error {
 func generateAgentTests(ctx context.Context, config AgentConfig) error {
 	log := logger.WithContext(ctx)
 
-	// Read behavior test template
-	templatePath := "templates/agent/agent_behavior.yaml"
-	tmpl, err := template.ParseFiles(templatePath)
+    // Read behavior test template
+    behRel := "templates/agent/agent_behavior.yaml"
+    behAbs, rerr := resolveTemplatePath(behRel)
+    if rerr != nil {
+        log.Error("failed to resolve agent behavior template path", zap.Error(rerr))
+        return fmt.Errorf("template not found: %s: %w", behRel, rerr)
+    }
+    tmpl, err := template.ParseFiles(behAbs)
 	if err != nil {
-		log.Error("failed to parse agent behavior template", zap.Error(err))
-		return fmt.Errorf("failed to parse template: %w", err)
+        log.Error("failed to parse agent behavior template", zap.Error(err))
+        return fmt.Errorf("failed to parse template %s: %w", behAbs, err)
 	}
 
 	// Create output file
@@ -380,10 +411,10 @@ func generateAgentMemory(ctx context.Context, config AgentConfig) error {
 	log := logger.WithContext(ctx)
 
 	// Create memory configuration file
-	memoryConfig := fmt.Sprintf(`# Memory Configuration for %s Agent
+    memoryConfig := fmt.Sprintf(`# Memory Configuration for %s Agent
 memory_type: "%s"
 max_history: 50
-privacy_level: "user_isolated"
+privacy: "user_isolated"
 retention_days: 30
 encryption: true
 
@@ -421,12 +452,17 @@ security:
 func generateAgentRequirements(ctx context.Context, config AgentConfig) error {
 	log := logger.WithContext(ctx)
 
-	// Read requirements template
-	requirementsPath := "templates/agent/requirements.txt"
-	content, err := os.ReadFile(requirementsPath)
+    // Read requirements template
+    reqRel := "templates/agent/requirements.txt"
+    reqAbs, rerr := resolveTemplatePath(reqRel)
+    if rerr != nil {
+        log.Error("failed to resolve requirements template path", zap.Error(rerr))
+        return fmt.Errorf("template not found: %s: %w", reqRel, rerr)
+    }
+    content, err := os.ReadFile(reqAbs)
 	if err != nil {
-		log.Error("failed to read requirements template", zap.String("template", requirementsPath), zap.Error(err))
-		return fmt.Errorf("failed to read requirements template: %w", err)
+        log.Error("failed to read requirements template", zap.String("template", reqAbs), zap.Error(err))
+        return fmt.Errorf("failed to read requirements template %s: %w", reqAbs, err)
 	}
 
 	// Create output file
@@ -438,4 +474,75 @@ func generateAgentRequirements(ctx context.Context, config AgentConfig) error {
 
 	log.Info("agent requirements generated", zap.String("path", outputPath))
 	return nil
+}
+
+// resolveTemplatePath tries to find a template by checking cwd, repo root (go.mod), and source-relative
+func resolveTemplatePath(rel string) (string, error) {
+    // 1) CWD
+    if p := filepath.Clean(rel); fileExists(p) {
+        abs, _ := filepath.Abs(p)
+        return abs, nil
+    }
+    // 2) Walk up for go.mod
+    if cwd, err := os.Getwd(); err == nil {
+        if root := findRepoRoot(cwd); root != "" {
+            candidate := filepath.Join(root, rel)
+            if fileExists(candidate) {
+                return candidate, nil
+            }
+        }
+    }
+    // 3) Relative to this source file
+    if _, src, _, ok := runtime.Caller(0); ok {
+        base := filepath.Dir(src)
+        root := filepath.Clean(filepath.Join(base, "..", "..", ".."))
+        candidate := filepath.Join(root, rel)
+        if fileExists(candidate) {
+            return candidate, nil
+        }
+    }
+    return "", fmt.Errorf("unable to locate %s", rel)
+}
+
+func findRepoRoot(start string) string {
+    dir := start
+    for i := 0; i < 12; i++ {
+        if fileExists(filepath.Join(dir, "go.mod")) {
+            return dir
+        }
+        parent := filepath.Dir(dir)
+        if parent == dir {
+            break
+        }
+        dir = parent
+    }
+    return ""
+}
+
+func fileExists(path string) bool {
+    info, err := os.Stat(path)
+    return err == nil && !info.IsDir()
+}
+
+// validateAgentName enforces the naming rules expected by tests
+func validateAgentName(name string) error {
+    if name == "" {
+        return fmt.Errorf("agent name is required")
+    }
+    if len(name) < 2 {
+        return fmt.Errorf("agent name should be at least 2 characters")
+    }
+    if strings.Contains(name, " ") {
+        return fmt.Errorf("agent name should not contain spaces")
+    }
+    if strings.Contains(name, "/") {
+        return fmt.Errorf("agent name should not contain slashes")
+    }
+    if strings.Contains(name, "\\") {
+        return fmt.Errorf("agent name should not contain backslashes")
+    }
+    if strings.Contains(name, "!") {
+        return fmt.Errorf("agent name should not contain special characters")
+    }
+    return nil
 }

@@ -38,8 +38,8 @@ func GetGenerateCommand() *cobra.Command {
 
 // GetAgentCommand returns the agent command
 func GetAgentCommand() *cobra.Command {
-	agentCmd := &cobra.Command{
-		Use:   "agent [name]",
+    agentCmd := &cobra.Command{
+        Use:   "agent",
 		Short: "Generate a conversational agent",
 		Long:  `Generate a conversational agent with specified tools and memory type.`,
 		Args:  cobra.ExactArgs(1),
@@ -68,7 +68,7 @@ func GetAgentCommand() *cobra.Command {
 // GetRAGCommand returns the RAG command
 func GetRAGCommand() *cobra.Command {
 	ragCmd := &cobra.Command{
-		Use:   "rag [name]",
+        Use:   "rag",
 		Short: "Generate a RAG system",
 		Long:  `Generate a Retrieval-Augmented Generation (RAG) system.`,
 		Args:  cobra.ExactArgs(1),
@@ -85,7 +85,7 @@ func GetRAGCommand() *cobra.Command {
 // GetWorkflowCommand returns the workflow command
 func GetWorkflowCommand() *cobra.Command {
 	workflowCmd := &cobra.Command{
-		Use:   "workflow [name]",
+        Use:   "workflow",
 		Short: "Generate a workflow",
 		Long:  `Generate a multi-step AI workflow.`,
 		Args:  cobra.ExactArgs(1),

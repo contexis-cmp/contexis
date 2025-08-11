@@ -5,7 +5,8 @@ A Rails-inspired framework for building reproducible AI applications with archit
 [![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org)
 [![Python Version](https://img.shields.io/badge/Python-3.8+-green.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/contexis-cmp/contexis/actions)
+[![Build Status](https://github.com/contexis-cmp/contexis/actions/workflows/build-and-helm.yml/badge.svg)](https://github.com/contexis-cmp/contexis/actions/workflows/build-and-helm.yml)
+[![Vulnerability Scan](https://github.com/contexis-cmp/contexis/actions/workflows/security.yml/badge.svg)](https://github.com/contexis-cmp/contexis/actions/workflows/security.yml)
 
 ## Overview
 

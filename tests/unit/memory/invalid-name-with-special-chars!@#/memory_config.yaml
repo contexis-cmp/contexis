@@ -1,0 +1,25 @@
+# Memory Configuration for invalid-name-with-special-chars!@# Agent
+memory_type: "episodic"
+max_history: 50
+privacy_level: "user_isolated"
+retention_days: 30
+encryption: true
+
+# Episodic Memory Settings
+episodic:
+  enabled: true
+  max_conversations: 100
+  context_window: 10
+  importance_threshold: 0.7
+
+# User Preferences
+preferences:
+  enabled: true
+  max_preferences: 20
+  update_frequency: "session"
+
+# Security Settings
+security:
+  data_encryption: true
+  access_logging: true
+  audit_trail: true

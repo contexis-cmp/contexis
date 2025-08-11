@@ -166,18 +166,18 @@ func GenerateWorkflow(ctx context.Context, name, steps string) error {
 
 // ValidateWorkflowConfig validates workflow configuration parameters
 func ValidateWorkflowConfig(steps []string) error {
-	// Validate steps
-	if len(steps) == 0 {
-		return fmt.Errorf("at least one step is required")
-	}
+    // Validate steps
+    if len(steps) == 0 {
+        return fmt.Errorf("at least one step is required")
+    }
 
 	// Validate individual steps
 	validStepTypes := []string{"research", "write", "review", "extract", "transform", "load", "analyze", "generate", "validate", "deploy"}
 
 	for _, step := range steps {
-		if step == "" {
-			return fmt.Errorf("step name cannot be empty")
-		}
+        if step == "" {
+            return fmt.Errorf("step name cannot be empty")
+        }
 
 		// Check if step type is valid
 		valid := false
@@ -188,9 +188,9 @@ func ValidateWorkflowConfig(steps []string) error {
 			}
 		}
 
-		if !valid {
-			return fmt.Errorf("invalid step type '%s'. Valid types: %s", step, strings.Join(validStepTypes, ", "))
-		}
+        if !valid {
+            return fmt.Errorf("invalid step type '%s'. Valid types: %s", step, strings.Join(validStepTypes, ", "))
+        }
 	}
 
 	return nil
