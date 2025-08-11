@@ -1,0 +1,596 @@
+=== RUN   TestAgentGeneratorIntegrationTestSuite
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
+2025-08-11T17:28:52.233+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "SimpleBot", "tools": ["web_search"], "memory": "episodic"}
+2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/SimpleBot/simplebot.ctx"}
+2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/SimpleBot/agent_response.md"}
+2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/SimpleBot/web_search.py"}
+2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
+2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/SimpleBot/agent_behavior.yaml"}
+2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/SimpleBot/memory_config.yaml"}
+2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/SimpleBot/requirements.txt"}
+2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "SimpleBot", "tools": ["web_search"], "memory": "episodic"}
+    helpers.go:548: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:548
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:309
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:121
+        	Error:      	"# Agent Behavior Test Configuration\nagent_name: \"SimpleBot\"\ntest_version: \"1.0.0\"\ndescription: \"Conversational agent for SimpleBot\"" does not contain "test_cases:"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
+        	Messages:   	File tests/SimpleBot/agent_behavior.yaml should contain: test_cases:
+    helpers.go:548: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:548
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:325
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:122
+        	Error:      	"# Memory Configuration for SimpleBot Agent\nmemory_type: \"episodic\"\nmax_history: 50\nprivacy_level: \"user_isolated\"\nretention_days: 30\nencryption: true\n\n# Episodic Memory Settings\nepisodic:\n  enabled: true\n  max_conversations: 100\n  context_window: 10\n  importance_threshold: 0.7\n\n# User Preferences\npreferences:\n  enabled: true\n  max_preferences: 20\n  update_frequency: \"session\"\n\n# Security Settings\nsecurity:\n  data_encryption: true\n  access_logging: true\n  audit_trail: true\n" does not contain "privacy:"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
+        	Messages:   	File memory/SimpleBot/memory_config.yaml should contain: privacy:
+    helpers.go:503: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:127
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
+        	Messages:   	Python file should contain function definitions
+    agent_generator_integration_test.go:353: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:127
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "web_search"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
+        	Messages:   	Tool file should contain tool name
+    agent_generator_integration_test.go:355: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:127
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
+        	Messages:   	Tool file should contain function definitions
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
+2025-08-11T17:28:52.235+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "MultiToolBot", "tools": ["web_search", "database", "api"], "memory": "episodic"}
+2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/MultiToolBot/multitoolbot.ctx"}
+2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/MultiToolBot/agent_response.md"}
+2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/MultiToolBot/web_search.py"}
+2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "database", "path": "tools/MultiToolBot/database.py"}
+2025-08-11T17:28:52.236+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/api.py", "error": "open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.236+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "api", "error": "failed to read template: open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.236+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+    agent_generator_integration_test.go:109: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:109
+        	Error:      	Received unexpected error:
+        	            	failed to generate agent tools: failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
+        	Messages:   	Agent generation should succeed
+    helpers.go:67: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:67
+        	            				/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:443
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:117
+        	Error:      	Received unexpected error:
+        	            	stat tests/MultiToolBot/agent_behavior.yaml: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
+        	Messages:   	File should exist: tests/MultiToolBot/agent_behavior.yaml
+    helpers.go:67: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:67
+        	            				/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:443
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:117
+        	Error:      	Received unexpected error:
+        	            	stat memory/MultiToolBot/memory_config.yaml: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
+        	Messages:   	File should exist: memory/MultiToolBot/memory_config.yaml
+    helpers.go:67: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:67
+        	            				/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:443
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:117
+        	Error:      	Received unexpected error:
+        	            	stat tools/MultiToolBot/requirements.txt: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
+        	Messages:   	File should exist: tools/MultiToolBot/requirements.txt
+    helpers.go:539: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:297
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:121
+        	Error:      	Received unexpected error:
+        	            	open tests/MultiToolBot/agent_behavior.yaml: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
+        	Messages:   	Failed to read file: tests/MultiToolBot/agent_behavior.yaml
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent
+2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "NoToolBot", "tools": [], "memory": "none"}
+2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/NoToolBot/notoolbot.ctx"}
+2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/NoToolBot/agent_response.md"}
+2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": []}
+2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/NoToolBot/agent_behavior.yaml"}
+2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/NoToolBot/memory_config.yaml"}
+2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/NoToolBot/requirements.txt"}
+2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "NoToolBot", "tools": [], "memory": "none"}
+    helpers.go:548: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:548
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:309
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:121
+        	Error:      	"# Agent Behavior Test Configuration\nagent_name: \"NoToolBot\"\ntest_version: \"1.0.0\"\ndescription: \"Conversational agent for NoToolBot\"" does not contain "test_cases:"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent
+        	Messages:   	File tests/NoToolBot/agent_behavior.yaml should contain: test_cases:
+    helpers.go:548: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:548
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:325
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:122
+        	Error:      	"# Memory Configuration for NoToolBot Agent\nmemory_type: \"none\"\nmax_history: 50\nprivacy_level: \"user_isolated\"\nretention_days: 30\nencryption: true\n\n# Episodic Memory Settings\nepisodic:\n  enabled: false\n  max_conversations: 100\n  context_window: 10\n  importance_threshold: 0.7\n\n# User Preferences\npreferences:\n  enabled: true\n  max_preferences: 20\n  update_frequency: \"session\"\n\n# Security Settings\nsecurity:\n  data_encryption: true\n  access_logging: true\n  audit_trail: true\n" does not contain "privacy:"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent
+        	Messages:   	File memory/NoToolBot/memory_config.yaml should contain: privacy:
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/invalid_tools
+2025-08-11T17:28:52.237+0800	ERROR	commands/agent_generator.go:65	agent configuration validation failed	{"error": "invalid tool 'invalid_tool'. Valid tools: web_search, database, api, file_system, email"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:65
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/invalid_memory
+2025-08-11T17:28:52.237+0800	ERROR	commands/agent_generator.go:65	agent configuration validation failed	{"error": "invalid memory type 'invalid_memory'. Valid types: episodic, none"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:65
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationErrorHandling
+2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "", "tools": ["web_search"], "memory": "episodic"}
+2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts//.ctx"}
+2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts//agent_response.md"}
+2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools//web_search.py"}
+2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
+2025-08-11T17:28:52.245+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests//agent_behavior.yaml"}
+2025-08-11T17:28:52.245+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory//memory_config.yaml"}
+2025-08-11T17:28:52.245+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools//requirements.txt"}
+2025-08-11T17:28:52.245+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "", "tools": ["web_search"], "memory": "episodic"}
+    agent_generator_integration_test.go:262: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:262
+        	Error:      	An error is expected but got nil.
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationErrorHandling
+        	Messages:   	Empty agent name should cause error
+2025-08-11T17:28:52.245+0800	ERROR	commands/agent_generator.go:65	agent configuration validation failed	{"error": "invalid tool 'invalid_tool'. Valid tools: web_search, database, api, file_system, email"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:65
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationErrorHandling
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:265
+reflect.Value.call
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/reflect/value.go:584
+reflect.Value.Call
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/reflect/value.go:368
+github.com/stretchr/testify/suite.Run.func1
+	/Users/jedfordseculles/go/pkg/mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.245+0800	ERROR	commands/agent_generator.go:65	agent configuration validation failed	{"error": "invalid memory type 'invalid_memory'. Valid types: episodic, none"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:65
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationErrorHandling
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:269
+reflect.Value.call
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/reflect/value.go:584
+reflect.Value.Call
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/reflect/value.go:368
+github.com/stretchr/testify/suite.Run.func1
+	/Users/jedfordseculles/go/pkg/mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationFilePermissions
+2025-08-11T17:28:52.248+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "PermissionTestBot", "tools": ["web_search"], "memory": "episodic"}
+2025-08-11T17:28:52.248+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/PermissionTestBot/permissiontestbot.ctx"}
+2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/PermissionTestBot/agent_response.md"}
+2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/PermissionTestBot/web_search.py"}
+2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
+2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/PermissionTestBot/agent_behavior.yaml"}
+2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/PermissionTestBot/memory_config.yaml"}
+2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/PermissionTestBot/requirements.txt"}
+2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "PermissionTestBot", "tools": ["web_search"], "memory": "episodic"}
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationTemplateProcessing
+2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "TemplateTestBot", "tools": ["web_search"], "memory": "episodic"}
+2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/TemplateTestBot/templatetestbot.ctx"}
+2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/TemplateTestBot/agent_response.md"}
+2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/TemplateTestBot/web_search.py"}
+2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
+2025-08-11T17:28:52.254+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/TemplateTestBot/agent_behavior.yaml"}
+2025-08-11T17:28:52.254+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/TemplateTestBot/memory_config.yaml"}
+2025-08-11T17:28:52.254+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/TemplateTestBot/requirements.txt"}
+2025-08-11T17:28:52.254+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "TemplateTestBot", "tools": ["web_search"], "memory": "episodic"}
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes/memory_episodic
+2025-08-11T17:28:52.258+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "MemoryTestBot_episodic", "tools": ["web_search"], "memory": "episodic"}
+2025-08-11T17:28:52.259+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/MemoryTestBot_episodic/memorytestbot_episodic.ctx"}
+2025-08-11T17:28:52.259+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/MemoryTestBot_episodic/agent_response.md"}
+2025-08-11T17:28:52.259+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/MemoryTestBot_episodic/web_search.py"}
+2025-08-11T17:28:52.259+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
+2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/MemoryTestBot_episodic/agent_behavior.yaml"}
+2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/MemoryTestBot_episodic/memory_config.yaml"}
+2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/MemoryTestBot_episodic/requirements.txt"}
+2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "MemoryTestBot_episodic", "tools": ["web_search"], "memory": "episodic"}
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes/memory_none
+2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "MemoryTestBot_none", "tools": ["web_search"], "memory": "none"}
+2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/MemoryTestBot_none/memorytestbot_none.ctx"}
+2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/MemoryTestBot_none/agent_response.md"}
+2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/MemoryTestBot_none/web_search.py"}
+2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
+2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/MemoryTestBot_none/agent_behavior.yaml"}
+2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/MemoryTestBot_none/memory_config.yaml"}
+2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/MemoryTestBot_none/requirements.txt"}
+2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "MemoryTestBot_none", "tools": ["web_search"], "memory": "none"}
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search
+2025-08-11T17:28:52.267+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_web_search", "tools": ["web_search"], "memory": "episodic"}
+2025-08-11T17:28:52.267+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_web_search/tooltestbot_web_search.ctx"}
+2025-08-11T17:28:52.267+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_web_search/agent_response.md"}
+2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/ToolTestBot_web_search/web_search.py"}
+2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
+2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/ToolTestBot_web_search/agent_behavior.yaml"}
+2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/ToolTestBot_web_search/memory_config.yaml"}
+2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/ToolTestBot_web_search/requirements.txt"}
+2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "ToolTestBot_web_search", "tools": ["web_search"], "memory": "episodic"}
+    helpers.go:503: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search
+        	Messages:   	Python file should contain function definitions
+    agent_generator_integration_test.go:353: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "web_search"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search
+        	Messages:   	Tool file should contain tool name
+    agent_generator_integration_test.go:355: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search
+        	Messages:   	Tool file should contain function definitions
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database
+2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_database", "tools": ["database"], "memory": "episodic"}
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_database/tooltestbot_database.ctx"}
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_database/agent_response.md"}
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "database", "path": "tools/ToolTestBot_database/database.py"}
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["database"]}
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/ToolTestBot_database/agent_behavior.yaml"}
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/ToolTestBot_database/memory_config.yaml"}
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/ToolTestBot_database/requirements.txt"}
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "ToolTestBot_database", "tools": ["database"], "memory": "episodic"}
+    helpers.go:503: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database
+        	Messages:   	Python file should contain function definitions
+    agent_generator_integration_test.go:353: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "database"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database
+        	Messages:   	Tool file should contain tool name
+    agent_generator_integration_test.go:355: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database
+        	Messages:   	Tool file should contain function definitions
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api
+2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_api", "tools": ["api"], "memory": "episodic"}
+2025-08-11T17:28:52.270+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_api/tooltestbot_api.ctx"}
+2025-08-11T17:28:52.270+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_api/agent_response.md"}
+2025-08-11T17:28:52.270+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/api.py", "error": "open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.270+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "api", "error": "failed to read template: open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.270+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+    agent_generator_integration_test.go:157: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
+        	Error:      	Received unexpected error:
+        	            	failed to generate agent tools: failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api
+        	Messages:   	Agent generation should succeed
+    helpers.go:539: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	Received unexpected error:
+        	            	open tools/ToolTestBot_api/api.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api
+        	Messages:   	Failed to read file: tools/ToolTestBot_api/api.py
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system
+2025-08-11T17:28:52.270+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_file_system", "tools": ["file_system"], "memory": "episodic"}
+2025-08-11T17:28:52.271+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_file_system/tooltestbot_file_system.ctx"}
+2025-08-11T17:28:52.271+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_file_system/agent_response.md"}
+2025-08-11T17:28:52.271+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/file_system.py", "error": "open templates/agent/file_system.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.271+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "file_system", "error": "failed to read template: open templates/agent/file_system.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.271+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool file_system: failed to read template: open templates/agent/file_system.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+    agent_generator_integration_test.go:157: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
+        	Error:      	Received unexpected error:
+        	            	failed to generate agent tools: failed to copy tool file_system: failed to read template: open templates/agent/file_system.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system
+        	Messages:   	Agent generation should succeed
+    helpers.go:539: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	Received unexpected error:
+        	            	open tools/ToolTestBot_file_system/file_system.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system
+        	Messages:   	Failed to read file: tools/ToolTestBot_file_system/file_system.py
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email
+2025-08-11T17:28:52.271+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_email", "tools": ["email"], "memory": "episodic"}
+2025-08-11T17:28:52.272+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_email/tooltestbot_email.ctx"}
+2025-08-11T17:28:52.272+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_email/agent_response.md"}
+2025-08-11T17:28:52.272+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/email.py", "error": "open templates/agent/email.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.272+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "email", "error": "failed to read template: open templates/agent/email.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.272+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool email: failed to read template: open templates/agent/email.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+    agent_generator_integration_test.go:157: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
+        	Error:      	Received unexpected error:
+        	            	failed to generate agent tools: failed to copy tool email: failed to read template: open templates/agent/email.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email
+        	Messages:   	Agent generation should succeed
+    helpers.go:539: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	Received unexpected error:
+        	            	open tools/ToolTestBot_email/email.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email
+        	Messages:   	Failed to read file: tools/ToolTestBot_email/email.py
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
+2025-08-11T17:28:52.272+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_web_search_database", "tools": ["web_search", "database"], "memory": "episodic"}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_web_search_database/tooltestbot_web_search_database.ctx"}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_web_search_database/agent_response.md"}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/ToolTestBot_web_search_database/web_search.py"}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "database", "path": "tools/ToolTestBot_web_search_database/database.py"}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search", "database"]}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/ToolTestBot_web_search_database/agent_behavior.yaml"}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/ToolTestBot_web_search_database/memory_config.yaml"}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/ToolTestBot_web_search_database/requirements.txt"}
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "ToolTestBot_web_search_database", "tools": ["web_search", "database"], "memory": "episodic"}
+    helpers.go:503: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
+        	Messages:   	Python file should contain function definitions
+    agent_generator_integration_test.go:353: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "web_search"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
+        	Messages:   	Tool file should contain tool name
+    agent_generator_integration_test.go:355: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
+        	Messages:   	Tool file should contain function definitions
+    helpers.go:503: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
+        	Messages:   	Python file should contain function definitions
+    agent_generator_integration_test.go:353: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "database"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
+        	Messages:   	Tool file should contain tool name
+    agent_generator_integration_test.go:355: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "def"
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
+        	Messages:   	Tool file should contain function definitions
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email
+2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_api_email", "tools": ["api", "email"], "memory": "episodic"}
+2025-08-11T17:28:52.274+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_api_email/tooltestbot_api_email.ctx"}
+2025-08-11T17:28:52.274+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_api_email/agent_response.md"}
+2025-08-11T17:28:52.274+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/api.py", "error": "open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.274+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "api", "error": "failed to read template: open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.274+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+    agent_generator_integration_test.go:157: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
+        	Error:      	Received unexpected error:
+        	            	failed to generate agent tools: failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email
+        	Messages:   	Agent generation should succeed
+    helpers.go:539: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	Received unexpected error:
+        	            	open tools/ToolTestBot_api_email/api.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email
+        	Messages:   	Failed to read file: tools/ToolTestBot_api_email/api.py
+=== RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database
+2025-08-11T17:28:52.274+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_file_system_api_database", "tools": ["file_system", "api", "database"], "memory": "episodic"}
+2025-08-11T17:28:52.275+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_file_system_api_database/tooltestbot_file_system_api_database.ctx"}
+2025-08-11T17:28:52.275+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_file_system_api_database/agent_response.md"}
+2025-08-11T17:28:52.275+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/file_system.py", "error": "open templates/agent/file_system.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.275+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "file_system", "error": "failed to read template: open templates/agent/file_system.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+2025-08-11T17:28:52.275+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool file_system: failed to read template: open templates/agent/file_system.py: no such file or directory"}
+github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
+	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
+github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
+	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
+testing.tRunner
+	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
+    agent_generator_integration_test.go:157: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
+        	Error:      	Received unexpected error:
+        	            	failed to generate agent tools: failed to copy tool file_system: failed to read template: open templates/agent/file_system.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database
+        	Messages:   	Agent generation should succeed
+    helpers.go:539: 
+        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
+        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
+        	Error:      	Received unexpected error:
+        	            	open tools/ToolTestBot_file_system_api_database/file_system.py: no such file or directory
+        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database
+        	Messages:   	Failed to read file: tools/ToolTestBot_file_system_api_database/file_system.py
+--- FAIL: TestAgentGeneratorIntegrationTestSuite (0.05s)
+    --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow (0.01s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/invalid_tools (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/invalid_memory (0.00s)
+    --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationErrorHandling (0.00s)
+    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationFilePermissions (0.00s)
+    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationTemplateProcessing (0.00s)
+    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes (0.01s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes/memory_episodic (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes/memory_none (0.00s)
+    --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools (0.02s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email (0.00s)
+        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database (0.00s)
+FAIL
+coverage: [no statements]
+FAIL	github.com/contexis-cmp/contexis/tests/integration	0.333s
+FAIL

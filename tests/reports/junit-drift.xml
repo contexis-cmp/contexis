@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="drift" tests="4" failures="4">
+  <testcase classname="CustomerDocs" name="basic_search_functionality">
+    <failure message="similarity 0.058 &lt; threshold 0.850"/>
+  </testcase>
+  <testcase classname="CustomerDocs" name="specific_information_retrieval">
+    <failure message="similarity 0.037 &lt; threshold 0.800"/>
+  </testcase>
+  <testcase classname="CustomerDocs" name="no_results_handling">
+    <failure message="similarity 0.036 &lt; threshold 0.300"/>
+  </testcase>
+  <testcase classname="CustomerDocs" name="response_format_consistency">
+    <failure message="similarity 0.100 &lt; threshold 0.850"/>
+  </testcase>
+</testsuite>
