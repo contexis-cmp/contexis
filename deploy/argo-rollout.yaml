@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: contexis-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: contexis
+  template:
+    metadata:
+      labels:
+        app: contexis
+    spec:
+      containers:
+        - name: contexis
+          image: contexis-cmp/contexis:latest
+          args: ["serve", "--addr", ":8000"]
+          ports:
+            - containerPort: 8000
+  strategy:
+    canary:
+      steps:
+        - setWeight: 20
+        - pause: {duration: 60}
+        - setWeight: 50
+        - pause: {duration: 120}
+        - setWeight: 100
+
+

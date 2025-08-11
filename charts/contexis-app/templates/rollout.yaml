@@ -1,0 +1,50 @@
+{{- if .Values.rollouts.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ include "contexis-app.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "contexis-app.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "contexis-app.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: contexis
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          args: ["serve", "--addr", ":8000"]
+          ports:
+            - containerPort: 8000
+          env:
+            - name: CMP_ENV
+              value: {{ .Values.env.CMP_ENV | quote }}
+          envFrom:
+            - secretRef:
+                name: {{ include "contexis-app.fullname" . }}-secrets
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+  strategy:
+    canary:
+      steps:
+        - setWeight: 20
+        - pause: {duration: 60}
+        - setWeight: 50
+        - pause: {duration: 120}
+        - setWeight: 100
+{{- end }}
+
+

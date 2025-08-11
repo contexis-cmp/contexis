@@ -1,0 +1,50 @@
+{{- if not .Values.rollouts.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "contexis-app.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "contexis-app.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "contexis-app.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "contexis-app.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: contexis
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["serve", "--addr", ":8000"]
+          ports:
+            - containerPort: 8000
+          env:
+            - name: CMP_ENV
+              value: {{ .Values.env.CMP_ENV | quote }}
+          envFrom:
+            - secretRef:
+                name: {{ include "contexis-app.fullname" . }}-secrets
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+{{- end }}
+
+

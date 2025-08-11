@@ -1,0 +1,36 @@
+{{- if .Values.worker.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "contexis-app.fullname" . }}-worker
+spec:
+  replicas: {{ .Values.worker.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "contexis-app.name" . }}-worker
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "contexis-app.name" . }}-worker
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: contexis-worker
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          args: ["worker", "--addr", ":9000"]
+          ports:
+            - containerPort: 9000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 9000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 9000
+          resources:
+{{ toYaml .Values.worker.resources | indent 12 }}
+{{- end }}
+
+

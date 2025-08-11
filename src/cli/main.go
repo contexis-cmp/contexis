@@ -40,7 +40,8 @@ func init() {
     rootCmd.AddCommand(commands.GetBuildCommand())
     rootCmd.AddCommand(commands.GetDeployCommand())
 	rootCmd.AddCommand(versionCmd)
-	rootCmd.AddCommand(commands.GetServeCommand())
+    rootCmd.AddCommand(commands.GetServeCommand())
+    rootCmd.AddCommand(commands.GetWorkerCommand())
 }
 
 func main() {

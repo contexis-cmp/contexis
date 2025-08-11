@@ -1,0 +1,17 @@
+{{- if .Values.worker.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "contexis-app.fullname" . }}-worker
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: {{ include "contexis-app.name" . }}-worker
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+    - name: http
+      port: 9000
+      targetPort: 9000
+{{- end }}
+
+

@@ -1,0 +1,56 @@
+image:
+  repository: contexis-cmp/contexis
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCount: 2
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+  className: nginx
+  host: contexis.local
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+env:
+  CMP_ENV: production
+
+secrets:
+  OPENAI_API_KEY: ""
+
+externalSecrets:
+  enabled: false
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault
+  data:
+    - secretKey: OPENAI_API_KEY
+      remoteRef:
+        key: kv/data/contexis
+        property: OPENAI_API_KEY
+
+rollouts:
+  enabled: false
+
+worker:
+  enabled: false
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 300m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+
