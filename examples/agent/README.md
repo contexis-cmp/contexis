@@ -19,7 +19,7 @@ ctx init conversation-agent
 cd conversation-agent
 
 # Generate the agent
-ctx generate agent ConversationAgent --memory=conversation --tools=api
+ctx generate agent ConversationAgent --memory=episodic --tools=web_search,database
 
 # Add conversation skills
 ctx agent add-skill --name=greeting --context=./contexts/greeting.ctx
@@ -28,8 +28,10 @@ ctx agent add-skill --name=help --context=./contexts/help.ctx
 # Test the agent
 ctx test
 
-# Start a conversation
-ctx run conversation "Hello, I need help with my account"
+# Start a conversation (example via server)
+ctx serve --addr :8000
+# curl -X POST http://localhost:8000/api/v1/chat -H 'Content-Type: application/json' \
+#   -d '{"context":"ConversationAgent","component":"ConversationAgent","query":"hello","top_k":0,"data":{"user_input":"Hello, I need help with my account"}}'
 ```
 
 ## Generated Structure

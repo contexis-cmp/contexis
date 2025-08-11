@@ -12,15 +12,23 @@ cd customer-support-rag
 # Generate the RAG system
 ctx generate rag CustomerDocs --db=sqlite --embeddings=openai
 
-# Add your knowledge base
-ctx memory add --file=./docs/company_policies.md
-ctx memory add --file=./docs/product_manual.pdf
+# Ingest your knowledge base (one document per line)
+printf "Returns are accepted within 30 days.\nShipping takes 3-5 business days." > docs.txt
+ctx memory ingest --provider=sqlite --component=CustomerDocs --input=docs.txt
 
-# Test the system
+# Test the system (optional)
 ctx test
 
-# Run a query
-ctx run query "What is your return policy?"
+# Search the knowledge base
+ctx memory search --provider=sqlite --component=CustomerDocs --query="What is your return policy?" --top-k=3
+
+# Render a response with a prompt template (optional)
+ctx prompt render --component=CustomerDocs --template=search_response.md --data='{"UserQuery":"What is your return policy?"}'
+
+# Serve a simple API (optional)
+ctx serve --addr :8000
+# curl -X POST http://localhost:8000/api/v1/chat -H 'Content-Type: application/json' \
+#   -d '{"context":"CustomerDocs","component":"CustomerDocs","query":"return policy","top_k":3,"data":{"user_query":"What is your return policy?"}}'
 ```
 
 ## Generated Structure
@@ -86,12 +94,9 @@ ctx deploy --target=kubernetes
 ### Adding New Knowledge
 
 ```bash
-# Add documents to memory
-ctx memory add --file=./new_document.pdf
-ctx memory add --url=https://docs.example.com/api
-
-# Update embeddings
-ctx memory update --force
+# Add documents to memory (append to your docs file and re-ingest)
+printf "Another policy line" >> docs.txt
+ctx memory ingest --provider=sqlite --component=CustomerDocs --input=docs.txt
 ```
 
 ### Modifying Context
