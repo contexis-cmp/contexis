@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Phase 3 Testing & Quality Infrastructure:
+  - Drift Detection System:
+    - YAML-driven specs under `tests/<Component>/rag_drift_test.yaml`
+    - Baselines stored at `tests/<Component>/baselines/drift_baseline.json`
+    - CLI: `ctx test --drift-detection [--component <Name>] [--semantic] [--update-baseline] [--junit] [--out <dir>]`
+    - Reports: per-component JSON and aggregated index; optional JUnit XML
+  - Go Testing Infrastructure:
+    - CLI: `ctx test --all|--unit|--integration|--e2e|--category <name> [--coverage] [--junit] [--out <dir>]`
+    - Coverage enforcement via `tests/test_config.yaml` thresholds
+    - Reports: `tests/reports/go_<suite>.txt`, `go_tests.json`, optional `junit-go.xml`; coverage in `tests/coverage/*.out`
 - Phase 2 Runtime Engine features:
   - Context Management System: tenant-aware resolution, inheritance/merge, JSON Schema validation; CLI `ctx context validate|reload`
   - Memory Management System: file-backed vector store ("sqlite") and episodic logs; CLI `ctx memory ingest|search|optimize`; component `memory_config.yaml` loader and encryption toggle
@@ -293,8 +303,8 @@ ctx generate workflow ContentPipeline --steps=research,write,review
 - [x] **Week 6**: Prompt Management System
 
 ### Phase 3: Testing & Quality Assurance (Weeks 7-8)
-- [ ] **Week 7**: Drift Detection System
-- [ ] **Week 8**: Testing Infrastructure
+- [x] **Week 7**: Drift Detection System
+- [x] **Week 8**: Testing Infrastructure
 
 ### Phase 4: Deployment & Operations (Weeks 9-10)
 - [ ] **Week 9**: Deployment System

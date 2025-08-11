@@ -41,28 +41,28 @@ go get github.com/stretchr/testify/require
 go get github.com/stretchr/testify/suite
 ```
 
-### Basic Test Commands
+### Using ctx test (recommended)
 ```bash
-# Run all tests
-make test
+# All Go suites with coverage and JUnit
+ctx test --all --coverage --junit --out tests/reports
 
-# Run specific test types
-make test-unit
-make test-integration
-make test-e2e
+# Specific suite
+ctx test --unit --coverage
 
-# Run tests with coverage
-make test-coverage
+# By category from tests/test_config.yaml
+ctx test --category core_components --coverage
 
-# Run performance tests
-make test-performance
+# Drift detection for all components
+ctx test --drift-detection --out tests/reports
 
-# Run security tests
-make test-security
-
-# Run specific test category
-make test-category CATEGORY=agent_generator
+# Drift detection for a single component with semantic similarity and baseline update
+ctx test --drift-detection --component CustomerDocs --semantic --update-baseline --junit --out tests/reports
 ```
+
+Artifacts:
+- `tests/reports/go_<suite>.txt`, `tests/reports/go_tests.json`, optional `junit-go.xml`
+- `tests/reports/drift_<Component>.json`, `tests/reports/drift_index.json`, optional `junit-drift.xml`
+- Coverage profiles in `tests/coverage/*.out`
 
 ### Direct Go Test Commands
 ```bash
@@ -312,7 +312,7 @@ open tests/coverage/coverage.html
 # Focus on critical paths first
 ```
 
-## �� Additional Resources
+## 📚 Additional Resources
 
 - [Go Testing Package](https://golang.org/pkg/testing/)
 - [Testify Documentation](https://github.com/stretchr/testify)

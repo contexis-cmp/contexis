@@ -231,10 +231,13 @@ Previous conversation: {{ conversation_history }}
 Now let's test your support bot:
 
 ```bash
-# Run tests to ensure everything is working
-ctx test
+# Run Go test suites with coverage and JUnit output
+ctx test --all --coverage --junit --out tests/reports
 
-# Test a query
+# Run drift detection for your knowledge base
+ctx test --drift-detection --component CustomerDocs --semantic --out tests/reports
+
+# Test a query (example)
 ctx run query "What is your return policy?"
 ```
 

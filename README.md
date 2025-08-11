@@ -249,26 +249,33 @@ constraints:
 
 ## 🧪 Testing
 
-### Drift Detection
-Monitors AI behavior consistency over time:
-
+### Run Go test suites
 ```bash
-ctx test --drift --threshold=0.85
+# All suites (unit, integration, e2e)
+ctx test --all --coverage --junit --out tests/reports
+
+# Specific suites
+ctx test --unit --coverage
+ctx test --integration
+ctx test --e2e
+
+# By category defined in tests/test_config.yaml
+ctx test --category=agent_generator --coverage
 ```
 
-### Correctness Validation
-Ensures business logic compliance:
-
+### Drift detection
 ```bash
-ctx test --correctness --rules=./tests/business_rules.yaml
+# Run drift tests for all components found under tests/**/rag_drift_test.yaml
+ctx test --drift-detection --out tests/reports
+
+# Limit to a component; write JUnit and update baselines
+ctx test --drift-detection --component CustomerDocs --semantic --junit --update-baseline --out tests/reports
 ```
 
-### Runtime Package Tests
-Run targeted tests for runtime packages:
-
-```bash
-go test ./src/runtime/context ./src/runtime/memory ./src/runtime/prompt ./src/runtime/guardrails -v
-```
+### Reports and artifacts
+- Drift: `tests/reports/drift_<Component>.json`, `tests/reports/drift_index.json`, optional `junit-drift.xml`
+- Go tests: `tests/reports/go_<suite>.txt`, `tests/reports/go_tests.json`, optional `junit-go.xml`
+- Coverage: profiles under `tests/coverage/*.out` (when `--coverage` is used)
 
 ## 🚀 Deployment
 
