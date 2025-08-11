@@ -35,8 +35,10 @@ func init() {
 	rootCmd.AddCommand(commands.GetLockCommand())
 	rootCmd.AddCommand(commands.GetPromptLintCommand())
 	rootCmd.AddCommand(generateCmd)
-	rootCmd.AddCommand(testCmd)
-	rootCmd.AddCommand(deployCmd)
+    rootCmd.AddCommand(testCmd)
+    // Build/Deploy commands
+    rootCmd.AddCommand(commands.GetBuildCommand())
+    rootCmd.AddCommand(commands.GetDeployCommand())
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(commands.GetServeCommand())
 }
@@ -145,16 +147,6 @@ func init() {
     testCmd.Flags().Bool("e2e", false, "Run Go end-to-end tests only")
     testCmd.Flags().String("category", "", "Run tests for a configured category from tests/test_config.yaml")
     testCmd.Flags().Bool("coverage", false, "Collect coverage and enforce thresholds from tests/test_config.yaml")
-}
-
-var deployCmd = &cobra.Command{
-	Use:   "deploy",
-	Short: "Deploy CMP application",
-	Long:  `Deploy the current CMP application to the configured environment.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Deploying CMP application...")
-		// TODO: Implement deployment
-	},
 }
 
 var versionCmd = &cobra.Command{

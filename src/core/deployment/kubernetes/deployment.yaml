@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contexis-app
+  labels:
+    app.kubernetes.io/name: contexis
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: contexis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: contexis
+    spec:
+      containers:
+        - name: contexis
+          image: contexis-cmp/contexis:latest
+          imagePullPolicy: IfNotPresent
+          args: ["serve", "--addr", ":8000"]
+          ports:
+            - containerPort: 8000
+          env:
+            - name: CMP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: contexis-config
+                  key: CMP_ENV
+          envFrom:
+            - secretRef:
+                name: contexis-secrets
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+

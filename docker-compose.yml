@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    image: contexis-cmp/contexis:dev
+    container_name: contexis-api
+    environment:
+      - CMP_ENV=${CMP_ENV:-development}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - PORT=8000
+    ports:
+      - "8000:8000"
+    command: ["serve", "--addr", ":8000"]
+    restart: unless-stopped
+    profiles: ["default"]
+
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: contexis-chroma
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    profiles: ["extras"]
+
+  postgres:
+    image: postgres:15
+    container_name: contexis-postgres
+    environment:
+      POSTGRES_DB: cmp
+      POSTGRES_USER: cmp
+      POSTGRES_PASSWORD: cmp
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    profiles: ["extras"]
+
+volumes:
+  chroma_data: {}
+  pg_data: {}
+
+

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: contexis-config
+data:
+  CMP_ENV: "production"
+
+
