@@ -28,14 +28,16 @@ func GetBuildCommand() *cobra.Command {
             if tag != "" && !strings.Contains(img, ":") {
                 img = fmt.Sprintf("%s:%s", image, tag)
             }
-            dockerArgs := []string{"build", "-t", img, "."}
+            var dockerArgs []string
             if platform != "" {
-                dockerArgs = append([]string{"buildx", "build", "--platform", platform, "-t", img, "."})
+                dockerArgs = []string{"buildx", "build", "--platform", platform, "-t", img}
+            } else {
+                dockerArgs = []string{"build", "-t", img}
             }
             for _, ba := range buildArgs {
-                dockerArgs = append([]string{"build", "-t", img}, parseBuildArg(ba)...)
-                dockerArgs = append(dockerArgs, ".")
+                dockerArgs = append(dockerArgs, "--build-arg", ba)
             }
+            dockerArgs = append(dockerArgs, ".")
             if err := runDocker(dockerArgs...); err != nil {
                 return err
             }

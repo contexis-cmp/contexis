@@ -159,7 +159,8 @@ my-ai-app/
 - **Memory Service:** Pluggable providers (file-backed vector store, episodic logs)
 - **Prompt Engine:** Template loading, includes, format validation, simple token trimming
 - **Guardrails:** Capability validation, format/max_tokens enforcement
-- **HTTP Server:** Minimal `/api/v1/chat` endpoint for local experimentation
+- **HTTP Server:** `/api/v1/chat` with health `/healthz`, readiness `/readyz`, version `/version`, metrics `/metrics`
+- **Worker:** `ctx worker` exposes `/healthz` and `/metrics` for background processing
 
 ## 🛠️ Available Commands
 
@@ -282,19 +283,25 @@ ctx test --drift-detection --component CustomerDocs --semantic --junit --update-
 ### Docker Deployment
 ```bash
 ctx build --environment=production
-ctx deploy --target=docker --image=my-ai-app:latest
+ctx build --image contexis-cmp/contexis --tag dev
+ctx deploy --target=docker --image=contexis-cmp/contexis:dev
 ```
 
-### Kubernetes Deployment
+### Kubernetes Deployment (Helm)
 ```bash
-ctx deploy --target=kubernetes --namespace=ai-apps
+helm upgrade --install contexis charts/contexis-app \
+  --set image.repository=contexis-cmp/contexis \
+  --set image.tag=dev \
+  --set env.CMP_ENV=production
 ```
 
-### Cloud Platforms
-```bash
-ctx deploy --target=aws --region=us-west-2
-ctx deploy --target=gcp --project=my-project
-```
+### Rollouts and External Secrets
+- Enable Argo Rollouts: `--set rollouts.enabled=true` (requires CRDs)
+- Enable ExternalSecret: `--set externalSecrets.enabled=true` and configure your SecretStore
+
+### Observability
+- Prometheus metrics at `/metrics` on app and worker
+- Health endpoints: `/healthz`, `/readyz`
 
 ## 🤝 Contributing
 

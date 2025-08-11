@@ -226,7 +226,7 @@ Previous conversation: {{ conversation_history }}
 {{/if}}
 ```
 
-### 7. Test Your Application
+### 7. Run and Monitor
 
 Now let's test your support bot:
 
@@ -236,6 +236,13 @@ ctx test --all --coverage --junit --out tests/reports
 
 # Run drift detection for your knowledge base
 ctx test --drift-detection --component CustomerDocs --semantic --out tests/reports
+
+### 8. Health and Metrics
+
+The server exposes:
+- Health: `/healthz`, `/readyz`
+- Version: `/version`
+- Metrics: `/metrics` (Prometheus)
 
 # Test a query (example)
 ctx run query "What is your return policy?"

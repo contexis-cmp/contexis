@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Phase 4 Deployment & Operations:
+  - Containerization: root Dockerfile and docker-compose
+  - CLI: `ctx build` (image build) and enhanced `ctx deploy` (docker/kubernetes)
+  - Kubernetes: base manifests and Helm chart (`charts/contexis-app`) with optional ExternalSecret and Argo Rollouts
+  - Server: health (`/healthz`), readiness (`/readyz`), version (`/version`), metrics (`/metrics`)
+  - Worker: `ctx worker` process with `/healthz` and `/metrics`
+  - Observability: Prometheus metrics for HTTP, prompt render, memory search; request logging and basic tracing
+  - CI: `build-and-helm.yml` (build, helm lint/template) and `security.yml` (SBOM + Grype scan)
 - Phase 3 Testing & Quality Infrastructure:
   - Drift Detection System:
     - YAML-driven specs under `tests/<Component>/rag_drift_test.yaml`
@@ -307,8 +315,8 @@ ctx generate workflow ContentPipeline --steps=research,write,review
 - [x] **Week 8**: Testing Infrastructure
 
 ### Phase 4: Deployment & Operations (Weeks 9-10)
-- [ ] **Week 9**: Deployment System
-- [ ] **Week 10**: Monitoring & Observability
+- [x] **Week 9**: Deployment System
+- [x] **Week 10**: Monitoring & Observability
 
 ### Phase 5: Advanced Features (Weeks 11-12)
 - [ ] **Week 11**: Enterprise Security & Compliance
