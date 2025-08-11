@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Hugging Face Integration (Phase 4 follow-up):
+  - Runtime provider layer with `HuggingFaceAPIProvider` (env-driven)
+  - Optional inference in server after prompt rendering when `HF_TOKEN` and `HF_MODEL_ID` are set
+  - CLI: `ctx hf test-model` for quick connectivity tests
+  - Metrics: `cmp_hf_inference_latency_seconds`, `cmp_hf_inference_errors_total`
+  - Tracing: OTel span `huggingface.generate` annotated with model id
+  - Helm: values and templates to inject `HF_*` env vars via Secret/ExternalSecret
+  - Docs: `docs/guides/hugging-face.md`, example `docs/examples/hugging-face.md`
 - Phase 4 Deployment & Operations:
   - Containerization: root Dockerfile and docker-compose
   - CLI: `ctx build` (image build) and enhanced `ctx deploy` (docker/kubernetes)

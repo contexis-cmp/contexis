@@ -42,6 +42,7 @@ func init() {
 	rootCmd.AddCommand(versionCmd)
     rootCmd.AddCommand(commands.GetServeCommand())
     rootCmd.AddCommand(commands.GetWorkerCommand())
+    rootCmd.AddCommand(commands.GetHFCommand())
 }
 
 func main() {

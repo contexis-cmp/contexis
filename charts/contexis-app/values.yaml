@@ -27,6 +27,9 @@ env:
 
 secrets:
   OPENAI_API_KEY: ""
+  HF_TOKEN: ""
+  HF_MODEL_ID: ""
+  HF_ENDPOINT: ""
 
 externalSecrets:
   enabled: false
@@ -38,6 +41,18 @@ externalSecrets:
       remoteRef:
         key: kv/data/contexis
         property: OPENAI_API_KEY
+    - secretKey: HF_TOKEN
+      remoteRef:
+        key: kv/data/contexis
+        property: HF_TOKEN
+    - secretKey: HF_MODEL_ID
+      remoteRef:
+        key: kv/data/contexis
+        property: HF_MODEL_ID
+    - secretKey: HF_ENDPOINT
+      remoteRef:
+        key: kv/data/contexis
+        property: HF_ENDPOINT
 
 rollouts:
   enabled: false

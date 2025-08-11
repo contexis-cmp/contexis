@@ -28,6 +28,16 @@ spec:
           env:
             - name: CMP_ENV
               value: {{ .Values.env.CMP_ENV | quote }}
+            - name: HF_MODEL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "contexis-app.fullname" . }}-secrets
+                  key: HF_MODEL_ID
+            - name: HF_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "contexis-app.fullname" . }}-secrets
+                  key: HF_ENDPOINT
           envFrom:
             - secretRef:
                 name: {{ include "contexis-app.fullname" . }}-secrets

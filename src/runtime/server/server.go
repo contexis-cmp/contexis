@@ -15,6 +15,7 @@ import (
     runtimeprompt "github.com/contexis-cmp/contexis/src/runtime/prompt"
     "github.com/prometheus/client_golang/prometheus"
     "github.com/prometheus/client_golang/prometheus/promhttp"
+    runtimemodel "github.com/contexis-cmp/contexis/src/runtime/model"
     "go.opentelemetry.io/otel"
     "go.opentelemetry.io/otel/attribute"
     "go.opentelemetry.io/otel/trace"
@@ -60,6 +61,15 @@ var (
         Name: "cmp_drift_score",
         Help: "Latest drift score by component (optional).",
     }, []string{"component"})
+    hfInferenceLatency = prometheus.NewHistogramVec(prometheus.HistogramOpts{
+        Name:    "cmp_hf_inference_latency_seconds",
+        Help:    "Latency of Hugging Face inference calls.",
+        Buckets: prometheus.DefBuckets,
+    }, []string{"model"})
+    hfInferenceErrors = prometheus.NewCounterVec(prometheus.CounterOpts{
+        Name: "cmp_hf_inference_errors_total",
+        Help: "Total errors from Hugging Face inference calls.",
+    }, []string{"code"})
 )
 
 func init() {
@@ -68,6 +78,8 @@ func init() {
     prometheus.MustRegister(promptRenderDuration)
     prometheus.MustRegister(memorySearchDuration)
     prometheus.MustRegister(driftScoreGauge)
+    prometheus.MustRegister(hfInferenceLatency)
+    prometheus.MustRegister(hfInferenceErrors)
 }
 
 type statusWriter struct {
@@ -87,6 +99,12 @@ func generateRequestID() string {
 
 // NewHandler constructs an http.Handler with health, readiness, version, and chat endpoints.
 func NewHandler(root string) http.Handler {
+    prov, _ := runtimemodel.FromEnv()
+    return NewHandlerWithProvider(root, prov)
+}
+
+// NewHandlerWithProvider allows injecting a model provider (for tests).
+func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Handler {
     ctxSvc := runtimecontext.NewContextService(root)
     eng := runtimeprompt.NewEngine(root)
 
@@ -159,6 +177,30 @@ func NewHandler(root string) http.Handler {
         promptRenderDuration.WithLabelValues(req.Component).Observe(time.Since(prStart).Seconds())
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+        // If a provider is configured, perform inference with rendered prompt
+        if provider != nil {
+            // Tracing span for inference
+            tracer := otel.Tracer("contexis/runtime/inference")
+            ctx := r.Context()
+            ctx, span := tracer.Start(ctx, "huggingface.generate")
+            span.SetAttributes(
+                attribute.String("provider", "huggingface"),
+                attribute.String("model_id", os.Getenv("HF_MODEL_ID")),
+            )
+            infStart := time.Now()
+            out, infErr := provider.Generate(ctx, rendered, runtimemodel.Params{MaxNewTokens: 256})
+            hfInferenceLatency.WithLabelValues(os.Getenv("HF_MODEL_ID")).Observe(time.Since(infStart).Seconds())
+            if infErr != nil {
+                hfInferenceErrors.WithLabelValues("bad_gateway").Inc()
+                span.RecordError(infErr)
+                span.End()
+                http.Error(w, infErr.Error(), http.StatusBadGateway)
+                return
+            }
+            span.End()
+            _ = json.NewEncoder(w).Encode(ChatResponse{Rendered: out})
             return
         }
         _ = json.NewEncoder(w).Encode(ChatResponse{Rendered: rendered})

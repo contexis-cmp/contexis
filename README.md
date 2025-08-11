@@ -304,6 +304,17 @@ helm upgrade --install contexis charts/contexis-app \
 - Prometheus metrics at `/metrics` on app and worker
 - Health endpoints: `/healthz`, `/readyz`
 
+### Hugging Face Inference (optional)
+- Set `HF_TOKEN` and `HF_MODEL_ID` in the environment (and optionally `HF_ENDPOINT`)
+- When configured, the server will call the HF Inference API after rendering prompts
+
+CLI quick test:
+```bash
+export HF_TOKEN=...  # your token
+export HF_MODEL_ID=meta-llama/Meta-Llama-3.1-8B-Instruct
+ctx hf test-model "Hello from Contexis!"
+```
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
@@ -332,6 +343,7 @@ make build
 - [API Reference](docs/api/) - Complete API documentation
 - [Examples](examples/) - Working examples and tutorials
 - [Guides](docs/guides/) - Step-by-step guides
+  - [Hugging Face Integration](docs/guides/hugging-face.md)
 
 ## 📄 License
 
