@@ -20,6 +20,7 @@ Available generators:
   rag       - Knowledge-based retrieval systems
   agent     - Conversational agents with tools
   workflow  - Multi-step AI processing pipelines
+  plugin    - Scaffolds a plugin template
 
 Examples:
   ctx generate rag CustomerDocs --db=sqlite --embeddings=openai
@@ -84,8 +85,10 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 		return generateRAG(ctx, name, dbType, embeddings)
 	case "agent":
 		return GenerateAgent(ctx, name, tools, memory)
-	case "workflow":
+    case "workflow":
 		return GenerateWorkflow(ctx, name, steps)
+    case "plugin":
+        return GeneratePlugin(ctx, name)
 	default:
 		return fmt.Errorf("generator type '%s' not implemented yet", generatorType)
 	}

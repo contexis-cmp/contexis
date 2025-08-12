@@ -103,7 +103,7 @@ testing:
   max_test_duration: 300s
 ```
 
-### 3. Set Up Your API Keys
+### 3. (Optional) Enable Server Authentication
 
 Create a `.env` file in your project root:
 
@@ -118,6 +118,10 @@ nano .env
 Add your API keys:
 ```bash
 # AI Provider Keys
+CMP_AUTH_ENABLED=true
+CMP_API_TOKENS=devtoken@tenantA:chat:execute|context:read
+
+# Provider keys as needed
 OPENAI_API_KEY=your_openai_api_key_here
 
 # Application Settings

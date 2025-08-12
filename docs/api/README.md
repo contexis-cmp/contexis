@@ -12,7 +12,7 @@ The CMP Framework provides APIs for:
 
 ## Authentication
 
-All API endpoints require authentication. Use Bearer tokens in the Authorization header:
+Optionally enable authentication by setting `CMP_AUTH_ENABLED=true`. Use Bearer tokens in the Authorization header when enabled:
 
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
@@ -47,9 +47,7 @@ All errors follow a consistent format:
 
 ## Rate Limiting
 
-- **Free Tier**: 100 requests/hour
-- **Pro Tier**: 10,000 requests/hour
-- **Enterprise**: Custom limits
+If authentication is enabled, per-API key/tenant/IP token bucket limits apply. Rate limit headers include:
 
 Rate limit headers are included in all responses:
 - `X-RateLimit-Limit`: Request limit per hour

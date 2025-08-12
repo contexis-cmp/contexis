@@ -1,8 +1,9 @@
 package commands
 
 import (
-	"fmt"
-	"github.com/spf13/cobra"
+    "fmt"
+    "os"
+    "github.com/spf13/cobra"
 )
 
 // GetRootCommand returns the root command
@@ -13,11 +14,18 @@ func GetRootCommand() *cobra.Command {
 		Long:  `A comprehensive CLI for the Context-Memory-Prompt (CMP) framework.`,
 	}
 
-	// Add subcommands
-	rootCmd.AddCommand(GetGenerateCommand())
+    // Add subcommands
+    rootCmd.AddCommand(GetGenerateCommand())
+    rootCmd.AddCommand(GetPluginCommand(getProjectRoot()))
 	rootCmd.AddCommand(GetVersionCommand())
 
 	return rootCmd
+}
+
+// getProjectRoot returns current working directory as project root
+func getProjectRoot() string {
+    cwd, _ := os.Getwd()
+    return cwd
 }
 
 // GetGenerateCommand returns the generate command

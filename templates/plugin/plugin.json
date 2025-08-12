@@ -1,0 +1,9 @@
+{
+  "name": "example_plugin",
+  "version": "0.1.0",
+  "description": "Example plugin for CMP",
+  "capabilities": ["example:capability"],
+  "compatibility": {"cmp_min": "0.1.0"}
+}
+
+

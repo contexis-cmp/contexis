@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Phase 5: Advanced Features
+  - Week 11: Enterprise Security & Compliance
+    - Optional API key authentication, RBAC enforcement, and per-key/tenant/IP rate limiting (HTTP server)
+    - Audit logging subsystem with JSONL sink and request context propagation
+    - Episodic memory encryption-at-rest via AES-GCM (env key provider)
+    - Helm hardening: securityContext (non-root, read-only FS), Ingress TLS/HSTS annotations
+  - Week 12: Integration Ecosystem
+    - Plugin system: local install from folder, remote install from ZIP URL or Git URL (#ref supported)
+    - Plugin CLI: `ctx plugin list|info|install|remove`
+    - Plugin scaffolder: `ctx generate plugin <name>`
+    - Capability registry and manifest compatibility hooks
+    - Templates: `templates/plugin/` example plugin
+    - Integration test scaffold for plugin lifecycle
 - Hugging Face Integration (Phase 4 follow-up):
   - Runtime provider layer with `HuggingFaceAPIProvider` (env-driven)
   - Optional inference in server after prompt rendering when `HF_TOKEN` and `HF_MODEL_ID` are set
@@ -126,6 +139,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive installation testing and validation
 
 ### Changed
+- README: documented security features and plugin commands
+- Charts: deployment and ingress templates hardened; values support `security.authEnabled`
 - README updated with new runtime commands and examples
 - Added dependency `github.com/xeipuuv/gojsonschema` for schema validation
 - **Repository Structure**: Updated to use correct GitHub repository URL `github.com/contexis-cmp/contexis`

@@ -152,15 +152,16 @@ my-ai-app/
 
 ###  Enterprise Ready
 - **Multi-Tenancy:** Built-in context isolation
+- **Security & Compliance (opt-in):** API key auth, RBAC, rate limiting, audit logs, encryption-at-rest
 - **Provider Agnostic:** Switch between AI models without code changes
 - **Scalable Architecture:** From prototypes to production systems
 
-###  Runtime Engine (Phase 2)
+###  Runtime Engine
 - **Context Service:** Tenant-aware resolution, inheritance/merge, schema validation
 - **Memory Service:** Pluggable providers (file-backed vector store, episodic logs)
 - **Prompt Engine:** Template loading, includes, format validation, simple token trimming
 - **Guardrails:** Capability validation, format/max_tokens enforcement
-- **HTTP Server:** `/api/v1/chat` with health `/healthz`, readiness `/readyz`, version `/version`, metrics `/metrics`
+- **HTTP Server:** `/api/v1/chat` with health `/healthz`, readiness `/readyz`, version `/version`, metrics `/metrics` (supports optional auth/RBAC/rate limiting)
 - **Worker:** `ctx worker` exposes `/healthz` and `/metrics` for background processing
 
 ## ️ Available Commands
@@ -168,7 +169,7 @@ my-ai-app/
 ```bash
 # Project Management
 ctx init <project-name>                   # Create new CMP project
-ctx generate rag|agent|workflow <name>    # Generate components
+ctx generate rag|agent|workflow|plugin <name>    # Generate components (incl. plugin scaffolding)
 
 # Context Operations
 ctx context validate <name> [--tenant=<id>]   # Validate a .ctx file
@@ -189,6 +190,12 @@ ctx lock generate                         # Write context.lock.json
 
 # Server
 ctx serve --addr :8000                    # Start HTTP server
+
+# Plugins
+ctx plugin list                           # List installed plugins
+ctx plugin info <name>                    # Show plugin details
+ctx plugin install <path|zip_url|git_url> # Install plugin from local path, ZIP URL, or Git URL (supports #ref)
+ctx plugin remove <name>                  # Uninstall plugin
 ```
 
 ##  Examples
