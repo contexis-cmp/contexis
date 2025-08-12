@@ -1,9 +1,12 @@
 # Contexis CMP Framework - Production Dockerfile (Week 9: Deployment System)
 
 # --- Builder stage: build the Go CLI binary ---
-FROM golang:1.21-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 WORKDIR /src
+
+# Ensure the Go toolchain can auto-manage minor versions if needed
+ENV GOTOOLCHAIN=auto
 
 # Install git and build deps
 RUN apk add --no-cache git build-base
