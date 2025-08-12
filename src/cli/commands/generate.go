@@ -51,8 +51,8 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 		zap.String("generator_type", generatorType),
 		zap.String("name", name))()
 
-	// Validate generator type
-	validTypes := []string{"rag", "agent", "workflow"}
+    // Validate generator type
+    validTypes := []string{"rag", "agent", "workflow", "plugin"}
 	isValid := false
 	for _, validType := range validTypes {
 		if generatorType == validType {

@@ -21,6 +21,7 @@ import (
     "go.opentelemetry.io/otel/attribute"
     "go.opentelemetry.io/otel/trace"
     "go.uber.org/zap"
+    "strings"
 )
 
 type ChatRequest struct {
@@ -81,6 +82,10 @@ func init() {
     prometheus.MustRegister(driftScoreGauge)
     prometheus.MustRegister(hfInferenceLatency)
     prometheus.MustRegister(hfInferenceErrors)
+    // Security telemetry
+    prometheus.MustRegister(runtimesecurity.PromptInjectionDetections)
+    prometheus.MustRegister(runtimesecurity.PolicyViolations)
+    prometheus.MustRegister(runtimesecurity.BlockedResponses)
 }
 
 type statusWriter struct {
@@ -108,8 +113,10 @@ func NewHandler(root string) http.Handler {
 func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Handler {
     ctxSvc := runtimecontext.NewContextService(root)
     eng := runtimeprompt.NewEngine(root)
-    // Security components (enabled via CMP_AUTH_ENABLED=true)
+    // Security components (enabled via env toggles)
     authEnabled := os.Getenv("CMP_AUTH_ENABLED") == "true"
+    piEnabled := os.Getenv("CMP_PI_ENFORCEMENT") == "true"
+    citationRequired := os.Getenv("CMP_REQUIRE_CITATION") == "true"
     keyStore := runtimesecurity.NewAPIKeyStoreFromEnv()
     rateLimiter := runtimesecurity.NewRateLimiter(10.0/1.0, 5)
     auditor := runtimesecurity.NewAuditor(runtimesecurity.NewJSONFileSink("audit.log"))
@@ -144,6 +151,33 @@ func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Ha
         if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
             http.Error(w, err.Error(), http.StatusBadRequest)
             return
+        }
+        // Minimal PI guard (optional): classify risk and sanitize inputs
+        if piEnabled {
+            extras := []string{}
+            for _, v := range req.Data {
+                if s, ok := v.(string); ok {
+                    extras = append(extras, s)
+                } else if m, ok := v.(map[string]interface{}); ok {
+                    if t, ok := m["text"].(string); ok { extras = append(extras, t) }
+                }
+            }
+            risk := runtimesecurity.ClassifyPromptRisk(req.Query, extras...)
+            if risk == runtimesecurity.RiskHigh {
+                runtimesecurity.PromptInjectionDetections.Inc()
+                auditor.Record(r.Context(), runtimesecurity.AuditEvent{
+                    Timestamp: time.Now(),
+                    RequestID: r.Context().Value("request_id").(string),
+                    TenantID:  req.TenantID,
+                    Action:    "chat:invoke",
+                    Resource:  "chat",
+                    Result:    "denied",
+                    Reason:    "prompt_injection",
+                })
+                http.Error(w, "request blocked by security policy", http.StatusForbidden)
+                return
+            }
+            req.Query = runtimesecurity.SanitizeUserInput(req.Query)
         }
         // Optional authentication & RBAC
         var principal *runtimesecurity.Principal
@@ -206,6 +240,23 @@ func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Ha
             http.Error(w, err.Error(), http.StatusBadRequest)
             return
         }
+        // Action gating via policy (OOB confirmation)
+        pol := runtimesecurity.DefaultPolicy().MergeEnv()
+        if act, ok := req.Data["action"].(string); ok && act != "" {
+            if pol.RequiresOutOfBand(act) {
+                oobHeader := r.Header.Get("X-OOB-Confirmed")
+                oobBody, _ := req.Data["oob_confirmed"].(bool)
+                if strings.ToLower(oobHeader) != "true" && !oobBody {
+                    runtimesecurity.BlockedResponses.Inc()
+                    auditor.Record(r.Context(), runtimesecurity.AuditEvent{
+                        Timestamp: time.Now(), RequestID: r.Context().Value("request_id").(string), TenantID: req.TenantID,
+                        Action: act, Resource: "chat", Result: "denied", Reason: "oob_required",
+                    })
+                    http.Error(w, "out-of-band confirmation required", http.StatusForbidden)
+                    return
+                }
+            }
+        }
         var results []runtimememory.SearchResult
         if req.Component != "" && req.Query != "" {
             store, err := runtimememory.NewStore(runtimememory.Config{Provider: "sqlite", RootDir: root, ComponentName: req.Component, TenantID: req.TenantID})
@@ -222,6 +273,19 @@ func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Ha
         }
         for k, v := range req.Data {
             data[k] = v
+        }
+        // Enforce source-constrained answering when results are expected (optional)
+        if citationRequired && req.Component != "" {
+            if len(results) == 0 {
+                runtimesecurity.PolicyViolations.Inc()
+                auditor.Record(r.Context(), runtimesecurity.AuditEvent{
+                    Timestamp: time.Now(), RequestID: r.Context().Value("request_id").(string), TenantID: req.TenantID,
+                    Action: "chat:invoke", Resource: "chat", Result: "denied", Reason: "no_sources",
+                })
+                http.Error(w, "no approved sources available for this request", http.StatusFailedDependency)
+                return
+            }
+            data["require_citation"] = true
         }
         // Safe prompt selection with allowlist
         promptFile := "agent_response.md"
@@ -240,6 +304,37 @@ func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Ha
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
+        }
+        // PII handling per policy (env-driven)
+        pol = runtimesecurity.DefaultPolicy().MergeEnv()
+        if runtimesecurity.DetectPII(rendered) {
+            switch pol.PIIMode {
+            case "block":
+                runtimesecurity.BlockedResponses.Inc()
+                auditor.Record(r.Context(), runtimesecurity.AuditEvent{
+                    Timestamp: time.Now(), RequestID: r.Context().Value("request_id").(string), TenantID: req.TenantID,
+                    Action: "chat:invoke", Resource: "chat", Result: "denied", Reason: "pii_detected",
+                })
+                http.Error(w, "response blocked: PII detected", http.StatusUnprocessableEntity)
+                return
+            case "redact":
+                rendered = runtimesecurity.RedactPII(rendered)
+            }
+        }
+        // Output adjudication: ensure citations when required (optional)
+        if citationRequired {
+            if rc, _ := data["require_citation"].(bool); rc {
+            low := strings.ToLower(rendered)
+            if !strings.Contains(low, "source:") && !strings.Contains(low, "sources:") {
+                runtimesecurity.BlockedResponses.Inc()
+                auditor.Record(r.Context(), runtimesecurity.AuditEvent{
+                    Timestamp: time.Now(), RequestID: r.Context().Value("request_id").(string), TenantID: req.TenantID,
+                    Action: "chat:invoke", Resource: "chat", Result: "denied", Reason: "missing_citation",
+                })
+                    http.Error(w, "response blocked: missing required citations", http.StatusUnprocessableEntity)
+                return
+            }
+            }
         }
         // If a provider is configured, perform inference with rendered prompt
         if provider != nil {

@@ -103,7 +103,7 @@ testing:
   max_test_duration: 300s
 ```
 
-### 3. (Optional) Enable Server Authentication
+### 3. (Optional) Enable Security Controls
 
 Create a `.env` file in your project root:
 
@@ -118,8 +118,10 @@ nano .env
 Add your API keys:
 ```bash
 # AI Provider Keys
-CMP_AUTH_ENABLED=true
+CMP_AUTH_ENABLED=true                    # API key auth/RBAC/rate limiting
 CMP_API_TOKENS=devtoken@tenantA:chat:execute|context:read
+CMP_PI_ENFORCEMENT=true                  # Prompt-injection guard
+CMP_REQUIRE_CITATION=true                # Enforce citations on memory-backed responses
 
 # Provider keys as needed
 OPENAI_API_KEY=your_openai_api_key_here

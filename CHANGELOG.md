@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Week 11: Enterprise Security & Compliance
     - Optional API key authentication, RBAC enforcement, and per-key/tenant/IP rate limiting (HTTP server)
     - Audit logging subsystem with JSONL sink and request context propagation
+    - Prompt-injection guard (optional via `CMP_PI_ENFORCEMENT`): classify and block risky inputs (403)
+    - Source-constrained answering (optional via `CMP_REQUIRE_CITATION`): `424` when no sources, `422` when missing citations
     - Episodic memory encryption-at-rest via AES-GCM (env key provider)
     - Helm hardening: securityContext (non-root, read-only FS), Ingress TLS/HSTS annotations
   - Week 12: Integration Ecosystem

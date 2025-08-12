@@ -45,9 +45,46 @@ All errors follow a consistent format:
 }
 ```
 
+## Security Policy Toggles
+
+- `CMP_PI_ENFORCEMENT=true`: Enable prompt-injection classification and blocking (403 on high risk)
+- `CMP_REQUIRE_CITATION=true`: Require sources for memory-backed responses (424 if none; 422 if missing citations)
+- `CMP_PII_MODE=off|redact|block`: Control PII handling in rendered outputs (422 when blocked)
+- `CMP_OOB_REQUIRED_ACTIONS=action1,action2`: Actions requiring out-of-band confirmation via `X-OOB-Confirmed: true`
+
 ## Rate Limiting
 
 If authentication is enabled, per-API key/tenant/IP token bucket limits apply. Rate limit headers include:
+## Security Controls
+
+- Prompt Injection Guard (optional): set `CMP_PI_ENFORCEMENT=true`.
+  - Behavior: risky prompts → `403 Forbidden`, audit entry recorded, counter incremented.
+- Source-Constrained Answering (optional): set `CMP_REQUIRE_CITATION=true`.
+  - Behavior: if `component` is set but no memory results → `424 Failed Dependency`.
+  - If results exist, rendered output must include citations (`Source:`). Otherwise → `422 Unprocessable Entity`.
+ - PII Handling (optional): set `CMP_PII_MODE=off|redact|block`.
+   - Behavior: when `block`, responses containing PII return `422 Unprocessable Entity`.
+ - OOB Action Gating (optional): set `CMP_OOB_REQUIRED_ACTIONS` and include `X-OOB-Confirmed: true` for sensitive actions.
+
+### Status code examples
+
+```bash
+# 403 Forbidden (OOB not confirmed)
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H 'Content-Type: application/json' \
+  -H 'X-OOB-Confirmed: false' \
+  -d '{"context":"SupportBot","component":"SupportBot","query":"delete account","data":{"action":"account_action"}}'
+
+# 422 Unprocessable Entity (PII blocked or missing citations)
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"context":"SupportBot","component":"SupportBot","query":"q"}'
+
+# 424 Failed Dependency (no sources found under citation requirement)
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"context":"SupportBot","component":"SupportBot","query":"nonexistent"}'
+```
 
 Rate limit headers are included in all responses:
 - `X-RateLimit-Limit`: Request limit per hour

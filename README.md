@@ -153,6 +153,11 @@ my-ai-app/
 ###  Enterprise Ready
 - **Multi-Tenancy:** Built-in context isolation
 - **Security & Compliance (opt-in):** API key auth, RBAC, rate limiting, audit logs, encryption-at-rest
+  - Toggles:
+    - `CMP_AUTH_ENABLED=true` – enable API key auth/RBAC/rate limiting
+    - `CMP_PI_ENFORCEMENT=true` – enable prompt-injection classification and blocking
+    - `CMP_REQUIRE_CITATION=true` – enforce citations on memory-backed responses
+    - `CMP_PII_MODE=off|redact|block` – control PII handling in rendered outputs
 - **Provider Agnostic:** Switch between AI models without code changes
 - **Scalable Architecture:** From prototypes to production systems
 
@@ -196,6 +201,34 @@ ctx plugin list                           # List installed plugins
 ctx plugin info <name>                    # Show plugin details
 ctx plugin install <path|zip_url|git_url> # Install plugin from local path, ZIP URL, or Git URL (supports #ref)
 ctx plugin remove <name>                  # Uninstall plugin
+
+## Security Controls
+
+- Input PI Guard (optional): when `CMP_PI_ENFORCEMENT=true`, user inputs are classified for risky phrases (e.g., “ignore previous instructions”). High-risk requests return 403 and are audited.
+- Source-constrained mode (optional): when `CMP_REQUIRE_CITATION=true` and a memory-backed component is used, the request requires retrieved results; if none, returns 424. Rendered outputs must contain citations (`Source:`) or return 422.
+- PII handling (optional): `CMP_PII_MODE=off|redact|block`. When `block`, responses containing PII return 422; when `redact`, PII is masked before returning.
+- OOB Action Gating (optional): declare sensitive actions via `CMP_OOB_REQUIRED_ACTIONS`, require `X-OOB-Confirmed: true` header (or `data.oob_confirmed=true`) for approval; otherwise 403.
+
+### Response examples
+
+```bash
+# 403 Forbidden (OOB required)
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H 'Content-Type: application/json' \
+  -H 'X-OOB-Confirmed: false' \
+  -d '{"context":"SupportBot","component":"SupportBot","query":"delete account","data":{"action":"account_action"}}'
+
+# 422 Unprocessable Entity (missing citations or PII when blocked)
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"context":"SupportBot","component":"SupportBot","query":"q"}'
+
+# 424 Failed Dependency (no sources found)
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"context":"SupportBot","component":"SupportBot","query":"nonexistent"}'
+```
+- Metrics: Prometheus exposes `cmp_security_prompt_injection_detections_total`, `cmp_security_policy_violations_total`, `cmp_security_blocked_responses_total`.
 ```
 
 ##  Examples

@@ -25,6 +25,12 @@ func init() {
 	// Add subcommands
 	rootCmd.AddCommand(commands.InitCmd)
 	rootCmd.AddCommand(commands.GenerateCmd)
+    // Plugin commands (use current working directory as project root)
+    if cwd, err := os.Getwd(); err == nil {
+        rootCmd.AddCommand(commands.GetPluginCommand(cwd))
+    } else {
+        rootCmd.AddCommand(commands.GetPluginCommand(""))
+    }
 	// Context command with runtime ops
 	rootCmd.AddCommand(commands.GetContextCommand(""))
 	// Memory command

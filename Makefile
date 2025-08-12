@@ -40,7 +40,11 @@ test:
 	@echo "Running all tests..."
 	go test ./tests/unit/... -v
 	go test ./tests/integration/... -v
-	go test ./tests/e2e/... -v
+	@if [ -n "$$($(shell which go) list ./tests/e2e/... 2>/dev/null)" ]; then \
+		go test ./tests/e2e/... -v; \
+	else \
+		echo "Skipping E2E tests: no packages"; \
+	fi
 	@echo " All tests passed"
 
 # Run unit tests only

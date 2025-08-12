@@ -16,6 +16,9 @@ ingress:
 
 security:
   authEnabled: false
+  piEnforcement: false
+  requireCitation: false
+  piiMode: off # off|redact|block
 
 resources:
   limits:
