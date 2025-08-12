@@ -24,7 +24,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o /out/ctx 
 
 
 ######## Distroless runtime stage (minimal attack surface) ########
-FROM gcr.io/distroless/static-debian12:nonroot AS runtime
+FROM cgr.dev/chainguard/static:latest AS runtime
 
 ENV CMP_ENV=production \
     PORT=8000
@@ -40,7 +40,8 @@ COPY prompts ./prompts
 COPY tools ./tools
 COPY config ./config
 
-USER nonroot
+# Run as non-root user (Chainguard static uses non-root by default, but set explicitly)
+USER 65532:65532
 
 EXPOSE 8000
 
