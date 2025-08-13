@@ -8,8 +8,11 @@ import (
 	"time"
 )
 
-// Context represents the declarative instructions and agent roles
-// in the CMP framework
+// Context represents a declarative agent specification in the CMP framework.
+//
+// A Context defines the agent's name and version, role/persona with
+// capabilities, available tools, guardrails, memory behavior, and testing
+// configuration. Contexts are typically loaded from `.ctx` YAML files.
 type Context struct {
 	Name        string `json:"name" yaml:"name"`
 	Version     string `json:"version" yaml:"version"`
@@ -26,21 +29,21 @@ type Context struct {
 	Metadata  map[string]string `json:"metadata,omitempty" yaml:"metadata,omitempty"`
 }
 
-// Role defines the agent's persona and capabilities
+// Role defines the agent persona and allowed capabilities.
 type Role struct {
 	Persona      string   `json:"persona" yaml:"persona"`
 	Capabilities []string `json:"capabilities" yaml:"capabilities"`
 	Limitations  []string `json:"limitations" yaml:"limitations"`
 }
 
-// Tool represents an external function or integration
+// Tool represents an external function or integration available to the agent.
 type Tool struct {
 	Name        string `json:"name" yaml:"name"`
 	URI         string `json:"uri" yaml:"uri"`
 	Description string `json:"description,omitempty" yaml:"description,omitempty"`
 }
 
-// Guardrails define behavioral constraints
+// Guardrails define behavioral constraints for agent responses.
 type Guardrails struct {
 	Tone        string  `json:"tone,omitempty" yaml:"tone,omitempty"`
 	Format      string  `json:"format,omitempty" yaml:"format,omitempty"`
@@ -48,20 +51,21 @@ type Guardrails struct {
 	Temperature float64 `json:"temperature,omitempty" yaml:"temperature,omitempty"`
 }
 
-// MemoryConfig defines memory behavior
+// MemoryConfig defines conversational memory behavior for an agent.
 type MemoryConfig struct {
 	Episodic   bool   `json:"episodic" yaml:"episodic"`
 	MaxHistory int    `json:"max_history" yaml:"max_history"`
 	Privacy    string `json:"privacy" yaml:"privacy"`
 }
 
-// TestingConfig defines testing parameters
+// TestingConfig defines testing parameters such as drift thresholds
+// and business rules that should hold in automated tests.
 type TestingConfig struct {
 	DriftThreshold float64  `json:"drift_threshold" yaml:"drift_threshold"`
 	BusinessRules  []string `json:"business_rules" yaml:"business_rules"`
 }
 
-// New creates a new Context with default values
+// New creates a new Context with default values.
 func New(name, version string) *Context {
 	return &Context{
 		Name:      name,
@@ -75,7 +79,7 @@ func New(name, version string) *Context {
 	}
 }
 
-// Validate ensures the context is properly configured
+// Validate ensures the Context has the required fields populated.
 func (c *Context) Validate() error {
 	if c.Name == "" {
 		return fmt.Errorf("context name is required")
@@ -89,12 +93,12 @@ func (c *Context) Validate() error {
 	return nil
 }
 
-// ToJSON converts the context to JSON
+// ToJSON converts the Context to pretty-printed JSON bytes.
 func (c *Context) ToJSON() ([]byte, error) {
 	return json.MarshalIndent(c, "", "  ")
 }
 
-// FromJSON creates a context from JSON
+// FromJSON parses a Context value from JSON bytes.
 func FromJSON(data []byte) (*Context, error) {
 	var ctx Context
 	if err := json.Unmarshal(data, &ctx); err != nil {
@@ -103,7 +107,8 @@ func FromJSON(data []byte) (*Context, error) {
 	return &ctx, nil
 }
 
-// GetSHA returns a content-based hash for versioning
+// GetSHA returns a content-addressed SHA-256 hash of the Context,
+// suitable for immutable versioning and provenance.
 func (c *Context) GetSHA() (string, error) {
 	data, err := c.ToJSON()
 	if err != nil {

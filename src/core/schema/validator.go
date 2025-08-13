@@ -10,9 +10,11 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// ValidateContextYAML performs a lightweight validation of a .ctx YAML file.
-// It ensures required top-level fields exist and have expected types.
-// This is intentionally minimal and can be upgraded to full JSON Schema validation later.
+// ValidateContextYAML performs a lightweight validation of a `.ctx` YAML file.
+//
+// The function ensures required top-level fields exist and have expected types.
+// If a JSON Schema is present at `src/core/schema/context_schema.json`, it
+// validates against that schema; otherwise it falls back to basic checks.
 func ValidateContextYAML(yamlBytes []byte) error {
 	var m map[string]interface{}
 	if err := yaml.Unmarshal(yamlBytes, &m); err != nil {
@@ -57,7 +59,7 @@ func ValidateContextYAML(yamlBytes []byte) error {
 	return nil
 }
 
-// JSONMarshal is a small helper to marshal any value to JSON bytes.
+// JSONMarshal marshals any value to JSON bytes.
 func JSONMarshal(v interface{}) ([]byte, error) {
 	return json.Marshal(v)
 }

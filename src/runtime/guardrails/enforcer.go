@@ -8,7 +8,8 @@ import (
 	runtimeprompt "github.com/contexis-cmp/contexis/src/runtime/prompt"
 )
 
-// Capability validation: ensure requested action is allowed by context.
+// ValidateCapabilities returns an error if requestedAction is not permitted by
+// the Context's role capabilities. An empty action is treated as allowed.
 func ValidateCapabilities(ctx *corectx.Context, requestedAction string) error {
 	if requestedAction == "" {
 		return nil
@@ -21,10 +22,13 @@ func ValidateCapabilities(ctx *corectx.Context, requestedAction string) error {
 	return fmt.Errorf("capability '%s' not allowed by context", requestedAction)
 }
 
-// EnforceGuardrails performs simple enforcement based on context guardrails.
-// - Ensures response format (json/markdown/text)
-// - Trims tokens if MaxTokens specified
-// - Temperature and tone are advisory here (no model call), so not enforced beyond bounds check.
+// EnforceGuardrails applies guardrail constraints to a candidate response.
+//
+// It enforces:
+//   - Response format (json|markdown|text)
+//   - Token length (MaxTokens)
+//
+// Tone and temperature are advisory and not enforced at this stage.
 func EnforceGuardrails(ctx *corectx.Context, response string) (string, error) {
 	gr := ctx.Guardrails
 	if gr.MaxTokens > 0 {
