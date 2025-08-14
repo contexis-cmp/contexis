@@ -252,10 +252,6 @@ func generateAgentContext(ctx context.Context, config AgentConfig) error {
 		log.Error("failed to parse agent context template", zap.Error(err))
 		return fmt.Errorf("failed to parse template %s: %w", ctxAbs, err)
 	}
-	if err != nil {
-		log.Error("failed to parse agent context template", zap.Error(err))
-		return fmt.Errorf("failed to parse template: %w", err)
-	}
 
 	// Create output file
 	outputPath := fmt.Sprintf("contexts/%s/%s.ctx", config.Name, strings.ToLower(config.Name))

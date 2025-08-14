@@ -13,7 +13,7 @@ func ExampleNew() {
 }
 
 func ExampleContext_Validate() {
-	c := New("MyAgent", "0.1.0")
+	c := New("MyAgent", "0.1.14")
 	c.Role.Persona = "Helpful assistant"
 	fmt.Println(c.Validate() == nil)
 	// Output:
@@ -21,7 +21,7 @@ func ExampleContext_Validate() {
 }
 
 func ExampleContext_GetSHA() {
-	c := New("MyAgent", "0.1.0")
+	c := New("MyAgent", "0.1.14")
 	sha, _ := c.GetSHA()
 	fmt.Println(strings.HasPrefix(sha, "sha256:"))
 	// Output:

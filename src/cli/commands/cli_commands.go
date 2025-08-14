@@ -1,9 +1,10 @@
 package commands
 
 import (
-    "fmt"
-    "os"
-    "github.com/spf13/cobra"
+	"fmt"
+	"os"
+
+	"github.com/spf13/cobra"
 )
 
 // GetRootCommand returns the root command
@@ -14,9 +15,9 @@ func GetRootCommand() *cobra.Command {
 		Long:  `A comprehensive CLI for the Context-Memory-Prompt (CMP) framework.`,
 	}
 
-    // Add subcommands
-    rootCmd.AddCommand(GetGenerateCommand())
-    rootCmd.AddCommand(GetPluginCommand(getProjectRoot()))
+	// Add subcommands
+	rootCmd.AddCommand(GetGenerateCommand())
+	rootCmd.AddCommand(GetPluginCommand(getProjectRoot()))
 	rootCmd.AddCommand(GetVersionCommand())
 
 	return rootCmd
@@ -24,8 +25,8 @@ func GetRootCommand() *cobra.Command {
 
 // getProjectRoot returns current working directory as project root
 func getProjectRoot() string {
-    cwd, _ := os.Getwd()
-    return cwd
+	cwd, _ := os.Getwd()
+	return cwd
 }
 
 // GetGenerateCommand returns the generate command
@@ -46,8 +47,8 @@ func GetGenerateCommand() *cobra.Command {
 
 // GetAgentCommand returns the agent command
 func GetAgentCommand() *cobra.Command {
-    agentCmd := &cobra.Command{
-        Use:   "agent",
+	agentCmd := &cobra.Command{
+		Use:   "agent",
 		Short: "Generate a conversational agent",
 		Long:  `Generate a conversational agent with specified tools and memory type.`,
 		Args:  cobra.ExactArgs(1),
@@ -76,7 +77,7 @@ func GetAgentCommand() *cobra.Command {
 // GetRAGCommand returns the RAG command
 func GetRAGCommand() *cobra.Command {
 	ragCmd := &cobra.Command{
-        Use:   "rag",
+		Use:   "rag",
 		Short: "Generate a RAG system",
 		Long:  `Generate a Retrieval-Augmented Generation (RAG) system.`,
 		Args:  cobra.ExactArgs(1),
@@ -93,7 +94,7 @@ func GetRAGCommand() *cobra.Command {
 // GetWorkflowCommand returns the workflow command
 func GetWorkflowCommand() *cobra.Command {
 	workflowCmd := &cobra.Command{
-        Use:   "workflow",
+		Use:   "workflow",
 		Short: "Generate a workflow",
 		Long:  `Generate a multi-step AI workflow.`,
 		Args:  cobra.ExactArgs(1),
@@ -123,7 +124,7 @@ func GetVersionCommand() *cobra.Command {
 		Use:   "version",
 		Short: "Show version information",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Contexis CMP Framework v0.1.0")
+			fmt.Println("Contexis CMP Framework v0.1.14")
 		},
 	}
 

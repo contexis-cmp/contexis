@@ -71,7 +71,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 	config := ProjectConfig{
 		Name:        projectName,
 		Description: fmt.Sprintf("A CMP application: %s", projectName),
-		Version:     "0.1.0",
+		Version:     "0.1.14",
 		Author:      "CMP Developer",
 		Email:       "developer@example.com",
 	}
@@ -493,7 +493,7 @@ ctx deploy --target=docker
 func createScripts(projectPath string, config ProjectConfig) error {
 	// Create requirements.txt
 	requirements := `# Core dependencies
-contexis>=0.1.0
+contexis>=0.1.14
 pydantic>=2.0.0
 pyyaml>=6.0
 click>=8.0.0

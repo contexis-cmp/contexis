@@ -18,10 +18,10 @@ import (
 //
 //	{
 //	  "name": "re_ranker",
-//	  "version": "0.1.0",
+//	  "version": "0.1.14",
 //	  "description": "Reranking component for RAG",
 //	  "capabilities": ["memory:rerank"],
-//	  "compatibility": {"cmp_min": "0.1.0"}
+//	  "compatibility": {"cmp_min": "0.1.14"}
 //	}
 type Manifest struct {
 	Name          string            `json:"name"`

@@ -28,7 +28,7 @@ ctx version
 
 You should see output like:
 ```
-Contexis CMP Framework v0.1.0
+Contexis CMP Framework v0.1.14
 ```
 
 ### 2. Set Up Your Environment

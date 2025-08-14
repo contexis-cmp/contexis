@@ -104,7 +104,7 @@ GetSHA returns a content\-addressed SHA\-256 hash of the Context, suitable for i
 
 
 ```go
-c := New("MyAgent", "0.1.0")
+c := New("MyAgent", "0.1.14")
 sha, _ := c.GetSHA()
 fmt.Println(strings.HasPrefix(sha, "sha256:"))
 // Output:
@@ -144,7 +144,7 @@ Validate ensures the Context has the required fields populated.
 
 
 ```go
-c := New("MyAgent", "0.1.0")
+c := New("MyAgent", "0.1.14")
 c.Role.Persona = "Helpful assistant"
 fmt.Println(c.Validate() == nil)
 // Output:
@@ -1736,10 +1736,10 @@ The manifest is stored at \`plugins/\<name\>/plugin.json\` and controls discover
 ```
 {
   "name": "re_ranker",
-  "version": "0.1.0",
+  "version": "0.1.14",
   "description": "Reranking component for RAG",
   "capabilities": ["memory:rerank"],
-  "compatibility": {"cmp_min": "0.1.0"}
+  "compatibility": {"cmp_min": "0.1.14"}
 }
 ```
 
