@@ -125,7 +125,7 @@ Create new templates in `prompts/` and reference them in your context files.
 
 ```bash
 # Enable debug logging
-ctx run --debug query "test question"
+ctx run CustomerDocs "test question" --debug
 
 # View detailed logs
 ctx logs --level=debug

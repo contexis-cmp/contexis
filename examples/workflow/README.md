@@ -33,7 +33,7 @@ ctx workflow add-destination --name=warehouse --type=bigquery --config=./config/
 ctx test
 
 # Run the pipeline
-ctx run workflow --name=DataProcessor
+ctx run DataProcessor "Process data"
 ```
 
 ## Generated Structure
@@ -197,13 +197,13 @@ Edit `prompts/data_transformation.md`:
 
 ```bash
 # Run complete workflow
-ctx run workflow --name=DataProcessor
+ctx run DataProcessor "Process data"
 
 # Run specific step
-ctx run workflow --name=DataProcessor --step=extract
+ctx run DataProcessor "Extract data" --data '{"step":"extract"}'
 
 # Run with custom parameters
-ctx run workflow --name=DataProcessor --params='{"batch_size": 1000}'
+ctx run DataProcessor "Process data" --data '{"batch_size": 1000}'
 ```
 
 ### Monitoring and Debugging
@@ -216,7 +216,7 @@ ctx monitor workflow --name=DataProcessor
 ctx logs --workflow=DataProcessor
 
 # Debug workflow issues
-ctx debug workflow --name=DataProcessor --step=transform
+ctx run DataProcessor "Debug transform step" --data '{"step":"transform","debug":true}' --debug
 ```
 
 ## Testing
@@ -288,7 +288,7 @@ def test_workflow_integration():
 ctx dev --port=8080
 
 # Test workflow locally
-ctx run workflow --name=DataProcessor --environment=development
+ctx run DataProcessor "Process data" --data '{"environment":"development"}'
 ```
 
 ### Production Deployment
@@ -428,10 +428,10 @@ ctx logs --level=debug --workflow=DataProcessor
 
 ```bash
 # Enable parallel processing
-ctx run workflow --name=DataProcessor --parallel --max-workers=4
+ctx run DataProcessor "Process data" --data '{"parallel":true,"max_workers":4}'
 
 # Configure batch processing
-ctx run workflow --name=DataProcessor --batch-size=1000
+ctx run DataProcessor "Process data" --data '{"batch_size":1000}'
 ```
 
 ### Caching

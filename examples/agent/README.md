@@ -180,23 +180,23 @@ Edit `prompts/conversation_continue.md`:
 
 ```bash
 # Start a conversation
-ctx run conversation "Hi, I'm new here"
+ctx run SupportBot "Hi, I'm new here"
 
 # Continue the conversation
-ctx run conversation "Can you help me set up my account?"
+ctx run SupportBot "Can you help me set up my account?"
 
 # Ask follow-up questions
-ctx run conversation "What are the security requirements?"
+ctx run SupportBot "What are the security requirements?"
 ```
 
 ### Context Switching
 
 ```bash
 # Switch to help context
-ctx run conversation "I need help with my order" --context=help
+ctx run SupportBot "I need help with my order" --data '{"context":"help"}'
 
 # Switch back to general conversation
-ctx run conversation "Thanks for the help!" --context=general
+ctx run SupportBot "Thanks for the help!" --data '{"context":"general"}'
 ```
 
 ### Personalization
@@ -206,7 +206,7 @@ ctx run conversation "Thanks for the help!" --context=general
 ctx user set-preferences --preferences='{"language": "en", "tone": "casual"}'
 
 # Start personalized conversation
-ctx run conversation "Hello" --user-id=user_123
+ctx run SupportBot "Hello" --data '{"user_id":"user_123"}'
 ```
 
 ## Testing
@@ -384,7 +384,7 @@ class CustomIntegrationTool:
 
 ```bash
 # Enable debug logging
-ctx run conversation "test" --debug
+ctx run SupportBot "test" --debug
 
 # View detailed logs
 ctx logs --level=debug --type=conversation

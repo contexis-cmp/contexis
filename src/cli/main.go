@@ -40,20 +40,20 @@ func init() {
 	// Lock command
 	rootCmd.AddCommand(commands.GetLockCommand())
 	rootCmd.AddCommand(commands.GetPromptLintCommand())
-	rootCmd.AddCommand(generateCmd)
 	rootCmd.AddCommand(testCmd)
 	// Build/Deploy commands
 	rootCmd.AddCommand(commands.GetBuildCommand())
 	rootCmd.AddCommand(commands.GetDeployCommand())
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(commands.GetServeCommand())
+	rootCmd.AddCommand(commands.GetRunCommand())
 	rootCmd.AddCommand(commands.GetWorkerCommand())
 	rootCmd.AddCommand(commands.GetHFCommand())
 }
 
 func main() {
-	// Initialize logger
-	if err := logger.InitLogger("info", "json"); err != nil {
+	// Initialize colored logger
+	if err := logger.InitColoredLogger("info"); err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to initialize logger: %v\n", err)
 		os.Exit(1)
 	}
@@ -73,17 +73,6 @@ func main() {
 // generateRequestID generates a simple request ID for tracing
 func generateRequestID() string {
 	return fmt.Sprintf("req_%d", os.Getpid())
-}
-
-var generateCmd = &cobra.Command{
-	Use:   "generate [type] [name]",
-	Short: "Generate a new CMP component",
-	Long:  `Generate RAG systems, agents, workflows, or other CMP components using templates.`,
-	Args:  cobra.ExactArgs(2),
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Generating %s component: %s\n", args[0], args[1])
-		// TODO: Implement component generation
-	},
 }
 
 var testCmd = &cobra.Command{

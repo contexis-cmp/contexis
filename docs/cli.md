@@ -45,9 +45,12 @@ ctx memory search --provider sqlite --component CustomerDocs --query "return pol
 ctx memory optimize --provider sqlite --component CustomerDocs --version <version-id>
 ```
 
-Run HTTP server:
+Run queries and server:
 ```bash
-# Start server on :8000
+# Run a query directly (starts server temporarily)
+ctx run SupportBot "What is your return policy?"
+
+# Start server manually for continuous use
 ctx serve --addr :8000
 ```
 

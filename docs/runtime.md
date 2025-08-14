@@ -1,7 +1,11 @@
 # Runtime and API
 
-Start the server:
+Start the server or run queries:
 ```bash
+# Run a query directly (starts server temporarily)
+ctx run SupportBot "What is your return policy?"
+
+# Start server manually for continuous use
 ctx serve --addr :8000
 ```
 

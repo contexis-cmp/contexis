@@ -251,7 +251,7 @@ The server exposes:
 - Metrics: `/metrics` (Prometheus)
 
 # Test a query (example)
-ctx run query "What is your return policy?"
+ctx run SupportBot "What is your return policy?"
 ```
 
 You should see a response like:
