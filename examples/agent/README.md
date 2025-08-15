@@ -1,406 +1,351 @@
 # Conversational Agent Example
 
-This example demonstrates how to build a conversational agent using the Contexis CMP framework.
+This example demonstrates how to build a conversational AI agent using Contexis with **local models by default**.
 
 ## Overview
 
-This conversational agent is designed to handle multi-turn conversations with context awareness and memory. It can:
-
-- Maintain conversation history
-- Remember user preferences
-- Handle complex multi-step interactions
-- Provide personalized responses
+A conversational agent provides:
+- **Natural Conversations**: Multi-turn dialogue capabilities
+- **Context Awareness**: Remembers conversation history
+- **Tool Integration**: Can call external APIs and services
+- **Personality**: Customizable agent persona and behavior
 
 ## Quick Start
 
+### 1. Initialize Project
+
 ```bash
-# Initialize the project
-ctx init conversation-agent
-cd conversation-agent
+# Create a new project
+ctx init agent-example
+cd agent-example
 
-# Generate the agent
-ctx generate agent ConversationAgent --memory=episodic --tools=web_search,database
-
-# Add conversation skills
-ctx agent add-skill --name=greeting --context=./contexts/greeting.ctx
-ctx agent add-skill --name=help --context=./contexts/help.ctx
-
-# Test the agent
-ctx test
-
-# Start a conversation (example via server)
-ctx serve --addr :8000
-# curl -X POST http://localhost:8000/api/v1/chat -H 'Content-Type: application/json' \
-#   -d '{"context":"ConversationAgent","component":"ConversationAgent","query":"hello","top_k":0,"data":{"user_input":"Hello, I need help with my account"}}'
+# Set up environment
+cp .env.example .env
+pip install -r requirements.txt
 ```
 
-## Generated Structure
+### 2. Generate Agent
 
-```
-conversation-agent/
-├── contexts/
-│   ├── conversation_agent.ctx    # Main agent definition
-│   ├── greeting.ctx              # Greeting skill
-│   └── help.ctx                  # Help skill
-├── memory/
-│   ├── conversations/            # Conversation history
-│   └── user_preferences/         # User preferences
-├── prompts/
-│   ├── conversation_start.md     # Conversation initiation
-│   ├── conversation_continue.md  # Conversation continuation
-│   └── conversation_end.md       # Conversation ending
-├── tools/
-│   ├── conversation_tracker.py   # Conversation state management
-│   └── user_preferences.py       # User preference storage
-├── tests/
-│   ├── conversation_flow.py      # Conversation flow tests
-│   └── context_switching.py      # Context switching tests
-└── context.lock.json             # Version locks
+```bash
+# Generate conversational agent with local models
+ctx generate agent SupportBot --tools web_search,database --memory episodic
 ```
 
-## Key Features
+This creates:
+- `contexts/SupportBot/` - Agent configuration
+- `memory/SupportBot/` - Conversation memory
+- `prompts/SupportBot/` - Response templates
+- `tools/SupportBot/` - Tool integrations
+- `tests/SupportBot/` - Test suite
 
-### Conversation Management
-- **Multi-turn Support**: Handle extended conversations
-- **Context Switching**: Switch between different conversation topics
-- **Memory Persistence**: Remember conversation history across sessions
-- **State Management**: Track conversation state and user intent
+### 3. Test Your Agent
 
-### Personalization
-- **User Preferences**: Store and recall user preferences
-- **Personalized Responses**: Tailor responses based on user history
-- **Adaptive Behavior**: Learn from user interactions
-
-### Integration
-- **API Integration**: Connect to external services
-- **Database Storage**: Persistent conversation storage
-- **Real-time Updates**: Live conversation updates
+```bash
+# Test with local models (no API keys needed!)
+ctx run SupportBot "Hello, I need help with my order"
+ctx run SupportBot "What's the status of order #12345?"
+ctx run SupportBot "Can you help me with a return?"
+```
 
 ## Configuration
 
-### Agent Context
+### Local Development (Default)
 
-Edit `contexts/conversation_agent.ctx`:
+The agent uses local models by default:
 
 ```yaml
-name: "Conversation Agent"
-version: "1.0.0"
-description: "Multi-turn conversational agent with memory"
+# config/environments/development.yaml
+providers:
+  local:
+    model: microsoft/DialoGPT-medium
+    temperature: 0.1
+    max_tokens: 1000
 
-role:
-  persona: "Friendly, helpful conversational assistant"
-  capabilities: ["multi_turn_conversation", "context_switching", "personalization"]
-  limitations: ["no_personal_data", "no_harmful_content"]
-
-tools:
-  - name: "conversation_tracker"
-    uri: "mcp://conversation.track"
-    description: "Track conversation state and history"
-  - name: "user_preferences"
-    uri: "mcp://user.preferences"
-    description: "Store and retrieve user preferences"
-  - name: "context_switcher"
-    uri: "mcp://conversation.switch"
-    description: "Switch conversation context"
-
-guardrails:
-  tone: "friendly"
-  format: "text"
-  max_tokens: 1000
-  temperature: 0.3
-  
 memory:
-  episodic: true
-  max_history: 50
-  privacy: "user_isolated"
-
-testing:
-  drift_threshold: 0.85
-  business_rules:
-    - "always_maintain_context"
-    - "respect_user_preferences"
-    - "handle_context_switches_gracefully"
+  provider: episodic
+  max_history: 10
+  privacy: user_isolated
 ```
 
-### Conversation Prompts
+### Production Migration
 
-#### Conversation Start
+When ready for production, switch to external providers:
 
-Edit `prompts/conversation_start.md`:
+```yaml
+# config/environments/production.yaml
+providers:
+  openai:
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini
 
-```markdown
-# Conversation Start Template
-
-Hello! I'm your conversational assistant. How can I help you today?
-
-**Previous Interactions**: {{ previous_interactions }}
-**User Preferences**: {{ user_preferences }}
-
-## Conversation Guidelines
-- Be friendly and helpful
-- Remember previous interactions
-- Respect user preferences
-- Ask clarifying questions when needed
-
-## Response
-
-{{ response_text }}
-
-**Next Suggested Actions**: {{ next_actions }}
+memory:
+  provider: redis
+  url: ${REDIS_URL}
 ```
 
-#### Conversation Continue
+## Advanced Usage
 
-Edit `prompts/conversation_continue.md`:
-
-```markdown
-# Conversation Continue Template
-
-**Current Context**: {{ current_context }}
-**Conversation History**: {{ conversation_history }}
-**User Intent**: {{ user_intent }}
-
-## Response Guidelines
-- Maintain conversation flow
-- Reference previous context
-- Provide helpful information
-- Suggest next steps when appropriate
-
-## Response
-
-{{ response_text }}
-
-**Context Updated**: {{ context_updated }}
-**Suggested Follow-up**: {{ follow_up_questions }}
-```
-
-## Usage Examples
-
-### Basic Conversation
+### 1. Multi-Turn Conversations
 
 ```bash
 # Start a conversation
-ctx run SupportBot "Hi, I'm new here"
+ctx run SupportBot "Hi, I'm having trouble with my account"
 
 # Continue the conversation
-ctx run SupportBot "Can you help me set up my account?"
+ctx run SupportBot "Yes, I forgot my password"
 
-# Ask follow-up questions
-ctx run SupportBot "What are the security requirements?"
+# The agent remembers context from previous messages
+ctx run SupportBot "Can you help me reset it?"
 ```
 
-### Context Switching
+### 2. Tool Integration
+
+The agent can use tools for external actions:
 
 ```bash
-# Switch to help context
-ctx run SupportBot "I need help with my order" --data '{"context":"help"}'
+# Agent can search the web
+ctx run SupportBot "What's the latest news about AI?"
 
-# Switch back to general conversation
-ctx run SupportBot "Thanks for the help!" --data '{"context":"general"}'
+# Agent can query databases
+ctx run SupportBot "What's the status of my recent orders?"
+
+# Agent can make API calls
+ctx run SupportBot "Can you check the weather in New York?"
 ```
 
-### Personalization
-
-```bash
-# Set user preferences
-ctx user set-preferences --preferences='{"language": "en", "tone": "casual"}'
-
-# Start personalized conversation
-ctx run SupportBot "Hello" --data '{"user_id":"user_123"}'
-```
-
-## Testing
-
-### Conversation Flow Testing
+### 3. Test Agent Behavior
 
 ```bash
 # Test conversation flow
-ctx test --type=conversation --scenario=basic_flow
+ctx test --drift-detection --component=SupportBot
 
-# Test context switching
-ctx test --type=conversation --scenario=context_switch
-
-# Test personalization
-ctx test --type=conversation --scenario=personalization
+# Test specific scenarios
+ctx test --correctness --rules=./tests/business_rules.yaml
 ```
 
-### Automated Testing
-
-The generated test suite includes:
-
-```python
-# tests/conversation_flow.py
-def test_basic_conversation_flow():
-    """Test basic conversation flow"""
-    agent = ConversationAgent()
-    
-    # Test conversation start
-    response1 = agent.start_conversation("Hi")
-    assert "hello" in response1.lower()
-    
-    # Test conversation continue
-    response2 = agent.continue_conversation("I need help")
-    assert "help" in response2.lower()
-    
-    # Test conversation end
-    response3 = agent.end_conversation("Goodbye")
-    assert "goodbye" in response3.lower()
-
-def test_context_switching():
-    """Test context switching capabilities"""
-    agent = ConversationAgent()
-    
-    # Start in general context
-    response1 = agent.run("Hello", context="general")
-    
-    # Switch to help context
-    response2 = agent.run("I need help", context="help")
-    
-    # Verify context switch
-    assert response2.context == "help"
-```
-
-## Deployment
-
-### Local Development
+### 4. Start Development Server
 
 ```bash
-# Start development server
-ctx dev --port=8080
+# Start server for continuous development
+ctx serve --addr :8000
 
-# Test with curl
-curl -X POST http://localhost:8080/conversation \
+# Test via HTTP API
+curl -X POST http://localhost:8000/api/v1/chat \
   -H "Content-Type: application/json" \
-  -d '{"message": "Hello", "user_id": "user_123"}'
-```
-
-### Production Deployment
-
-```bash
-# Build for production
-ctx build --environment=production
-
-# Deploy to container
-ctx deploy --target=docker --image=conversation-agent:latest
-
-# Deploy to Kubernetes
-ctx deploy --target=kubernetes --namespace=agents
-```
-
-## Monitoring
-
-### Conversation Metrics
-
-```bash
-# View conversation metrics
-ctx metrics --type=conversation
-
-# Monitor conversation quality
-ctx metrics --type=quality
-
-# Track user engagement
-ctx metrics --type=engagement
-```
-
-### Logs
-
-```bash
-# View conversation logs
-ctx logs --type=conversation --user-id=user_123
-
-# Monitor errors
-ctx logs --level=error --type=conversation
+  -d '{
+    "context": "SupportBot",
+    "component": "SupportBot",
+    "query": "Hello, I need help",
+    "data": {"conversation_id": "user123"}
+  }'
 ```
 
 ## Customization
 
-### Adding New Skills
+### 1. Modify Agent Personality
 
-1. **Create Skill Context**
+Edit `contexts/SupportBot/SupportBot.ctx`:
 
 ```yaml
-# contexts/booking.ctx
-name: "Booking Skill"
+name: "Customer Support Agent"
 version: "1.0.0"
-description: "Handle booking and scheduling"
+description: "Helpful customer support agent"
 
 role:
-  persona: "Efficient booking assistant"
-  capabilities: ["schedule_appointments", "check_availability", "confirm_bookings"]
+  persona: "Friendly, professional customer service representative who is patient and empathetic"
+  capabilities: ["answer_questions", "process_orders", "handle_returns", "escalate_issues"]
+  limitations: ["no_refunds_over_policy", "no_personal_data_sharing", "no_financial_advice"]
 
-tools:
-  - name: "calendar_integration"
-    uri: "mcp://calendar.book"
-    description: "Integrate with calendar systems"
+guardrails:
+  tone: "friendly"
+  format: "text"
+  max_tokens: 500
+  temperature: 0.2
+
+memory:
+  episodic: true
+  max_history: 15
+  privacy: user_isolated
 ```
 
-2. **Add Skill to Agent**
+### 2. Customize Response Templates
 
-```bash
-ctx agent add-skill --name=booking --context=./contexts/booking.ctx
+Edit `prompts/SupportBot/agent_response.md`:
+
+```markdown
+# Support Agent Response
+
+**Conversation Context:**
+{{#if conversation_history}}
+Previous messages:
+{{#each conversation_history}}
+- {{ role }}: {{ content }}
+{{/each}}
+{{/if}}
+
+**Current User Message:** {{ .user_input }}
+
+**Agent Response:**
+{{ .response }}
+
+---
+*Response generated by SupportBot agent*
 ```
 
-3. **Test New Skill**
+### 3. Add Custom Tools
 
-```bash
-ctx test --skill=booking
-```
-
-### Custom Tools
-
-Create custom tools for specific integrations:
+Create `tools/SupportBot/order_lookup.py`:
 
 ```python
-# tools/custom_integration.py
-class CustomIntegrationTool:
-    def __init__(self, api_key):
-        self.api_key = api_key
+class OrderLookupTool:
+    def __init__(self, config):
+        self.config = config
     
-    async def call(self, parameters):
-        # Custom integration logic
-        return result
+    async def lookup_order(self, order_id):
+        # Connect to order database
+        # Return order status
+        return {
+            "order_id": order_id,
+            "status": "shipped",
+            "tracking_number": "123456789"
+        }
+```
+
+### 4. Configure Memory
+
+Edit `memory/SupportBot/memory_config.yaml`:
+
+```yaml
+provider: episodic
+max_history: 15
+privacy: user_isolated
+storage:
+  type: file
+  path: ./data/conversations
+```
+
+## Testing
+
+### 1. Run All Tests
+
+```bash
+# Run comprehensive tests
+ctx test --all --coverage
+```
+
+### 2. Test Conversation Flow
+
+```bash
+# Test conversation scenarios
+ctx test --drift-detection --component=SupportBot
+
+# Test specific conversation paths
+ctx test --correctness --rules=./tests/conversation_rules.yaml
+```
+
+### 3. Performance Testing
+
+```bash
+# Test response times
+time ctx run SupportBot "Hello"
+
+# Test memory usage
+htop
+```
+
+## Conversation Examples
+
+### Customer Support Scenario
+
+```bash
+# User: "Hi, I need help with my order"
+ctx run SupportBot "Hi, I need help with my order"
+
+# Agent: "Hello! I'd be happy to help you with your order. Could you please provide your order number?"
+
+# User: "My order number is #12345"
+ctx run SupportBot "My order number is #12345"
+
+# Agent: "Thank you! Let me look up order #12345 for you. I can see that your order was shipped yesterday and is currently in transit. The estimated delivery date is tomorrow. Is there anything specific about your order that I can help you with?"
+
+# User: "Can I change the delivery address?"
+ctx run SupportBot "Can I change the delivery address?"
+
+# Agent: "I understand you'd like to change the delivery address for order #12345. Unfortunately, since your order has already been shipped, I cannot change the delivery address. However, I can help you with a few alternatives..."
+```
+
+### Technical Support Scenario
+
+```bash
+# User: "I'm having trouble logging into my account"
+ctx run SupportBot "I'm having trouble logging into my account"
+
+# Agent: "I'm sorry to hear you're having trouble logging in. Let me help you troubleshoot this. First, could you tell me what happens when you try to log in? Do you get an error message?"
+
+# User: "It says 'invalid password'"
+ctx run SupportBot "It says 'invalid password'"
+
+# Agent: "I see you're getting an 'invalid password' error. This is a common issue that we can resolve. Let me help you reset your password. I'll send a password reset link to the email address associated with your account. Would you like me to do that now?"
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Conversation State Loss**
-   - Check memory configuration
-   - Verify conversation persistence
-   - Review state management
+1. **Conversation Memory Issues**
+   ```bash
+   # Check memory configuration
+   cat memory/SupportBot/memory_config.yaml
+   
+   # Test memory storage
+   ctx memory search --provider=episodic --component=SupportBot --query="test"
+   ```
 
-2. **Context Switching Issues**
-   - Validate context definitions
-   - Check context switching logic
-   - Review conversation flow
+2. **Tool Integration Issues**
+   ```bash
+   # Check tool configuration
+   cat contexts/SupportBot/SupportBot.ctx
+   
+   # Test tool availability
+   ctx context validate SupportBot
+   ```
 
-3. **Personalization Not Working**
-   - Verify user preference storage
-   - Check preference retrieval
-   - Review personalization logic
+3. **Response Quality Issues**
+   ```bash
+   # Check prompt templates
+   cat prompts/SupportBot/agent_response.md
+   
+   # Test with different inputs
+   ctx run SupportBot "Hello"
+   ctx run SupportBot "Help me"
+   ```
 
-### Debug Mode
+### Performance Optimization
 
-```bash
-# Enable debug logging
-ctx run SupportBot "test" --debug
+1. **Memory Management**
+   ```bash
+   # Optimize conversation memory
+   ctx memory optimize --provider=episodic --component=SupportBot
+   ```
 
-# View detailed logs
-ctx logs --level=debug --type=conversation
-```
+2. **Model Warmup**
+   ```bash
+   # Pre-download models for faster responses
+   ctx models warmup
+   ```
 
 ## Next Steps
 
-- Add more conversation skills
-- Implement advanced personalization
-- Integrate with external services
-- Add conversation analytics
-- Implement multi-language support
+- **Add more tools** for external integrations
+- **Customize personality** for your brand
+- **Add conversation flows** for common scenarios
+- **Implement authentication** for user management
+- **Set up monitoring** for conversation quality
+- **Migrate to production** providers when ready
 
 ## Resources
 
-- [Conversation Design Guide](https://docs.contexis.dev/guides/conversation-design)
-- [Personalization Best Practices](https://docs.contexis.dev/guides/personalization)
-- [Context Switching Patterns](https://docs.contexis.dev/guides/context-switching)
-- [Testing Strategies](https://docs.contexis.dev/guides/testing)
+- [Getting Started Guide](../docs/guides/getting-started.md)
+- [CLI Reference](../docs/cli.md)
+- [Model Providers](../docs/model_providers.md)
+- [Memory Management](../docs/memory.md)

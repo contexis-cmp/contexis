@@ -1,178 +1,262 @@
 === RUN   TestAgentGeneratorIntegrationTestSuite
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
-2025-08-11T17:28:52.233+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "SimpleBot", "tools": ["web_search"], "memory": "episodic"}
-2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/SimpleBot/simplebot.ctx"}
-2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/SimpleBot/agent_response.md"}
-2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/SimpleBot/web_search.py"}
-2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
-2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/SimpleBot/agent_behavior.yaml"}
-2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/SimpleBot/memory_config.yaml"}
-2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/SimpleBot/requirements.txt"}
-2025-08-11T17:28:52.234+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "SimpleBot", "tools": ["web_search"], "memory": "episodic"}
-    helpers.go:548: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:548
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:309
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:121
-        	Error:      	"# Agent Behavior Test Configuration\nagent_name: \"SimpleBot\"\ntest_version: \"1.0.0\"\ndescription: \"Conversational agent for SimpleBot\"" does not contain "test_cases:"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
-        	Messages:   	File tests/SimpleBot/agent_behavior.yaml should contain: test_cases:
-    helpers.go:548: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:548
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:325
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:122
-        	Error:      	"# Memory Configuration for SimpleBot Agent\nmemory_type: \"episodic\"\nmax_history: 50\nprivacy_level: \"user_isolated\"\nretention_days: 30\nencryption: true\n\n# Episodic Memory Settings\nepisodic:\n  enabled: true\n  max_conversations: 100\n  context_window: 10\n  importance_threshold: 0.7\n\n# User Preferences\npreferences:\n  enabled: true\n  max_preferences: 20\n  update_frequency: \"session\"\n\n# Security Settings\nsecurity:\n  data_encryption: true\n  access_logging: true\n  audit_trail: true\n" does not contain "privacy:"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
-        	Messages:   	File memory/SimpleBot/memory_config.yaml should contain: privacy:
-    helpers.go:503: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:127
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
-        	Messages:   	Python file should contain function definitions
-    agent_generator_integration_test.go:353: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:127
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "web_search"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
-        	Messages:   	Tool file should contain tool name
-    agent_generator_integration_test.go:355: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:127
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent
-        	Messages:   	Tool file should contain function definitions
+2025-08-15T22:06:54.161+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "SimpleBot", "tools": ["web_search"], "memory": "episodic", "name": "SimpleBot", "tools": ["web_search"], "memory": "episodic"}
+2025-08-15T22:06:54.161+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.161+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/SimpleBot", "path": "contexts/SimpleBot"}
+2025-08-15T22:06:54.161+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/SimpleBot", "path": "memory/SimpleBot"}
+2025-08-15T22:06:54.162+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/SimpleBot/episodic", "path": "memory/SimpleBot/episodic"}
+2025-08-15T22:06:54.162+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/SimpleBot/user_preferences", "path": "memory/SimpleBot/user_preferences"}
+2025-08-15T22:06:54.162+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/SimpleBot", "path": "prompts/SimpleBot"}
+2025-08-15T22:06:54.162+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/SimpleBot", "path": "tools/SimpleBot"}
+2025-08-15T22:06:54.162+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/SimpleBot", "path": "tests/SimpleBot"}
+2025-08-15T22:06:54.162+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.162+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/SimpleBot/simplebot.ctx"}
+2025-08-15T22:06:54.162+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.162+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/SimpleBot/agent_response.md"}
+2025-08-15T22:06:54.162+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.163+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "web_search", "path": "tools/SimpleBot/web_search.py"}
+2025-08-15T22:06:54.163+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["web_search"]}
+2025-08-15T22:06:54.163+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.163+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/SimpleBot/agent_behavior.yaml"}
+2025-08-15T22:06:54.163+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.163+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/SimpleBot/memory_config.yaml"}
+2025-08-15T22:06:54.163+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.163+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/SimpleBot/requirements.txt"}
+
+2025-08-15T22:06:54.163+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "SimpleBot", "tools": ["web_search"], "memory": "episodic", "name": "SimpleBot", "tools": ["web_search"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/SimpleBot/
+  ├── 📄 SimpleBot.ctx
+  ├── 📁 memory/SimpleBot/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/SimpleBot/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/SimpleBot/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/SimpleBot/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test SimpleBot
+   ctx test --behavior --component=SimpleBot
+
+2️⃣  Start a conversation:
+   ctx run SimpleBot "Hello, can you help me?"
+   ctx run SimpleBot "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/SimpleBot/SimpleBot.ctx
+   
+   # Modify prompts
+   nano prompts/SimpleBot/agent_response.md
+   
+   # Add custom tools
+   nano tools/SimpleBot/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=SimpleBot
+   
+   # View behavior reports
+   cat tests/reports/behavior_SimpleBot.json
+
+📚 Configuration Details:
+   • Tools: web_search
+   • Memory: episodic
+   • Context: contexts/SimpleBot/SimpleBot.ctx
+   • Memory Config: memory/SimpleBot/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
-2025-08-11T17:28:52.235+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "MultiToolBot", "tools": ["web_search", "database", "api"], "memory": "episodic"}
-2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/MultiToolBot/multitoolbot.ctx"}
-2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/MultiToolBot/agent_response.md"}
-2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/MultiToolBot/web_search.py"}
-2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "database", "path": "tools/MultiToolBot/database.py"}
-2025-08-11T17:28:52.236+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/api.py", "error": "open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.236+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "api", "error": "failed to read template: open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.236+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-    agent_generator_integration_test.go:109: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:109
-        	Error:      	Received unexpected error:
-        	            	failed to generate agent tools: failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
-        	Messages:   	Agent generation should succeed
-    helpers.go:67: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:67
-        	            				/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:443
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:117
-        	Error:      	Received unexpected error:
-        	            	stat tests/MultiToolBot/agent_behavior.yaml: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
-        	Messages:   	File should exist: tests/MultiToolBot/agent_behavior.yaml
-    helpers.go:67: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:67
-        	            				/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:443
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:117
-        	Error:      	Received unexpected error:
-        	            	stat memory/MultiToolBot/memory_config.yaml: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
-        	Messages:   	File should exist: memory/MultiToolBot/memory_config.yaml
-    helpers.go:67: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:67
-        	            				/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:443
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:117
-        	Error:      	Received unexpected error:
-        	            	stat tools/MultiToolBot/requirements.txt: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
-        	Messages:   	File should exist: tools/MultiToolBot/requirements.txt
-    helpers.go:539: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:297
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:121
-        	Error:      	Received unexpected error:
-        	            	open tests/MultiToolBot/agent_behavior.yaml: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent
-        	Messages:   	Failed to read file: tests/MultiToolBot/agent_behavior.yaml
+2025-08-15T22:06:54.163+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "MultiToolBot", "tools": ["web_search", "database", "api"], "memory": "episodic", "name": "MultiToolBot", "tools": ["web_search", "database", "api"], "memory": "episodic"}
+2025-08-15T22:06:54.163+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.163+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/MultiToolBot", "path": "contexts/MultiToolBot"}
+2025-08-15T22:06:54.163+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MultiToolBot", "path": "memory/MultiToolBot"}
+2025-08-15T22:06:54.163+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MultiToolBot/episodic", "path": "memory/MultiToolBot/episodic"}
+2025-08-15T22:06:54.164+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MultiToolBot/user_preferences", "path": "memory/MultiToolBot/user_preferences"}
+2025-08-15T22:06:54.164+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/MultiToolBot", "path": "prompts/MultiToolBot"}
+2025-08-15T22:06:54.164+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/MultiToolBot", "path": "tools/MultiToolBot"}
+2025-08-15T22:06:54.164+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/MultiToolBot", "path": "tests/MultiToolBot"}
+2025-08-15T22:06:54.164+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.164+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/MultiToolBot/multitoolbot.ctx"}
+2025-08-15T22:06:54.164+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.164+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/MultiToolBot/agent_response.md"}
+2025-08-15T22:06:54.164+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.164+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "web_search", "path": "tools/MultiToolBot/web_search.py"}
+2025-08-15T22:06:54.164+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "database", "path": "tools/MultiToolBot/database.py"}
+2025-08-15T22:06:54.164+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "api", "path": "tools/MultiToolBot/api.py"}
+2025-08-15T22:06:54.164+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["web_search", "database", "api"]}
+2025-08-15T22:06:54.164+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.165+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/MultiToolBot/agent_behavior.yaml"}
+2025-08-15T22:06:54.165+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.165+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/MultiToolBot/memory_config.yaml"}
+2025-08-15T22:06:54.165+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.165+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/MultiToolBot/requirements.txt"}
+
+2025-08-15T22:06:54.165+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "MultiToolBot", "tools": ["web_search", "database", "api"], "memory": "episodic", "name": "MultiToolBot", "tools": ["web_search", "database", "api"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/MultiToolBot/
+  ├── 📄 MultiToolBot.ctx
+  ├── 📁 memory/MultiToolBot/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/MultiToolBot/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/MultiToolBot/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/MultiToolBot/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test MultiToolBot
+   ctx test --behavior --component=MultiToolBot
+
+2️⃣  Start a conversation:
+   ctx run MultiToolBot "Hello, can you help me?"
+   ctx run MultiToolBot "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/MultiToolBot/MultiToolBot.ctx
+   
+   # Modify prompts
+   nano prompts/MultiToolBot/agent_response.md
+   
+   # Add custom tools
+   nano tools/MultiToolBot/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=MultiToolBot
+   
+   # View behavior reports
+   cat tests/reports/behavior_MultiToolBot.json
+
+📚 Configuration Details:
+   • Tools: web_search, database, api
+   • Memory: episodic
+   • Context: contexts/MultiToolBot/MultiToolBot.ctx
+   • Memory Config: memory/MultiToolBot/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent
-2025-08-11T17:28:52.236+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "NoToolBot", "tools": [], "memory": "none"}
-2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/NoToolBot/notoolbot.ctx"}
-2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/NoToolBot/agent_response.md"}
-2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": []}
-2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/NoToolBot/agent_behavior.yaml"}
-2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/NoToolBot/memory_config.yaml"}
-2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/NoToolBot/requirements.txt"}
-2025-08-11T17:28:52.237+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "NoToolBot", "tools": [], "memory": "none"}
-    helpers.go:548: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:548
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:309
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:121
-        	Error:      	"# Agent Behavior Test Configuration\nagent_name: \"NoToolBot\"\ntest_version: \"1.0.0\"\ndescription: \"Conversational agent for NoToolBot\"" does not contain "test_cases:"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent
-        	Messages:   	File tests/NoToolBot/agent_behavior.yaml should contain: test_cases:
-    helpers.go:548: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:548
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:325
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:122
-        	Error:      	"# Memory Configuration for NoToolBot Agent\nmemory_type: \"none\"\nmax_history: 50\nprivacy_level: \"user_isolated\"\nretention_days: 30\nencryption: true\n\n# Episodic Memory Settings\nepisodic:\n  enabled: false\n  max_conversations: 100\n  context_window: 10\n  importance_threshold: 0.7\n\n# User Preferences\npreferences:\n  enabled: true\n  max_preferences: 20\n  update_frequency: \"session\"\n\n# Security Settings\nsecurity:\n  data_encryption: true\n  access_logging: true\n  audit_trail: true\n" does not contain "privacy:"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent
-        	Messages:   	File memory/NoToolBot/memory_config.yaml should contain: privacy:
+2025-08-15T22:06:54.165+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "NoToolBot", "tools": [], "memory": "none", "name": "NoToolBot", "tools": [], "memory": "none"}
+2025-08-15T22:06:54.165+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.165+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/NoToolBot", "path": "contexts/NoToolBot"}
+2025-08-15T22:06:54.165+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/NoToolBot", "path": "memory/NoToolBot"}
+2025-08-15T22:06:54.165+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/NoToolBot/episodic", "path": "memory/NoToolBot/episodic"}
+2025-08-15T22:06:54.165+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/NoToolBot/user_preferences", "path": "memory/NoToolBot/user_preferences"}
+2025-08-15T22:06:54.166+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/NoToolBot", "path": "prompts/NoToolBot"}
+2025-08-15T22:06:54.166+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/NoToolBot", "path": "tools/NoToolBot"}
+2025-08-15T22:06:54.166+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/NoToolBot", "path": "tests/NoToolBot"}
+2025-08-15T22:06:54.166+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.166+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/NoToolBot/notoolbot.ctx"}
+2025-08-15T22:06:54.166+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.166+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/NoToolBot/agent_response.md"}
+2025-08-15T22:06:54.166+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.166+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": []}
+2025-08-15T22:06:54.166+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.166+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/NoToolBot/agent_behavior.yaml"}
+2025-08-15T22:06:54.166+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.166+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/NoToolBot/memory_config.yaml"}
+2025-08-15T22:06:54.166+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.167+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/NoToolBot/requirements.txt"}
+
+2025-08-15T22:06:54.167+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "NoToolBot", "tools": [], "memory": "none", "name": "NoToolBot", "tools": [], "memory": "none"}
+
+🤖 Generated Agent Structure:
+  contexts/NoToolBot/
+  ├── 📄 NoToolBot.ctx
+  ├── 📁 memory/NoToolBot/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/NoToolBot/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/NoToolBot/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/NoToolBot/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test NoToolBot
+   ctx test --behavior --component=NoToolBot
+
+2️⃣  Start a conversation:
+   ctx run NoToolBot "Hello, can you help me?"
+   ctx run NoToolBot "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/NoToolBot/NoToolBot.ctx
+   
+   # Modify prompts
+   nano prompts/NoToolBot/agent_response.md
+   
+   # Add custom tools
+   nano tools/NoToolBot/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=NoToolBot
+   
+   # View behavior reports
+   cat tests/reports/behavior_NoToolBot.json
+
+📚 Configuration Details:
+   • Tools: 
+   • Memory: none
+   • Context: contexts/NoToolBot/NoToolBot.ctx
+   • Memory Config: memory/NoToolBot/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/invalid_tools
-2025-08-11T17:28:52.237+0800	ERROR	commands/agent_generator.go:65	agent configuration validation failed	{"error": "invalid tool 'invalid_tool'. Valid tools: web_search, database, api, file_system, email"}
+2025-08-15T22:06:54.167+0800	ERROR	commands/agent_generator.go:72	agent configuration validation failed	{"error": "invalid tool 'invalid_tool'. Valid tools: web_search, database, api, file_system, email"}
 github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:65
+	/Users/jedfordseculles/Projects/cmp-concepts/contexis/src/cli/commands/agent_generator.go:72
 github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
+	/Users/jedfordseculles/Projects/cmp-concepts/contexis/tests/integration/agent_generator_integration_test.go:102
 testing.tRunner
 	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/invalid_memory
-2025-08-11T17:28:52.237+0800	ERROR	commands/agent_generator.go:65	agent configuration validation failed	{"error": "invalid memory type 'invalid_memory'. Valid types: episodic, none"}
+2025-08-15T22:06:54.167+0800	ERROR	commands/agent_generator.go:72	agent configuration validation failed	{"error": "invalid memory type 'invalid_memory'. Valid types: episodic, none"}
 github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:65
+	/Users/jedfordseculles/Projects/cmp-concepts/contexis/src/cli/commands/agent_generator.go:72
 github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationCompleteFlow.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:102
+	/Users/jedfordseculles/Projects/cmp-concepts/contexis/tests/integration/agent_generator_integration_test.go:102
 testing.tRunner
 	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationErrorHandling
-2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "", "tools": ["web_search"], "memory": "episodic"}
-2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts//.ctx"}
-2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts//agent_response.md"}
-2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools//web_search.py"}
-2025-08-11T17:28:52.244+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
-2025-08-11T17:28:52.245+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests//agent_behavior.yaml"}
-2025-08-11T17:28:52.245+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory//memory_config.yaml"}
-2025-08-11T17:28:52.245+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools//requirements.txt"}
-2025-08-11T17:28:52.245+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "", "tools": ["web_search"], "memory": "episodic"}
-    agent_generator_integration_test.go:262: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:262
-        	Error:      	An error is expected but got nil.
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationErrorHandling
-        	Messages:   	Empty agent name should cause error
-2025-08-11T17:28:52.245+0800	ERROR	commands/agent_generator.go:65	agent configuration validation failed	{"error": "invalid tool 'invalid_tool'. Valid tools: web_search, database, api, file_system, email"}
+2025-08-15T22:06:54.174+0800	ERROR	commands/agent_generator.go:72	agent configuration validation failed	{"error": "invalid tool 'invalid_tool'. Valid tools: web_search, database, api, file_system, email"}
 github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:65
+	/Users/jedfordseculles/Projects/cmp-concepts/contexis/src/cli/commands/agent_generator.go:72
 github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationErrorHandling
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:265
+	/Users/jedfordseculles/Projects/cmp-concepts/contexis/tests/integration/agent_generator_integration_test.go:265
 reflect.Value.call
 	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/reflect/value.go:584
 reflect.Value.Call
@@ -181,11 +265,11 @@ github.com/stretchr/testify/suite.Run.func1
 	/Users/jedfordseculles/go/pkg/mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202
 testing.tRunner
 	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.245+0800	ERROR	commands/agent_generator.go:65	agent configuration validation failed	{"error": "invalid memory type 'invalid_memory'. Valid types: episodic, none"}
+2025-08-15T22:06:54.174+0800	ERROR	commands/agent_generator.go:72	agent configuration validation failed	{"error": "invalid memory type 'invalid_memory'. Valid types: episodic, none"}
 github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:65
+	/Users/jedfordseculles/Projects/cmp-concepts/contexis/src/cli/commands/agent_generator.go:72
 github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationErrorHandling
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:269
+	/Users/jedfordseculles/Projects/cmp-concepts/contexis/tests/integration/agent_generator_integration_test.go:269
 reflect.Value.call
 	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/reflect/value.go:584
 reflect.Value.Call
@@ -195,402 +279,972 @@ github.com/stretchr/testify/suite.Run.func1
 testing.tRunner
 	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationFilePermissions
-2025-08-11T17:28:52.248+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "PermissionTestBot", "tools": ["web_search"], "memory": "episodic"}
-2025-08-11T17:28:52.248+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/PermissionTestBot/permissiontestbot.ctx"}
-2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/PermissionTestBot/agent_response.md"}
-2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/PermissionTestBot/web_search.py"}
-2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
-2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/PermissionTestBot/agent_behavior.yaml"}
-2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/PermissionTestBot/memory_config.yaml"}
-2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/PermissionTestBot/requirements.txt"}
-2025-08-11T17:28:52.249+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "PermissionTestBot", "tools": ["web_search"], "memory": "episodic"}
+2025-08-15T22:06:54.177+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "PermissionTestBot", "tools": ["web_search"], "memory": "episodic", "name": "PermissionTestBot", "tools": ["web_search"], "memory": "episodic"}
+2025-08-15T22:06:54.177+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.177+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/PermissionTestBot", "path": "contexts/PermissionTestBot"}
+2025-08-15T22:06:54.177+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/PermissionTestBot", "path": "memory/PermissionTestBot"}
+2025-08-15T22:06:54.177+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/PermissionTestBot/episodic", "path": "memory/PermissionTestBot/episodic"}
+2025-08-15T22:06:54.177+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/PermissionTestBot/user_preferences", "path": "memory/PermissionTestBot/user_preferences"}
+2025-08-15T22:06:54.177+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/PermissionTestBot", "path": "prompts/PermissionTestBot"}
+2025-08-15T22:06:54.177+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/PermissionTestBot", "path": "tools/PermissionTestBot"}
+2025-08-15T22:06:54.177+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/PermissionTestBot", "path": "tests/PermissionTestBot"}
+2025-08-15T22:06:54.177+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.178+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/PermissionTestBot/permissiontestbot.ctx"}
+2025-08-15T22:06:54.178+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.178+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/PermissionTestBot/agent_response.md"}
+2025-08-15T22:06:54.178+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.178+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "web_search", "path": "tools/PermissionTestBot/web_search.py"}
+2025-08-15T22:06:54.178+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["web_search"]}
+2025-08-15T22:06:54.178+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.178+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/PermissionTestBot/agent_behavior.yaml"}
+2025-08-15T22:06:54.178+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.178+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/PermissionTestBot/memory_config.yaml"}
+2025-08-15T22:06:54.178+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.178+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/PermissionTestBot/requirements.txt"}
+
+2025-08-15T22:06:54.178+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "PermissionTestBot", "tools": ["web_search"], "memory": "episodic", "name": "PermissionTestBot", "tools": ["web_search"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/PermissionTestBot/
+  ├── 📄 PermissionTestBot.ctx
+  ├── 📁 memory/PermissionTestBot/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/PermissionTestBot/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/PermissionTestBot/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/PermissionTestBot/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test PermissionTestBot
+   ctx test --behavior --component=PermissionTestBot
+
+2️⃣  Start a conversation:
+   ctx run PermissionTestBot "Hello, can you help me?"
+   ctx run PermissionTestBot "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/PermissionTestBot/PermissionTestBot.ctx
+   
+   # Modify prompts
+   nano prompts/PermissionTestBot/agent_response.md
+   
+   # Add custom tools
+   nano tools/PermissionTestBot/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=PermissionTestBot
+   
+   # View behavior reports
+   cat tests/reports/behavior_PermissionTestBot.json
+
+📚 Configuration Details:
+   • Tools: web_search
+   • Memory: episodic
+   • Context: contexts/PermissionTestBot/PermissionTestBot.ctx
+   • Memory Config: memory/PermissionTestBot/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationTemplateProcessing
-2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "TemplateTestBot", "tools": ["web_search"], "memory": "episodic"}
-2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/TemplateTestBot/templatetestbot.ctx"}
-2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/TemplateTestBot/agent_response.md"}
-2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/TemplateTestBot/web_search.py"}
-2025-08-11T17:28:52.253+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
-2025-08-11T17:28:52.254+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/TemplateTestBot/agent_behavior.yaml"}
-2025-08-11T17:28:52.254+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/TemplateTestBot/memory_config.yaml"}
-2025-08-11T17:28:52.254+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/TemplateTestBot/requirements.txt"}
-2025-08-11T17:28:52.254+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "TemplateTestBot", "tools": ["web_search"], "memory": "episodic"}
+2025-08-15T22:06:54.183+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "TemplateTestBot", "tools": ["web_search"], "memory": "episodic", "name": "TemplateTestBot", "tools": ["web_search"], "memory": "episodic"}
+2025-08-15T22:06:54.183+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.183+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/TemplateTestBot", "path": "contexts/TemplateTestBot"}
+2025-08-15T22:06:54.183+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/TemplateTestBot", "path": "memory/TemplateTestBot"}
+2025-08-15T22:06:54.183+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/TemplateTestBot/episodic", "path": "memory/TemplateTestBot/episodic"}
+2025-08-15T22:06:54.183+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/TemplateTestBot/user_preferences", "path": "memory/TemplateTestBot/user_preferences"}
+2025-08-15T22:06:54.183+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/TemplateTestBot", "path": "prompts/TemplateTestBot"}
+2025-08-15T22:06:54.183+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/TemplateTestBot", "path": "tools/TemplateTestBot"}
+2025-08-15T22:06:54.183+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/TemplateTestBot", "path": "tests/TemplateTestBot"}
+2025-08-15T22:06:54.183+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.183+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/TemplateTestBot/templatetestbot.ctx"}
+2025-08-15T22:06:54.183+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.183+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/TemplateTestBot/agent_response.md"}
+2025-08-15T22:06:54.183+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.184+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "web_search", "path": "tools/TemplateTestBot/web_search.py"}
+2025-08-15T22:06:54.184+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["web_search"]}
+2025-08-15T22:06:54.184+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.184+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/TemplateTestBot/agent_behavior.yaml"}
+2025-08-15T22:06:54.184+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.184+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/TemplateTestBot/memory_config.yaml"}
+2025-08-15T22:06:54.184+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.184+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/TemplateTestBot/requirements.txt"}
+
+2025-08-15T22:06:54.184+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "TemplateTestBot", "tools": ["web_search"], "memory": "episodic", "name": "TemplateTestBot", "tools": ["web_search"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/TemplateTestBot/
+  ├── 📄 TemplateTestBot.ctx
+  ├── 📁 memory/TemplateTestBot/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/TemplateTestBot/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/TemplateTestBot/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/TemplateTestBot/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test TemplateTestBot
+   ctx test --behavior --component=TemplateTestBot
+
+2️⃣  Start a conversation:
+   ctx run TemplateTestBot "Hello, can you help me?"
+   ctx run TemplateTestBot "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/TemplateTestBot/TemplateTestBot.ctx
+   
+   # Modify prompts
+   nano prompts/TemplateTestBot/agent_response.md
+   
+   # Add custom tools
+   nano tools/TemplateTestBot/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=TemplateTestBot
+   
+   # View behavior reports
+   cat tests/reports/behavior_TemplateTestBot.json
+
+📚 Configuration Details:
+   • Tools: web_search
+   • Memory: episodic
+   • Context: contexts/TemplateTestBot/TemplateTestBot.ctx
+   • Memory Config: memory/TemplateTestBot/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes/memory_episodic
-2025-08-11T17:28:52.258+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "MemoryTestBot_episodic", "tools": ["web_search"], "memory": "episodic"}
-2025-08-11T17:28:52.259+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/MemoryTestBot_episodic/memorytestbot_episodic.ctx"}
-2025-08-11T17:28:52.259+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/MemoryTestBot_episodic/agent_response.md"}
-2025-08-11T17:28:52.259+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/MemoryTestBot_episodic/web_search.py"}
-2025-08-11T17:28:52.259+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
-2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/MemoryTestBot_episodic/agent_behavior.yaml"}
-2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/MemoryTestBot_episodic/memory_config.yaml"}
-2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/MemoryTestBot_episodic/requirements.txt"}
-2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "MemoryTestBot_episodic", "tools": ["web_search"], "memory": "episodic"}
+2025-08-15T22:06:54.188+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "MemoryTestBot_episodic", "tools": ["web_search"], "memory": "episodic", "name": "MemoryTestBot_episodic", "tools": ["web_search"], "memory": "episodic"}
+2025-08-15T22:06:54.188+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.188+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/MemoryTestBot_episodic", "path": "contexts/MemoryTestBot_episodic"}
+2025-08-15T22:06:54.188+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MemoryTestBot_episodic", "path": "memory/MemoryTestBot_episodic"}
+2025-08-15T22:06:54.188+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MemoryTestBot_episodic/episodic", "path": "memory/MemoryTestBot_episodic/episodic"}
+2025-08-15T22:06:54.188+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MemoryTestBot_episodic/user_preferences", "path": "memory/MemoryTestBot_episodic/user_preferences"}
+2025-08-15T22:06:54.188+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/MemoryTestBot_episodic", "path": "prompts/MemoryTestBot_episodic"}
+2025-08-15T22:06:54.188+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/MemoryTestBot_episodic", "path": "tools/MemoryTestBot_episodic"}
+2025-08-15T22:06:54.188+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/MemoryTestBot_episodic", "path": "tests/MemoryTestBot_episodic"}
+2025-08-15T22:06:54.188+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.189+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/MemoryTestBot_episodic/memorytestbot_episodic.ctx"}
+2025-08-15T22:06:54.189+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.189+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/MemoryTestBot_episodic/agent_response.md"}
+2025-08-15T22:06:54.189+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.189+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "web_search", "path": "tools/MemoryTestBot_episodic/web_search.py"}
+2025-08-15T22:06:54.189+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["web_search"]}
+2025-08-15T22:06:54.189+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.189+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/MemoryTestBot_episodic/agent_behavior.yaml"}
+2025-08-15T22:06:54.189+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.189+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/MemoryTestBot_episodic/memory_config.yaml"}
+2025-08-15T22:06:54.189+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.189+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/MemoryTestBot_episodic/requirements.txt"}
+
+2025-08-15T22:06:54.189+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "MemoryTestBot_episodic", "tools": ["web_search"], "memory": "episodic", "name": "MemoryTestBot_episodic", "tools": ["web_search"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/MemoryTestBot_episodic/
+  ├── 📄 MemoryTestBot_episodic.ctx
+  ├── 📁 memory/MemoryTestBot_episodic/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/MemoryTestBot_episodic/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/MemoryTestBot_episodic/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/MemoryTestBot_episodic/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test MemoryTestBot_episodic
+   ctx test --behavior --component=MemoryTestBot_episodic
+
+2️⃣  Start a conversation:
+   ctx run MemoryTestBot_episodic "Hello, can you help me?"
+   ctx run MemoryTestBot_episodic "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/MemoryTestBot_episodic/MemoryTestBot_episodic.ctx
+   
+   # Modify prompts
+   nano prompts/MemoryTestBot_episodic/agent_response.md
+   
+   # Add custom tools
+   nano tools/MemoryTestBot_episodic/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=MemoryTestBot_episodic
+   
+   # View behavior reports
+   cat tests/reports/behavior_MemoryTestBot_episodic.json
+
+📚 Configuration Details:
+   • Tools: web_search
+   • Memory: episodic
+   • Context: contexts/MemoryTestBot_episodic/MemoryTestBot_episodic.ctx
+   • Memory Config: memory/MemoryTestBot_episodic/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes/memory_none
-2025-08-11T17:28:52.260+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "MemoryTestBot_none", "tools": ["web_search"], "memory": "none"}
-2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/MemoryTestBot_none/memorytestbot_none.ctx"}
-2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/MemoryTestBot_none/agent_response.md"}
-2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/MemoryTestBot_none/web_search.py"}
-2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
-2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/MemoryTestBot_none/agent_behavior.yaml"}
-2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/MemoryTestBot_none/memory_config.yaml"}
-2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/MemoryTestBot_none/requirements.txt"}
-2025-08-11T17:28:52.261+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "MemoryTestBot_none", "tools": ["web_search"], "memory": "none"}
+2025-08-15T22:06:54.189+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "MemoryTestBot_none", "tools": ["web_search"], "memory": "none", "name": "MemoryTestBot_none", "tools": ["web_search"], "memory": "none"}
+2025-08-15T22:06:54.190+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.190+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/MemoryTestBot_none", "path": "contexts/MemoryTestBot_none"}
+2025-08-15T22:06:54.190+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MemoryTestBot_none", "path": "memory/MemoryTestBot_none"}
+2025-08-15T22:06:54.190+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MemoryTestBot_none/episodic", "path": "memory/MemoryTestBot_none/episodic"}
+2025-08-15T22:06:54.190+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/MemoryTestBot_none/user_preferences", "path": "memory/MemoryTestBot_none/user_preferences"}
+2025-08-15T22:06:54.190+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/MemoryTestBot_none", "path": "prompts/MemoryTestBot_none"}
+2025-08-15T22:06:54.190+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/MemoryTestBot_none", "path": "tools/MemoryTestBot_none"}
+2025-08-15T22:06:54.190+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/MemoryTestBot_none", "path": "tests/MemoryTestBot_none"}
+2025-08-15T22:06:54.190+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.190+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/MemoryTestBot_none/memorytestbot_none.ctx"}
+2025-08-15T22:06:54.190+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.190+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/MemoryTestBot_none/agent_response.md"}
+2025-08-15T22:06:54.190+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.191+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "web_search", "path": "tools/MemoryTestBot_none/web_search.py"}
+2025-08-15T22:06:54.191+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["web_search"]}
+2025-08-15T22:06:54.191+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.191+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/MemoryTestBot_none/agent_behavior.yaml"}
+2025-08-15T22:06:54.191+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.191+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/MemoryTestBot_none/memory_config.yaml"}
+2025-08-15T22:06:54.191+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.191+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/MemoryTestBot_none/requirements.txt"}
+
+2025-08-15T22:06:54.191+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "MemoryTestBot_none", "tools": ["web_search"], "memory": "none", "name": "MemoryTestBot_none", "tools": ["web_search"], "memory": "none"}
+
+🤖 Generated Agent Structure:
+  contexts/MemoryTestBot_none/
+  ├── 📄 MemoryTestBot_none.ctx
+  ├── 📁 memory/MemoryTestBot_none/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/MemoryTestBot_none/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/MemoryTestBot_none/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/MemoryTestBot_none/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test MemoryTestBot_none
+   ctx test --behavior --component=MemoryTestBot_none
+
+2️⃣  Start a conversation:
+   ctx run MemoryTestBot_none "Hello, can you help me?"
+   ctx run MemoryTestBot_none "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/MemoryTestBot_none/MemoryTestBot_none.ctx
+   
+   # Modify prompts
+   nano prompts/MemoryTestBot_none/agent_response.md
+   
+   # Add custom tools
+   nano tools/MemoryTestBot_none/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=MemoryTestBot_none
+   
+   # View behavior reports
+   cat tests/reports/behavior_MemoryTestBot_none.json
+
+📚 Configuration Details:
+   • Tools: web_search
+   • Memory: none
+   • Context: contexts/MemoryTestBot_none/MemoryTestBot_none.ctx
+   • Memory Config: memory/MemoryTestBot_none/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search
-2025-08-11T17:28:52.267+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_web_search", "tools": ["web_search"], "memory": "episodic"}
-2025-08-11T17:28:52.267+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_web_search/tooltestbot_web_search.ctx"}
-2025-08-11T17:28:52.267+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_web_search/agent_response.md"}
-2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/ToolTestBot_web_search/web_search.py"}
-2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search"]}
-2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/ToolTestBot_web_search/agent_behavior.yaml"}
-2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/ToolTestBot_web_search/memory_config.yaml"}
-2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/ToolTestBot_web_search/requirements.txt"}
-2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "ToolTestBot_web_search", "tools": ["web_search"], "memory": "episodic"}
-    helpers.go:503: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search
-        	Messages:   	Python file should contain function definitions
-    agent_generator_integration_test.go:353: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "web_search"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search
-        	Messages:   	Tool file should contain tool name
-    agent_generator_integration_test.go:355: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search
-        	Messages:   	Tool file should contain function definitions
+2025-08-15T22:06:54.197+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "ToolTestBot_web_search", "tools": ["web_search"], "memory": "episodic", "name": "ToolTestBot_web_search", "tools": ["web_search"], "memory": "episodic"}
+2025-08-15T22:06:54.197+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.197+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/ToolTestBot_web_search", "path": "contexts/ToolTestBot_web_search"}
+2025-08-15T22:06:54.197+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_web_search", "path": "memory/ToolTestBot_web_search"}
+2025-08-15T22:06:54.197+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_web_search/episodic", "path": "memory/ToolTestBot_web_search/episodic"}
+2025-08-15T22:06:54.197+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_web_search/user_preferences", "path": "memory/ToolTestBot_web_search/user_preferences"}
+2025-08-15T22:06:54.197+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/ToolTestBot_web_search", "path": "prompts/ToolTestBot_web_search"}
+2025-08-15T22:06:54.197+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/ToolTestBot_web_search", "path": "tools/ToolTestBot_web_search"}
+2025-08-15T22:06:54.197+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/ToolTestBot_web_search", "path": "tests/ToolTestBot_web_search"}
+2025-08-15T22:06:54.197+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.197+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/ToolTestBot_web_search/tooltestbot_web_search.ctx"}
+2025-08-15T22:06:54.197+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.198+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/ToolTestBot_web_search/agent_response.md"}
+2025-08-15T22:06:54.198+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.198+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "web_search", "path": "tools/ToolTestBot_web_search/web_search.py"}
+2025-08-15T22:06:54.198+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["web_search"]}
+2025-08-15T22:06:54.198+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.198+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/ToolTestBot_web_search/agent_behavior.yaml"}
+2025-08-15T22:06:54.198+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.198+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/ToolTestBot_web_search/memory_config.yaml"}
+2025-08-15T22:06:54.198+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.198+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/ToolTestBot_web_search/requirements.txt"}
+
+2025-08-15T22:06:54.198+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "ToolTestBot_web_search", "tools": ["web_search"], "memory": "episodic", "name": "ToolTestBot_web_search", "tools": ["web_search"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/ToolTestBot_web_search/
+  ├── 📄 ToolTestBot_web_search.ctx
+  ├── 📁 memory/ToolTestBot_web_search/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/ToolTestBot_web_search/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/ToolTestBot_web_search/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/ToolTestBot_web_search/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test ToolTestBot_web_search
+   ctx test --behavior --component=ToolTestBot_web_search
+
+2️⃣  Start a conversation:
+   ctx run ToolTestBot_web_search "Hello, can you help me?"
+   ctx run ToolTestBot_web_search "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/ToolTestBot_web_search/ToolTestBot_web_search.ctx
+   
+   # Modify prompts
+   nano prompts/ToolTestBot_web_search/agent_response.md
+   
+   # Add custom tools
+   nano tools/ToolTestBot_web_search/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=ToolTestBot_web_search
+   
+   # View behavior reports
+   cat tests/reports/behavior_ToolTestBot_web_search.json
+
+📚 Configuration Details:
+   • Tools: web_search
+   • Memory: episodic
+   • Context: contexts/ToolTestBot_web_search/ToolTestBot_web_search.ctx
+   • Memory Config: memory/ToolTestBot_web_search/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database
-2025-08-11T17:28:52.268+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_database", "tools": ["database"], "memory": "episodic"}
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_database/tooltestbot_database.ctx"}
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_database/agent_response.md"}
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "database", "path": "tools/ToolTestBot_database/database.py"}
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["database"]}
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/ToolTestBot_database/agent_behavior.yaml"}
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/ToolTestBot_database/memory_config.yaml"}
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/ToolTestBot_database/requirements.txt"}
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "ToolTestBot_database", "tools": ["database"], "memory": "episodic"}
-    helpers.go:503: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database
-        	Messages:   	Python file should contain function definitions
-    agent_generator_integration_test.go:353: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "database"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database
-        	Messages:   	Tool file should contain tool name
-    agent_generator_integration_test.go:355: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database
-        	Messages:   	Tool file should contain function definitions
+2025-08-15T22:06:54.198+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "ToolTestBot_database", "tools": ["database"], "memory": "episodic", "name": "ToolTestBot_database", "tools": ["database"], "memory": "episodic"}
+2025-08-15T22:06:54.198+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.198+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/ToolTestBot_database", "path": "contexts/ToolTestBot_database"}
+2025-08-15T22:06:54.199+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_database", "path": "memory/ToolTestBot_database"}
+2025-08-15T22:06:54.199+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_database/episodic", "path": "memory/ToolTestBot_database/episodic"}
+2025-08-15T22:06:54.199+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_database/user_preferences", "path": "memory/ToolTestBot_database/user_preferences"}
+2025-08-15T22:06:54.199+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/ToolTestBot_database", "path": "prompts/ToolTestBot_database"}
+2025-08-15T22:06:54.199+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/ToolTestBot_database", "path": "tools/ToolTestBot_database"}
+2025-08-15T22:06:54.199+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/ToolTestBot_database", "path": "tests/ToolTestBot_database"}
+2025-08-15T22:06:54.199+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.199+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/ToolTestBot_database/tooltestbot_database.ctx"}
+2025-08-15T22:06:54.199+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.199+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/ToolTestBot_database/agent_response.md"}
+2025-08-15T22:06:54.199+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.199+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "database", "path": "tools/ToolTestBot_database/database.py"}
+2025-08-15T22:06:54.199+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["database"]}
+2025-08-15T22:06:54.199+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.200+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/ToolTestBot_database/agent_behavior.yaml"}
+2025-08-15T22:06:54.200+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.200+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/ToolTestBot_database/memory_config.yaml"}
+2025-08-15T22:06:54.200+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.200+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/ToolTestBot_database/requirements.txt"}
+
+2025-08-15T22:06:54.200+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "ToolTestBot_database", "tools": ["database"], "memory": "episodic", "name": "ToolTestBot_database", "tools": ["database"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/ToolTestBot_database/
+  ├── 📄 ToolTestBot_database.ctx
+  ├── 📁 memory/ToolTestBot_database/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/ToolTestBot_database/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/ToolTestBot_database/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/ToolTestBot_database/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test ToolTestBot_database
+   ctx test --behavior --component=ToolTestBot_database
+
+2️⃣  Start a conversation:
+   ctx run ToolTestBot_database "Hello, can you help me?"
+   ctx run ToolTestBot_database "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/ToolTestBot_database/ToolTestBot_database.ctx
+   
+   # Modify prompts
+   nano prompts/ToolTestBot_database/agent_response.md
+   
+   # Add custom tools
+   nano tools/ToolTestBot_database/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=ToolTestBot_database
+   
+   # View behavior reports
+   cat tests/reports/behavior_ToolTestBot_database.json
+
+📚 Configuration Details:
+   • Tools: database
+   • Memory: episodic
+   • Context: contexts/ToolTestBot_database/ToolTestBot_database.ctx
+   • Memory Config: memory/ToolTestBot_database/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api
-2025-08-11T17:28:52.269+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_api", "tools": ["api"], "memory": "episodic"}
-2025-08-11T17:28:52.270+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_api/tooltestbot_api.ctx"}
-2025-08-11T17:28:52.270+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_api/agent_response.md"}
-2025-08-11T17:28:52.270+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/api.py", "error": "open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.270+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "api", "error": "failed to read template: open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.270+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-    agent_generator_integration_test.go:157: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
-        	Error:      	Received unexpected error:
-        	            	failed to generate agent tools: failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api
-        	Messages:   	Agent generation should succeed
-    helpers.go:539: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	Received unexpected error:
-        	            	open tools/ToolTestBot_api/api.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api
-        	Messages:   	Failed to read file: tools/ToolTestBot_api/api.py
+2025-08-15T22:06:54.200+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "ToolTestBot_api", "tools": ["api"], "memory": "episodic", "name": "ToolTestBot_api", "tools": ["api"], "memory": "episodic"}
+2025-08-15T22:06:54.200+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.200+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/ToolTestBot_api", "path": "contexts/ToolTestBot_api"}
+2025-08-15T22:06:54.200+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_api", "path": "memory/ToolTestBot_api"}
+2025-08-15T22:06:54.200+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_api/episodic", "path": "memory/ToolTestBot_api/episodic"}
+2025-08-15T22:06:54.200+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_api/user_preferences", "path": "memory/ToolTestBot_api/user_preferences"}
+2025-08-15T22:06:54.200+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/ToolTestBot_api", "path": "prompts/ToolTestBot_api"}
+2025-08-15T22:06:54.200+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/ToolTestBot_api", "path": "tools/ToolTestBot_api"}
+2025-08-15T22:06:54.200+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/ToolTestBot_api", "path": "tests/ToolTestBot_api"}
+2025-08-15T22:06:54.200+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.201+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/ToolTestBot_api/tooltestbot_api.ctx"}
+2025-08-15T22:06:54.201+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.201+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/ToolTestBot_api/agent_response.md"}
+2025-08-15T22:06:54.201+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.201+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "api", "path": "tools/ToolTestBot_api/api.py"}
+2025-08-15T22:06:54.201+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["api"]}
+2025-08-15T22:06:54.201+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.201+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/ToolTestBot_api/agent_behavior.yaml"}
+2025-08-15T22:06:54.201+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.201+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/ToolTestBot_api/memory_config.yaml"}
+2025-08-15T22:06:54.201+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.201+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/ToolTestBot_api/requirements.txt"}
+
+2025-08-15T22:06:54.201+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "ToolTestBot_api", "tools": ["api"], "memory": "episodic", "name": "ToolTestBot_api", "tools": ["api"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/ToolTestBot_api/
+  ├── 📄 ToolTestBot_api.ctx
+  ├── 📁 memory/ToolTestBot_api/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/ToolTestBot_api/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/ToolTestBot_api/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/ToolTestBot_api/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test ToolTestBot_api
+   ctx test --behavior --component=ToolTestBot_api
+
+2️⃣  Start a conversation:
+   ctx run ToolTestBot_api "Hello, can you help me?"
+   ctx run ToolTestBot_api "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/ToolTestBot_api/ToolTestBot_api.ctx
+   
+   # Modify prompts
+   nano prompts/ToolTestBot_api/agent_response.md
+   
+   # Add custom tools
+   nano tools/ToolTestBot_api/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=ToolTestBot_api
+   
+   # View behavior reports
+   cat tests/reports/behavior_ToolTestBot_api.json
+
+📚 Configuration Details:
+   • Tools: api
+   • Memory: episodic
+   • Context: contexts/ToolTestBot_api/ToolTestBot_api.ctx
+   • Memory Config: memory/ToolTestBot_api/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system
-2025-08-11T17:28:52.270+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_file_system", "tools": ["file_system"], "memory": "episodic"}
-2025-08-11T17:28:52.271+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_file_system/tooltestbot_file_system.ctx"}
-2025-08-11T17:28:52.271+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_file_system/agent_response.md"}
-2025-08-11T17:28:52.271+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/file_system.py", "error": "open templates/agent/file_system.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.271+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "file_system", "error": "failed to read template: open templates/agent/file_system.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.271+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool file_system: failed to read template: open templates/agent/file_system.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-    agent_generator_integration_test.go:157: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
-        	Error:      	Received unexpected error:
-        	            	failed to generate agent tools: failed to copy tool file_system: failed to read template: open templates/agent/file_system.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system
-        	Messages:   	Agent generation should succeed
-    helpers.go:539: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	Received unexpected error:
-        	            	open tools/ToolTestBot_file_system/file_system.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system
-        	Messages:   	Failed to read file: tools/ToolTestBot_file_system/file_system.py
+2025-08-15T22:06:54.201+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "ToolTestBot_file_system", "tools": ["file_system"], "memory": "episodic", "name": "ToolTestBot_file_system", "tools": ["file_system"], "memory": "episodic"}
+2025-08-15T22:06:54.201+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.202+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/ToolTestBot_file_system", "path": "contexts/ToolTestBot_file_system"}
+2025-08-15T22:06:54.202+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_file_system", "path": "memory/ToolTestBot_file_system"}
+2025-08-15T22:06:54.202+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_file_system/episodic", "path": "memory/ToolTestBot_file_system/episodic"}
+2025-08-15T22:06:54.202+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_file_system/user_preferences", "path": "memory/ToolTestBot_file_system/user_preferences"}
+2025-08-15T22:06:54.202+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/ToolTestBot_file_system", "path": "prompts/ToolTestBot_file_system"}
+2025-08-15T22:06:54.202+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/ToolTestBot_file_system", "path": "tools/ToolTestBot_file_system"}
+2025-08-15T22:06:54.202+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/ToolTestBot_file_system", "path": "tests/ToolTestBot_file_system"}
+2025-08-15T22:06:54.202+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.202+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/ToolTestBot_file_system/tooltestbot_file_system.ctx"}
+2025-08-15T22:06:54.202+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.202+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/ToolTestBot_file_system/agent_response.md"}
+2025-08-15T22:06:54.202+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.202+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "file_system", "path": "tools/ToolTestBot_file_system/file_system.py"}
+2025-08-15T22:06:54.202+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["file_system"]}
+2025-08-15T22:06:54.202+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.203+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/ToolTestBot_file_system/agent_behavior.yaml"}
+2025-08-15T22:06:54.203+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.203+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/ToolTestBot_file_system/memory_config.yaml"}
+2025-08-15T22:06:54.203+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.203+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/ToolTestBot_file_system/requirements.txt"}
+
+2025-08-15T22:06:54.203+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "ToolTestBot_file_system", "tools": ["file_system"], "memory": "episodic", "name": "ToolTestBot_file_system", "tools": ["file_system"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/ToolTestBot_file_system/
+  ├── 📄 ToolTestBot_file_system.ctx
+  ├── 📁 memory/ToolTestBot_file_system/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/ToolTestBot_file_system/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/ToolTestBot_file_system/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/ToolTestBot_file_system/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test ToolTestBot_file_system
+   ctx test --behavior --component=ToolTestBot_file_system
+
+2️⃣  Start a conversation:
+   ctx run ToolTestBot_file_system "Hello, can you help me?"
+   ctx run ToolTestBot_file_system "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/ToolTestBot_file_system/ToolTestBot_file_system.ctx
+   
+   # Modify prompts
+   nano prompts/ToolTestBot_file_system/agent_response.md
+   
+   # Add custom tools
+   nano tools/ToolTestBot_file_system/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=ToolTestBot_file_system
+   
+   # View behavior reports
+   cat tests/reports/behavior_ToolTestBot_file_system.json
+
+📚 Configuration Details:
+   • Tools: file_system
+   • Memory: episodic
+   • Context: contexts/ToolTestBot_file_system/ToolTestBot_file_system.ctx
+   • Memory Config: memory/ToolTestBot_file_system/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email
-2025-08-11T17:28:52.271+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_email", "tools": ["email"], "memory": "episodic"}
-2025-08-11T17:28:52.272+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_email/tooltestbot_email.ctx"}
-2025-08-11T17:28:52.272+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_email/agent_response.md"}
-2025-08-11T17:28:52.272+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/email.py", "error": "open templates/agent/email.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.272+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "email", "error": "failed to read template: open templates/agent/email.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.272+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool email: failed to read template: open templates/agent/email.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-    agent_generator_integration_test.go:157: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
-        	Error:      	Received unexpected error:
-        	            	failed to generate agent tools: failed to copy tool email: failed to read template: open templates/agent/email.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email
-        	Messages:   	Agent generation should succeed
-    helpers.go:539: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	Received unexpected error:
-        	            	open tools/ToolTestBot_email/email.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email
-        	Messages:   	Failed to read file: tools/ToolTestBot_email/email.py
+2025-08-15T22:06:54.203+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "ToolTestBot_email", "tools": ["email"], "memory": "episodic", "name": "ToolTestBot_email", "tools": ["email"], "memory": "episodic"}
+2025-08-15T22:06:54.203+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.203+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/ToolTestBot_email", "path": "contexts/ToolTestBot_email"}
+2025-08-15T22:06:54.203+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_email", "path": "memory/ToolTestBot_email"}
+2025-08-15T22:06:54.203+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_email/episodic", "path": "memory/ToolTestBot_email/episodic"}
+2025-08-15T22:06:54.203+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_email/user_preferences", "path": "memory/ToolTestBot_email/user_preferences"}
+2025-08-15T22:06:54.203+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/ToolTestBot_email", "path": "prompts/ToolTestBot_email"}
+2025-08-15T22:06:54.203+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/ToolTestBot_email", "path": "tools/ToolTestBot_email"}
+2025-08-15T22:06:54.203+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/ToolTestBot_email", "path": "tests/ToolTestBot_email"}
+2025-08-15T22:06:54.203+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.204+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/ToolTestBot_email/tooltestbot_email.ctx"}
+2025-08-15T22:06:54.204+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.204+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/ToolTestBot_email/agent_response.md"}
+2025-08-15T22:06:54.204+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.204+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "email", "path": "tools/ToolTestBot_email/email.py"}
+2025-08-15T22:06:54.204+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["email"]}
+2025-08-15T22:06:54.204+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.204+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/ToolTestBot_email/agent_behavior.yaml"}
+2025-08-15T22:06:54.204+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.204+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/ToolTestBot_email/memory_config.yaml"}
+2025-08-15T22:06:54.204+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.204+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/ToolTestBot_email/requirements.txt"}
+
+2025-08-15T22:06:54.204+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "ToolTestBot_email", "tools": ["email"], "memory": "episodic", "name": "ToolTestBot_email", "tools": ["email"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/ToolTestBot_email/
+  ├── 📄 ToolTestBot_email.ctx
+  ├── 📁 memory/ToolTestBot_email/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/ToolTestBot_email/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/ToolTestBot_email/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/ToolTestBot_email/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test ToolTestBot_email
+   ctx test --behavior --component=ToolTestBot_email
+
+2️⃣  Start a conversation:
+   ctx run ToolTestBot_email "Hello, can you help me?"
+   ctx run ToolTestBot_email "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/ToolTestBot_email/ToolTestBot_email.ctx
+   
+   # Modify prompts
+   nano prompts/ToolTestBot_email/agent_response.md
+   
+   # Add custom tools
+   nano tools/ToolTestBot_email/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=ToolTestBot_email
+   
+   # View behavior reports
+   cat tests/reports/behavior_ToolTestBot_email.json
+
+📚 Configuration Details:
+   • Tools: email
+   • Memory: episodic
+   • Context: contexts/ToolTestBot_email/ToolTestBot_email.ctx
+   • Memory Config: memory/ToolTestBot_email/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
-2025-08-11T17:28:52.272+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_web_search_database", "tools": ["web_search", "database"], "memory": "episodic"}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_web_search_database/tooltestbot_web_search_database.ctx"}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_web_search_database/agent_response.md"}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "web_search", "path": "tools/ToolTestBot_web_search_database/web_search.py"}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:343	tool template copied	{"tool": "database", "path": "tools/ToolTestBot_web_search_database/database.py"}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:306	agent tools generated	{"tools": ["web_search", "database"]}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:374	agent tests generated	{"path": "tests/ToolTestBot_web_search_database/agent_behavior.yaml"}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:416	agent memory configuration generated	{"path": "memory/ToolTestBot_web_search_database/memory_config.yaml"}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:439	agent requirements generated	{"path": "tools/ToolTestBot_web_search_database/requirements.txt"}
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:145	agent generation completed successfully	{"name": "ToolTestBot_web_search_database", "tools": ["web_search", "database"], "memory": "episodic"}
-    helpers.go:503: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
-        	Messages:   	Python file should contain function definitions
-    agent_generator_integration_test.go:353: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "web_search"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
-        	Messages:   	Tool file should contain tool name
-    agent_generator_integration_test.go:355: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nWeb Search Tool for CMP Agents\n\"\"\"\nimport requests\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
-        	Messages:   	Tool file should contain function definitions
-    helpers.go:503: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:503
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:350
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
-        	Messages:   	Python file should contain function definitions
-    agent_generator_integration_test.go:353: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:353
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "database"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
-        	Messages:   	Tool file should contain tool name
-    agent_generator_integration_test.go:355: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:355
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	"#!/usr/bin/env python3\n\"\"\"\nDatabase Tool for CMP Agents\n\"\"\"\nimport sqlite3\nimport logging" does not contain "def"
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database
-        	Messages:   	Tool file should contain function definitions
+2025-08-15T22:06:54.204+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "ToolTestBot_web_search_database", "tools": ["web_search", "database"], "memory": "episodic", "name": "ToolTestBot_web_search_database", "tools": ["web_search", "database"], "memory": "episodic"}
+2025-08-15T22:06:54.204+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.204+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/ToolTestBot_web_search_database", "path": "contexts/ToolTestBot_web_search_database"}
+2025-08-15T22:06:54.204+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_web_search_database", "path": "memory/ToolTestBot_web_search_database"}
+2025-08-15T22:06:54.205+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_web_search_database/episodic", "path": "memory/ToolTestBot_web_search_database/episodic"}
+2025-08-15T22:06:54.205+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_web_search_database/user_preferences", "path": "memory/ToolTestBot_web_search_database/user_preferences"}
+2025-08-15T22:06:54.205+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/ToolTestBot_web_search_database", "path": "prompts/ToolTestBot_web_search_database"}
+2025-08-15T22:06:54.205+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/ToolTestBot_web_search_database", "path": "tools/ToolTestBot_web_search_database"}
+2025-08-15T22:06:54.205+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/ToolTestBot_web_search_database", "path": "tests/ToolTestBot_web_search_database"}
+2025-08-15T22:06:54.205+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.205+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/ToolTestBot_web_search_database/tooltestbot_web_search_database.ctx"}
+2025-08-15T22:06:54.205+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.205+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/ToolTestBot_web_search_database/agent_response.md"}
+2025-08-15T22:06:54.205+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.205+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "web_search", "path": "tools/ToolTestBot_web_search_database/web_search.py"}
+2025-08-15T22:06:54.205+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "database", "path": "tools/ToolTestBot_web_search_database/database.py"}
+2025-08-15T22:06:54.205+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["web_search", "database"]}
+2025-08-15T22:06:54.205+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.206+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/ToolTestBot_web_search_database/agent_behavior.yaml"}
+2025-08-15T22:06:54.206+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.206+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/ToolTestBot_web_search_database/memory_config.yaml"}
+2025-08-15T22:06:54.206+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.206+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/ToolTestBot_web_search_database/requirements.txt"}
+
+2025-08-15T22:06:54.206+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "ToolTestBot_web_search_database", "tools": ["web_search", "database"], "memory": "episodic", "name": "ToolTestBot_web_search_database", "tools": ["web_search", "database"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/ToolTestBot_web_search_database/
+  ├── 📄 ToolTestBot_web_search_database.ctx
+  ├── 📁 memory/ToolTestBot_web_search_database/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/ToolTestBot_web_search_database/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/ToolTestBot_web_search_database/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/ToolTestBot_web_search_database/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test ToolTestBot_web_search_database
+   ctx test --behavior --component=ToolTestBot_web_search_database
+
+2️⃣  Start a conversation:
+   ctx run ToolTestBot_web_search_database "Hello, can you help me?"
+   ctx run ToolTestBot_web_search_database "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/ToolTestBot_web_search_database/ToolTestBot_web_search_database.ctx
+   
+   # Modify prompts
+   nano prompts/ToolTestBot_web_search_database/agent_response.md
+   
+   # Add custom tools
+   nano tools/ToolTestBot_web_search_database/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=ToolTestBot_web_search_database
+   
+   # View behavior reports
+   cat tests/reports/behavior_ToolTestBot_web_search_database.json
+
+📚 Configuration Details:
+   • Tools: web_search, database
+   • Memory: episodic
+   • Context: contexts/ToolTestBot_web_search_database/ToolTestBot_web_search_database.ctx
+   • Memory Config: memory/ToolTestBot_web_search_database/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email
-2025-08-11T17:28:52.273+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_api_email", "tools": ["api", "email"], "memory": "episodic"}
-2025-08-11T17:28:52.274+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_api_email/tooltestbot_api_email.ctx"}
-2025-08-11T17:28:52.274+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_api_email/agent_response.md"}
-2025-08-11T17:28:52.274+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/api.py", "error": "open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.274+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "api", "error": "failed to read template: open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.274+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-    agent_generator_integration_test.go:157: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
-        	Error:      	Received unexpected error:
-        	            	failed to generate agent tools: failed to copy tool api: failed to read template: open templates/agent/api.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email
-        	Messages:   	Agent generation should succeed
-    helpers.go:539: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	Received unexpected error:
-        	            	open tools/ToolTestBot_api_email/api.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email
-        	Messages:   	Failed to read file: tools/ToolTestBot_api_email/api.py
+2025-08-15T22:06:54.206+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "ToolTestBot_api_email", "tools": ["api", "email"], "memory": "episodic", "name": "ToolTestBot_api_email", "tools": ["api", "email"], "memory": "episodic"}
+2025-08-15T22:06:54.206+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.206+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/ToolTestBot_api_email", "path": "contexts/ToolTestBot_api_email"}
+2025-08-15T22:06:54.206+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_api_email", "path": "memory/ToolTestBot_api_email"}
+2025-08-15T22:06:54.206+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_api_email/episodic", "path": "memory/ToolTestBot_api_email/episodic"}
+2025-08-15T22:06:54.206+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_api_email/user_preferences", "path": "memory/ToolTestBot_api_email/user_preferences"}
+2025-08-15T22:06:54.206+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/ToolTestBot_api_email", "path": "prompts/ToolTestBot_api_email"}
+2025-08-15T22:06:54.206+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/ToolTestBot_api_email", "path": "tools/ToolTestBot_api_email"}
+2025-08-15T22:06:54.206+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/ToolTestBot_api_email", "path": "tests/ToolTestBot_api_email"}
+2025-08-15T22:06:54.206+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.206+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/ToolTestBot_api_email/tooltestbot_api_email.ctx"}
+2025-08-15T22:06:54.206+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.207+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/ToolTestBot_api_email/agent_response.md"}
+2025-08-15T22:06:54.207+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.207+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "api", "path": "tools/ToolTestBot_api_email/api.py"}
+2025-08-15T22:06:54.207+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "email", "path": "tools/ToolTestBot_api_email/email.py"}
+2025-08-15T22:06:54.207+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["api", "email"]}
+2025-08-15T22:06:54.207+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.207+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/ToolTestBot_api_email/agent_behavior.yaml"}
+2025-08-15T22:06:54.207+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.207+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/ToolTestBot_api_email/memory_config.yaml"}
+2025-08-15T22:06:54.207+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.207+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/ToolTestBot_api_email/requirements.txt"}
+
+2025-08-15T22:06:54.207+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "ToolTestBot_api_email", "tools": ["api", "email"], "memory": "episodic", "name": "ToolTestBot_api_email", "tools": ["api", "email"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/ToolTestBot_api_email/
+  ├── 📄 ToolTestBot_api_email.ctx
+  ├── 📁 memory/ToolTestBot_api_email/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/ToolTestBot_api_email/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/ToolTestBot_api_email/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/ToolTestBot_api_email/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test ToolTestBot_api_email
+   ctx test --behavior --component=ToolTestBot_api_email
+
+2️⃣  Start a conversation:
+   ctx run ToolTestBot_api_email "Hello, can you help me?"
+   ctx run ToolTestBot_api_email "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/ToolTestBot_api_email/ToolTestBot_api_email.ctx
+   
+   # Modify prompts
+   nano prompts/ToolTestBot_api_email/agent_response.md
+   
+   # Add custom tools
+   nano tools/ToolTestBot_api_email/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=ToolTestBot_api_email
+   
+   # View behavior reports
+   cat tests/reports/behavior_ToolTestBot_api_email.json
+
+📚 Configuration Details:
+   • Tools: api, email
+   • Memory: episodic
+   • Context: contexts/ToolTestBot_api_email/ToolTestBot_api_email.ctx
+   • Memory Config: memory/ToolTestBot_api_email/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
 === RUN   TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database
-2025-08-11T17:28:52.274+0800	INFO	commands/agent_generator.go:91	generating agent	{"name": "ToolTestBot_file_system_api_database", "tools": ["file_system", "api", "database"], "memory": "episodic"}
-2025-08-11T17:28:52.275+0800	INFO	commands/agent_generator.go:259	agent context generated	{"path": "contexts/ToolTestBot_file_system_api_database/tooltestbot_file_system_api_database.ctx"}
-2025-08-11T17:28:52.275+0800	INFO	commands/agent_generator.go:290	agent prompts generated	{"path": "prompts/ToolTestBot_file_system_api_database/agent_response.md"}
-2025-08-11T17:28:52.275+0800	ERROR	commands/agent_generator.go:332	failed to read tool template	{"template": "templates/agent/file_system.py", "error": "open templates/agent/file_system.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.copyToolTemplate
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:332
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:300
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.275+0800	ERROR	commands/agent_generator.go:301	failed to copy tool template	{"tool": "file_system", "error": "failed to read template: open templates/agent/file_system.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.generateAgentTools
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:301
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:125
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-2025-08-11T17:28:52.275+0800	ERROR	commands/agent_generator.go:126	failed to generate agent tools	{"error": "failed to copy tool file_system: failed to read template: open templates/agent/file_system.py: no such file or directory"}
-github.com/contexis-cmp/contexis/src/cli/commands.GenerateAgent
-	/Users/jedfordseculles/Projects/contexis/src/cli/commands/agent_generator.go:126
-github.com/contexis-cmp/contexis/tests/integration.(*AgentGeneratorIntegrationTestSuite).TestAgentGenerationWithDifferentTools.func1
-	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:156
-testing.tRunner
-	/Users/jedfordseculles/.local/share/mise/installs/go/1.24.6/src/testing/testing.go:1792
-    agent_generator_integration_test.go:157: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:157
-        	Error:      	Received unexpected error:
-        	            	failed to generate agent tools: failed to copy tool file_system: failed to read template: open templates/agent/file_system.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database
-        	Messages:   	Agent generation should succeed
-    helpers.go:539: 
-        	Error Trace:	/Users/jedfordseculles/Projects/contexis/tests/unit/helpers/helpers.go:539
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:347
-        	            				/Users/jedfordseculles/Projects/contexis/tests/integration/agent_generator_integration_test.go:160
-        	Error:      	Received unexpected error:
-        	            	open tools/ToolTestBot_file_system_api_database/file_system.py: no such file or directory
-        	Test:       	TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database
-        	Messages:   	Failed to read file: tools/ToolTestBot_file_system_api_database/file_system.py
---- FAIL: TestAgentGeneratorIntegrationTestSuite (0.05s)
-    --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow (0.01s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent (0.00s)
+2025-08-15T22:06:54.207+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent	{"name": "ToolTestBot_file_system_api_database", "tools": ["file_system", "api", "database"], "memory": "episodic", "name": "ToolTestBot_file_system_api_database", "tools": ["file_system", "api", "database"], "memory": "episodic"}
+2025-08-15T22:06:54.207+0800	INFO	logger/colored_logger.go:181	ℹ Creating agent directory structure
+2025-08-15T22:06:54.207+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "contexts/ToolTestBot_file_system_api_database", "path": "contexts/ToolTestBot_file_system_api_database"}
+2025-08-15T22:06:54.207+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_file_system_api_database", "path": "memory/ToolTestBot_file_system_api_database"}
+2025-08-15T22:06:54.208+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_file_system_api_database/episodic", "path": "memory/ToolTestBot_file_system_api_database/episodic"}
+2025-08-15T22:06:54.208+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "memory/ToolTestBot_file_system_api_database/user_preferences", "path": "memory/ToolTestBot_file_system_api_database/user_preferences"}
+2025-08-15T22:06:54.208+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "prompts/ToolTestBot_file_system_api_database", "path": "prompts/ToolTestBot_file_system_api_database"}
+2025-08-15T22:06:54.208+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tools/ToolTestBot_file_system_api_database", "path": "tools/ToolTestBot_file_system_api_database"}
+2025-08-15T22:06:54.208+0800	DEBUG	logger/colored_logger.go:187	🔍 Created directory	{"path": "tests/ToolTestBot_file_system_api_database", "path": "tests/ToolTestBot_file_system_api_database"}
+2025-08-15T22:06:54.208+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent context
+2025-08-15T22:06:54.208+0800	INFO	commands/agent_generator.go:278	agent context generated	{"path": "contexts/ToolTestBot_file_system_api_database/tooltestbot_file_system_api_database.ctx"}
+2025-08-15T22:06:54.208+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent prompts
+2025-08-15T22:06:54.208+0800	INFO	commands/agent_generator.go:314	agent prompts generated	{"path": "prompts/ToolTestBot_file_system_api_database/agent_response.md"}
+2025-08-15T22:06:54.208+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tools
+2025-08-15T22:06:54.208+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "file_system", "path": "tools/ToolTestBot_file_system_api_database/file_system.py"}
+2025-08-15T22:06:54.208+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "api", "path": "tools/ToolTestBot_file_system_api_database/api.py"}
+2025-08-15T22:06:54.208+0800	INFO	commands/agent_generator.go:372	tool template copied	{"tool": "database", "path": "tools/ToolTestBot_file_system_api_database/database.py"}
+2025-08-15T22:06:54.208+0800	INFO	commands/agent_generator.go:330	agent tools generated	{"tools": ["file_system", "api", "database"]}
+2025-08-15T22:06:54.208+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent tests
+2025-08-15T22:06:54.209+0800	INFO	commands/agent_generator.go:408	agent tests generated	{"path": "tests/ToolTestBot_file_system_api_database/agent_behavior.yaml"}
+2025-08-15T22:06:54.209+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent memory configuration
+2025-08-15T22:06:54.209+0800	INFO	commands/agent_generator.go:450	agent memory configuration generated	{"path": "memory/ToolTestBot_file_system_api_database/memory_config.yaml"}
+2025-08-15T22:06:54.209+0800	INFO	logger/colored_logger.go:181	ℹ Generating agent requirements
+2025-08-15T22:06:54.209+0800	INFO	commands/agent_generator.go:478	agent requirements generated	{"path": "tools/ToolTestBot_file_system_api_database/requirements.txt"}
+
+2025-08-15T22:06:54.209+0800	INFO	logger/colored_logger.go:169	✓ Agent generated successfully	{"name": "ToolTestBot_file_system_api_database", "tools": ["file_system", "api", "database"], "memory": "episodic", "name": "ToolTestBot_file_system_api_database", "tools": ["file_system", "api", "database"], "memory": "episodic"}
+
+🤖 Generated Agent Structure:
+  contexts/ToolTestBot_file_system_api_database/
+  ├── 📄 ToolTestBot_file_system_api_database.ctx
+  ├── 📁 memory/ToolTestBot_file_system_api_database/
+  │   ├── 📄 memory_config.yaml
+  │   ├── 📁 episodic/
+  │   └── 📁 user_preferences/
+  ├── 📁 prompts/ToolTestBot_file_system_api_database/
+  │   └── 📄 agent_response.md
+  ├── 📁 tools/ToolTestBot_file_system_api_database/
+  │   ├── 📄 api.py
+  │   └── 📄 requirements.txt
+  └── 📁 tests/ToolTestBot_file_system_api_database/
+      └── 📄 agent_behavior.yaml
+
+🚀 Agent Development Flow:
+
+1️⃣  Test your agent:
+   ctx test ToolTestBot_file_system_api_database
+   ctx test --behavior --component=ToolTestBot_file_system_api_database
+
+2️⃣  Start a conversation:
+   ctx run ToolTestBot_file_system_api_database "Hello, can you help me?"
+   ctx run ToolTestBot_file_system_api_database "What tools do you have available?"
+
+3️⃣  Start development server:
+   ctx serve --addr :8000
+
+4️⃣  Customize your agent:
+   # Edit the context file
+   nano contexts/ToolTestBot_file_system_api_database/ToolTestBot_file_system_api_database.ctx
+   
+   # Modify prompts
+   nano prompts/ToolTestBot_file_system_api_database/agent_response.md
+   
+   # Add custom tools
+   nano tools/ToolTestBot_file_system_api_database/api.py
+
+5️⃣  Monitor agent behavior:
+   # Check drift detection
+   ctx test --drift-detection --component=ToolTestBot_file_system_api_database
+   
+   # View behavior reports
+   cat tests/reports/behavior_ToolTestBot_file_system_api_database.json
+
+📚 Configuration Details:
+   • Tools: file_system, api, database
+   • Memory: episodic
+   • Context: contexts/ToolTestBot_file_system_api_database/ToolTestBot_file_system_api_database.ctx
+   • Memory Config: memory/ToolTestBot_file_system_api_database/memory_config.yaml
+
+🎉 Your agent is ready! Start conversations and customize as needed.
+--- PASS: TestAgentGeneratorIntegrationTestSuite (0.06s)
+    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow (0.01s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/simple_agent (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/multi_tool_agent (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/no_tools_agent (0.00s)
         --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/invalid_tools (0.00s)
         --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationCompleteFlow/invalid_memory (0.00s)
-    --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationErrorHandling (0.00s)
-    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationFilePermissions (0.00s)
-    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationTemplateProcessing (0.00s)
+    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationErrorHandling (0.00s)
+    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationFilePermissions (0.01s)
+    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationTemplateProcessing (0.01s)
     --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes (0.01s)
         --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes/memory_episodic (0.00s)
         --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentMemoryTypes/memory_none (0.00s)
-    --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools (0.02s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email (0.00s)
-        --- FAIL: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database (0.00s)
-FAIL
-coverage: [no statements]
-FAIL	github.com/contexis-cmp/contexis/tests/integration	0.333s
-FAIL
+    --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools (0.02s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_database (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_email (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_web_search_database (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_api_email (0.00s)
+        --- PASS: TestAgentGeneratorIntegrationTestSuite/TestAgentGenerationWithDifferentTools/tools_file_system_api_database (0.00s)
+=== RUN   TestPluginLifecycle
+=== PAUSE TestPluginLifecycle
+=== CONT  TestPluginLifecycle
+--- PASS: TestPluginLifecycle (0.03s)
+PASS
+ok  	github.com/contexis-cmp/contexis/tests/integration	0.422s

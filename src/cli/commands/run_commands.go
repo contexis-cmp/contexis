@@ -154,7 +154,12 @@ func executeQuery(ctx context.Context, projectRoot, addr string, req RunRequest,
 	defer os.Chdir(originalDir)
 
 	// Start server process
-	serverCmd := exec.CommandContext(ctx, "./bin/ctx", "serve", "--addr", addr)
+	executable, err := os.Executable()
+	if err != nil {
+		return fmt.Errorf("failed to get executable path: %w", err)
+	}
+
+	serverCmd := exec.CommandContext(ctx, executable, "serve", "--addr", addr)
 	serverCmd.Stdout = os.Stdout
 	serverCmd.Stderr = os.Stderr
 

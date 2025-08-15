@@ -38,7 +38,7 @@ Contexis CMP Framework v0.1.14
 mkdir my-first-ai-app
 cd my-first-ai-app
 
-# Initialize a new CMP project
+# Initialize a new CMP project (local-first by default)
 ctx init my-support-bot
 
 # Navigate into your project
@@ -47,7 +47,7 @@ cd my-support-bot
 
 ## Your First AI Application
 
-Let's build a customer support chatbot that can answer questions about your company policies.
+Let's build a customer support chatbot that can answer questions about your company policies. **No external API keys required** - everything runs locally!
 
 ### 1. Project Structure
 
@@ -71,26 +71,25 @@ my-support-bot/
 
 ### 2. Configure Your Environment
 
-Edit `config/environments/development.yaml` to set up your AI provider:
+The project comes with local-first defaults. Edit `config/environments/development.yaml` to see the configuration:
 
 ```yaml
 environment: development
 
-# AI Provider Configuration
+# Local AI Provider Configuration (default)
 providers:
-  openai:
-    api_key: ${OPENAI_API_KEY}
-    model: gpt-4o-mini
+  local:
+    model: microsoft/DialoGPT-medium  # Local model for text generation
     temperature: 0.1
     max_tokens: 1000
 
-# Embeddings Configuration
+# Local Embeddings Configuration (default)
 embeddings:
-  provider: openai
-  model: text-embedding-3-small
-  dimensions: 1536
+  provider: sentence-transformers
+  model: all-MiniLM-L6-v2  # Local embeddings model
+  dimensions: 384
 
-# Vector Database Configuration
+# Local Vector Database Configuration (default)
 vector_db:
   provider: chroma
   path: ./data/embeddings
@@ -103,32 +102,17 @@ testing:
   max_test_duration: 300s
 ```
 
-### 3. (Optional) Enable Security Controls
-
-Create a `.env` file in your project root:
+### 3. Set Up Your Environment
 
 ```bash
 # Copy the example environment file
 cp .env.example .env
 
-# Edit the file with your API keys
-nano .env
-```
+# Install local model dependencies
+pip install -r requirements.txt
 
-Add your API keys:
-```bash
-# AI Provider Keys
-CMP_AUTH_ENABLED=true                    # API key auth/RBAC/rate limiting
-CMP_API_TOKENS=devtoken@tenantA:chat:execute|context:read
-CMP_PI_ENFORCEMENT=true                  # Prompt-injection guard
-CMP_REQUIRE_CITATION=true                # Enforce citations on memory-backed responses
-
-# Provider keys as needed
-OPENAI_API_KEY=your_openai_api_key_here
-
-# Application Settings
-LOG_LEVEL=debug
-ENVIRONMENT=development
+# Optional: Pre-download local models (recommended for first run)
+ctx models warmup
 ```
 
 ### 4. Create Your First Context
@@ -169,9 +153,18 @@ testing:
     - "always_verify_order_before_processing"
 ```
 
-### 5. Add Knowledge to Memory
+### 5. Generate a RAG System
 
-Create a document with your company policies. Create `memory/documents/company_policies.md`:
+Create a RAG system to handle knowledge-based queries:
+
+```bash
+# Generate a RAG system with local embeddings
+ctx generate rag CustomerDocs --db=sqlite --embeddings=sentence-transformers
+```
+
+### 6. Add Knowledge to Memory
+
+Create a document with your company policies. Create `memory/CustomerDocs/documents/company_policies.md`:
 
 ```markdown
 # Company Policies
@@ -193,17 +186,17 @@ Now add this document to your memory:
 
 ```bash
 # Add the document to memory
-ctx memory add --file=memory/documents/company_policies.md
+ctx memory ingest --provider=sqlite --component=CustomerDocs --input=memory/CustomerDocs/documents/company_policies.md
 ```
 
-### 6. Create a Response Template
+### 7. Create a Response Template
 
-Edit `prompts/support_response.md`:
+Edit `prompts/CustomerDocs/search_response.md`:
 
 ```markdown
 # Support Response Template
 
-Based on the customer inquiry: {{ user_query }}
+Based on the customer inquiry: {{ .user_query }}
 
 ## Context Information
 {{#if conversation_history}}
@@ -225,33 +218,20 @@ Previous conversation: {{ conversation_history }}
 
 ## Response
 
-{{ response_text }}
+{{ .response }}
 
 {{#if confidence_score}}
 **Confidence**: {{ confidence_score }}
 {{/if}}
 ```
 
-### 7. Run and Monitor
+### 8. Test Your System
 
-Now let's test your support bot:
+Now let's test your support bot with local models:
 
 ```bash
-# Run Go test suites with coverage and JUnit output
-ctx test --all --coverage --junit --out tests/reports
-
-# Run drift detection for your knowledge base
-ctx test --drift-detection --component CustomerDocs --semantic --out tests/reports
-
-### 8. Health and Metrics
-
-The server exposes:
-- Health: `/healthz`, `/readyz`
-- Version: `/version`
-- Metrics: `/metrics` (Prometheus)
-
-# Test a query (example)
-ctx run SupportBot "What is your return policy?"
+# Test a query (uses local Phi-3.5-Mini model)
+ctx run CustomerDocs "What is your return policy?"
 ```
 
 You should see a response like:
@@ -262,6 +242,31 @@ This policy is designed to ensure customer satisfaction while maintaining the qu
 
 **Confidence**: 0.95
 ```
+
+### 9. Run Tests
+
+```bash
+# Run comprehensive tests
+ctx test --all --coverage
+
+# Monitor AI behavior drift
+ctx test --drift-detection --component=CustomerDocs
+
+# Test specific scenarios
+ctx test --correctness --rules=./tests/business_rules.yaml
+```
+
+### 10. Start Development Server
+
+```bash
+# Start the development server
+ctx serve --addr :8000
+```
+
+The server exposes:
+- Health: `/healthz`, `/readyz`
+- Version: `/version`
+- Metrics: `/metrics` (Prometheus)
 
 ## Next Steps
 
@@ -289,13 +294,36 @@ This policy is designed to ensure customer satisfaction while maintaining the qu
 - **Configure alerts** for performance issues
 - **Track user satisfaction** metrics
 
+## Switching to Production
+
+When you're ready to deploy to production, simply update your configuration:
+
+```yaml
+# config/environments/production.yaml
+providers:
+  openai:
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini
+
+embeddings:
+  provider: openai
+  model: text-embedding-3-small
+
+vector_db:
+  provider: pinecone
+  api_key: ${PINECONE_API_KEY}
+```
+
+The same code works seamlessly across environments!
+
 ## Troubleshooting
 
 ### Common Issues
 
-1. **API Key Errors**
-   - Make sure your API keys are correctly set in `.env`
-   - Verify the keys are valid and have sufficient credits
+1. **Model Download Issues**
+   - Run `ctx models warmup` to pre-download models
+   - Check your internet connection for initial downloads
+   - Ensure sufficient disk space (~3GB for local models)
 
 2. **Memory Issues**
    - Ensure documents are properly formatted
@@ -307,7 +335,7 @@ This policy is designed to ensure customer satisfaction while maintaining the qu
 
 4. **Performance Issues**
    - Check your vector database configuration
-   - Monitor API rate limits
+   - Monitor local model performance
 
 ### Getting Help
 
@@ -362,10 +390,11 @@ ctx test --performance --max-latency=2s
 
 Congratulations! You've successfully created your first AI application with Contexis. You now have:
 
--  A working customer support chatbot
+-  A working customer support chatbot with local models
 -  Knowledge base with company policies
 -  Professional response templates
 -  Testing and monitoring setup
+-  **No external dependencies** - everything runs locally!
 
 Continue exploring the framework to unlock its full potential for building reliable, secure, and scalable AI applications.
 

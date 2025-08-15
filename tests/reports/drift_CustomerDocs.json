@@ -1,6 +1,6 @@
 {
   "component": "CustomerDocs",
-  "spec_path": "/Users/jedfordseculles/Projects/contexis/tests/CustomerDocs/rag_drift_test.yaml",
+  "spec_path": "/Users/jedfordseculles/Projects/cmp-concepts/contexis/tests/CustomerDocs/rag_drift_test.yaml",
   "passed": 0,
   "failed": 4,
   "total": 4,

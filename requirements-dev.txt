@@ -1,0 +1,42 @@
+# Contexis Dev-Only Package
+# This package enables local development with Phi-3.5-Mini and Chroma(SQLite)
+# No external API calls required - everything runs locally
+
+# Core Contexis (install from local source)
+-e .
+
+# Local AI Models
+transformers>=4.35.0
+torch>=2.0.0
+accelerate>=0.20.0
+safetensors>=0.4.0
+
+# Phi-3.5-Mini specific
+microsoft-phi3>=1.0.0
+tokenizers>=0.15.0
+
+# Vector Database (SQLite backend)
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# Local Embeddings
+numpy>=1.24.0
+scikit-learn>=1.3.0
+
+# Core dependencies
+pydantic>=2.4.0
+pyyaml>=6.0
+click>=8.0.0
+rich>=13.0.0
+structlog>=23.0.0
+
+# Development tools
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.0.0
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Optional: For better performance
+# uncomment if you have CUDA available
+# torch>=2.0.0+cu118 --index-url https://download.pytorch.org/whl/cu118

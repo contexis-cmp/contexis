@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"text/template"
 
@@ -142,6 +143,41 @@ If you need help with this topic, please provide additional context or check wit
 		return fmt.Errorf("failed to execute no results prompt template: %w", err)
 	}
 
-	log.Info("RAG prompts generated", zap.String("search_prompt", searchPromptPath))
+	// Create agent_response.md as a symlink to search_response.md to avoid redundancy
+	agentResponsePath := fmt.Sprintf("prompts/%s/agent_response.md", config.Name)
+
+	// Remove existing file if it exists
+	os.Remove(agentResponsePath)
+
+	// Create symlink from agent_response.md to search_response.md using relative path
+	if err := os.Symlink("search_response.md", agentResponsePath); err != nil {
+		// If symlink fails (e.g., on Windows), copy the file instead
+		if err := copyFile(searchPromptPath, agentResponsePath); err != nil {
+			log.Error("failed to create agent response symlink/copy", zap.String("path", agentResponsePath), zap.Error(err))
+			return fmt.Errorf("failed to create agent response symlink/copy: %w", err)
+		}
+	}
+
+	log.Info("RAG prompts generated",
+		zap.String("search_prompt", searchPromptPath),
+		zap.String("agent_response", agentResponsePath))
 	return nil
+}
+
+// copyFile copies a file from src to dst
+func copyFile(src, dst string) error {
+	sourceFile, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer sourceFile.Close()
+
+	destFile, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer destFile.Close()
+
+	_, err = io.Copy(destFile, sourceFile)
+	return err
 }

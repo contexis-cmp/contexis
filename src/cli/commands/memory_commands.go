@@ -7,8 +7,10 @@ import (
 	"os"
 	"strings"
 
+	"github.com/contexis-cmp/contexis/src/cli/logger"
 	runtimememory "github.com/contexis-cmp/contexis/src/runtime/memory"
 	"github.com/spf13/cobra"
+	"go.uber.org/zap"
 )
 
 // GetMemoryCommand returns the parent memory command with subcommands.
@@ -32,12 +34,19 @@ func newMemoryIngestCmd() *cobra.Command {
 		Use:   "ingest",
 		Short: "Ingest documents into a memory store",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := cmd.Context()
 			if component == "" {
 				return fmt.Errorf("--component is required")
 			}
 			if provider == "" {
 				provider = "sqlite"
 			}
+
+			logger.LogInfo(ctx, "Starting memory ingestion",
+				zap.String("component", component),
+				zap.String("provider", provider),
+				zap.String("model", model))
+
 			cfg := runtimememory.Config{
 				Provider:       provider,
 				RootDir:        mustGetwd(),
@@ -48,18 +57,29 @@ func newMemoryIngestCmd() *cobra.Command {
 			}
 			store, err := runtimememory.NewStore(cfg)
 			if err != nil {
+				logger.LogErrorColored(ctx, "Failed to create memory store", err)
 				return err
 			}
 			defer store.Close()
+
 			// load documents from file (one per line) or stdin
 			docs, err := readLines(inputPath)
 			if err != nil {
+				logger.LogErrorColored(ctx, "Failed to read documents", err)
 				return err
 			}
+
+			logger.LogInfo(ctx, "Ingesting documents", zap.Int("count", len(docs)))
 			ver, err := store.IngestDocuments(context.Background(), docs)
 			if err != nil {
+				logger.LogErrorColored(ctx, "Failed to ingest documents", err)
 				return err
 			}
+
+			logger.LogSuccess(ctx, "Memory ingestion completed",
+				zap.String("version", ver),
+				zap.Int("documents_ingested", len(docs)))
+
 			fmt.Fprintf(cmd.OutOrStdout(), "ingested version: %s\n", ver)
 			return nil
 		},
@@ -84,22 +104,37 @@ func newMemorySearchCmd() *cobra.Command {
 		Use:   "search",
 		Short: "Search a memory store",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := cmd.Context()
 			if component == "" {
 				return fmt.Errorf("--component is required")
 			}
 			if query == "" {
 				return fmt.Errorf("--query is required")
 			}
+
+			logger.LogInfo(ctx, "Starting memory search",
+				zap.String("component", component),
+				zap.String("provider", provider),
+				zap.String("query", query),
+				zap.Int("top_k", topK))
+
 			cfg := runtimememory.Config{Provider: provider, RootDir: mustGetwd(), ComponentName: component, TenantID: tenant}
 			store, err := runtimememory.NewStore(cfg)
 			if err != nil {
+				logger.LogErrorColored(ctx, "Failed to create memory store", err)
 				return err
 			}
 			defer store.Close()
+
 			results, err := store.Search(context.Background(), query, topK)
 			if err != nil {
+				logger.LogErrorColored(ctx, "Failed to search memory", err)
 				return err
 			}
+
+			logger.LogSuccess(ctx, "Memory search completed",
+				zap.Int("results_count", len(results)))
+
 			for _, r := range results {
 				fmt.Fprintf(cmd.OutOrStdout(), "%.3f\t%s\n", r.Score, strings.ReplaceAll(strings.TrimSpace(r.Content), "\n", " "))
 			}

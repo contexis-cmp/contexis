@@ -1,139 +1,307 @@
-# RAG Application Example
+# RAG System Example
 
-This example demonstrates how to build a Retrieval-Augmented Generation (RAG) system using the Contexis CMP framework.
+This example demonstrates how to build a Retrieval-Augmented Generation (RAG) system using Contexis with **local models by default**.
+
+## Overview
+
+A RAG system combines:
+- **Knowledge Base**: Vector store with your documents
+- **Semantic Search**: Find relevant information
+- **Text Generation**: Generate responses using local models
 
 ## Quick Start
 
+### 1. Initialize Project
+
 ```bash
-# Initialize the project
-ctx init customer-support-rag
-cd customer-support-rag
+# Create a new project
+ctx init rag-example
+cd rag-example
 
-# Generate the RAG system
-ctx generate rag CustomerDocs --db=sqlite --embeddings=openai
-
-# Ingest your knowledge base (one document per line)
-printf "Returns are accepted within 30 days.\nShipping takes 3-5 business days." > docs.txt
-ctx memory ingest --provider=sqlite --component=CustomerDocs --input=docs.txt
-
-# Test the system (optional)
-ctx test
-
-# Search the knowledge base
-ctx memory search --provider=sqlite --component=CustomerDocs --query="What is your return policy?" --top-k=3
-
-# Render a response with a prompt template (optional)
-ctx prompt render --component=CustomerDocs --template=search_response.md --data='{"UserQuery":"What is your return policy?"}'
-
-# Serve a simple API (optional)
-ctx serve --addr :8000
-# curl -X POST http://localhost:8000/api/v1/chat -H 'Content-Type: application/json' \
-#   -d '{"context":"CustomerDocs","component":"CustomerDocs","query":"return policy","top_k":3,"data":{"user_query":"What is your return policy?"}}'
+# Set up environment
+cp .env.example .env
+pip install -r requirements.txt
 ```
 
-## Generated Structure
+### 2. Generate RAG System
 
-```
-customer-support-rag/
-├── contexts/
-│   └── support_agent.ctx          # Agent role and behavior
-├── memory/
-│   ├── documents/                  # Knowledge base files
-│   └── embeddings/                 # Vector embeddings
-├── prompts/
-│   └── support_response.md         # Response template
-├── tools/
-│   └── semantic_search.py         # Search implementation
-├── tests/
-│   ├── drift_detection.py         # Similarity monitoring
-│   └── correctness.py             # Business logic validation
-└── context.lock.json              # Version locks
+```bash
+# Generate RAG system with local embeddings
+ctx generate rag CustomerDocs --db=sqlite --embeddings=sentence-transformers
 ```
 
-## Key Features
+This creates:
+- `contexts/CustomerDocs/` - Agent configuration
+- `memory/CustomerDocs/` - Knowledge base structure
+- `prompts/CustomerDocs/` - Response templates
+- `tools/CustomerDocs/` - Search tools
+- `tests/CustomerDocs/` - Test suite
 
-- **Semantic Search**: Find relevant documents using embeddings
-- **Context-Aware Responses**: Combine retrieved knowledge with LLM generation
-- **Version Control**: Track all components for reproducibility
-- **Drift Detection**: Monitor for unexpected behavior changes
-- **Multi-Provider Support**: Switch between OpenAI, Anthropic, etc.
+### 3. Add Knowledge
+
+```bash
+# Create sample documents
+mkdir -p memory/CustomerDocs/documents
+
+# Add company policies
+cat > memory/CustomerDocs/documents/policies.txt << 'EOF'
+Return Policy: Returns are accepted within 30 days of purchase with original receipt. Items must be in original condition and packaging.
+
+Shipping Policy: We offer free shipping on orders over $50. Standard shipping takes 3-5 business days.
+
+Customer Service Hours: Our customer service team is available Monday-Friday, 9 AM - 6 PM EST.
+
+Privacy Policy: We respect your privacy and never share personal information with third parties.
+EOF
+
+# Ingest documents into vector store
+ctx memory ingest --provider=sqlite --component=CustomerDocs --input=memory/CustomerDocs/documents/policies.txt
+```
+
+### 4. Test Your RAG System
+
+```bash
+# Test with local models (no API keys needed!)
+ctx run CustomerDocs "What is your return policy?"
+ctx run CustomerDocs "How long does shipping take?"
+ctx run CustomerDocs "What are your customer service hours?"
+```
 
 ## Configuration
 
-Edit `config/environments/development.yaml` to customize:
+### Local Development (Default)
 
-- AI provider settings
-- Vector database configuration
-- Testing thresholds
-- Logging preferences
+The system uses local models by default:
 
-## Testing
+```yaml
+# config/environments/development.yaml
+providers:
+  local:
+    model: microsoft/DialoGPT-medium
+    temperature: 0.1
+    max_tokens: 1000
 
-The generated test suite includes:
+embeddings:
+  provider: sentence-transformers
+  model: all-MiniLM-L6-v2
 
-- **Drift Detection**: Monitors response similarity over time
-- **Correctness Tests**: Validates business logic compliance
-- **Performance Tests**: Ensures response time requirements
-- **Integration Tests**: End-to-end workflow validation
+vector_db:
+  provider: chroma
+  path: ./data/embeddings
+```
 
-## Deployment
+### Production Migration
+
+When ready for production, switch to external providers:
+
+```yaml
+# config/environments/production.yaml
+providers:
+  openai:
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini
+
+embeddings:
+  provider: openai
+  model: text-embedding-3-small
+
+vector_db:
+  provider: pinecone
+  api_key: ${PINECONE_API_KEY}
+```
+
+## Advanced Usage
+
+### 1. Add More Documents
 
 ```bash
-# Build for production
-ctx build --environment=production
+# Add product catalog
+cat > memory/CustomerDocs/documents/products.txt << 'EOF'
+Product: Wireless Headphones
+Price: $99.99
+Features: Noise cancellation, 30-hour battery life, Bluetooth 5.0
 
-# Deploy to container
-ctx deploy --target=docker
+Product: Smart Watch
+Price: $199.99
+Features: Heart rate monitor, GPS, Water resistant
+EOF
 
-# Deploy to Kubernetes
-ctx deploy --target=kubernetes
+ctx memory ingest --provider=sqlite --component=CustomerDocs --input=memory/CustomerDocs/documents/products.txt
+```
+
+### 2. Search Knowledge Base
+
+```bash
+# Search for specific information
+ctx memory search --provider=sqlite --component=CustomerDocs --query="wireless headphones" --top-k=3
+```
+
+### 3. Test Drift Detection
+
+```bash
+# Monitor AI behavior consistency
+ctx test --drift-detection --component=CustomerDocs
+```
+
+### 4. Start Development Server
+
+```bash
+# Start server for continuous development
+ctx serve --addr :8000
+
+# Test via HTTP API
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "context": "CustomerDocs",
+    "component": "CustomerDocs",
+    "query": "What is your return policy?",
+    "top_k": 5
+  }'
 ```
 
 ## Customization
 
-### Adding New Knowledge
+### 1. Modify Context
 
-```bash
-# Add documents to memory (append to your docs file and re-ingest)
-printf "Another policy line" >> docs.txt
-ctx memory ingest --provider=sqlite --component=CustomerDocs --input=docs.txt
+Edit `contexts/CustomerDocs/CustomerDocs.ctx`:
+
+```yaml
+name: "Customer Support Agent"
+version: "1.0.0"
+description: "Handles customer inquiries with company knowledge"
+
+role:
+  persona: "Professional, helpful customer service representative"
+  capabilities: ["answer_questions", "process_returns", "provide_product_info"]
+  limitations: ["no_refunds_over_policy", "no_personal_data_sharing"]
+
+guardrails:
+  tone: "professional"
+  format: "text"
+  max_tokens: 500
+  temperature: 0.1
 ```
 
-### Modifying Context
+### 2. Customize Prompts
 
-Edit `contexts/support_agent.ctx` to change:
+Edit `prompts/CustomerDocs/search_response.md`:
 
-- Agent persona and capabilities
-- Tool integrations
-- Response guardrails
-- Testing parameters
+```markdown
+# Customer Support Response
 
-### Custom Prompts
+**Customer Query:** {{ .user_query }}
 
-Create new templates in `prompts/` and reference them in your context files.
+**Relevant Information:**
+{{#each knowledge_results}}
+- {{ content }} (relevance: {{ score }})
+{{/each}}
+
+**Response:**
+Based on our company policies and product information:
+
+{{ .response }}
+
+---
+*Response generated by CustomerDocs RAG system*
+```
+
+### 3. Add Custom Tools
+
+Create `tools/CustomerDocs/custom_search.py`:
+
+```python
+class CustomSearchTool:
+    def __init__(self, config):
+        self.config = config
+    
+    async def search(self, query, top_k=5):
+        # Custom search logic
+        return results
+```
+
+## Testing
+
+### 1. Run All Tests
+
+```bash
+# Run comprehensive tests
+ctx test --all --coverage
+```
+
+### 2. Test Specific Scenarios
+
+```bash
+# Test drift detection
+ctx test --drift-detection --component=CustomerDocs
+
+# Test correctness
+ctx test --correctness --rules=./tests/business_rules.yaml
+```
+
+### 3. Performance Testing
+
+```bash
+# Test response times
+time ctx run CustomerDocs "What is your return policy?"
+
+# Monitor resource usage
+htop
+```
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Low Search Relevance**: Adjust embedding model or chunk size
-2. **Response Drift**: Check context boundaries and guardrails
-3. **Performance Issues**: Optimize vector database or reduce context size
-4. **Provider Errors**: Verify API keys and rate limits
+1. **Model Download Issues**
+   ```bash
+   # Pre-download models
+   ctx models warmup
+   
+   # Check disk space
+   df -h ./data/models
+   ```
 
-### Debug Mode
+2. **Memory Issues**
+   ```bash
+   # Verify embeddings generation
+   ctx memory search --provider=sqlite --component=CustomerDocs --query="test" --top-k=1
+   ```
 
-```bash
-# Enable debug logging
-ctx run CustomerDocs "test question" --debug
+3. **Response Quality**
+   ```bash
+   # Check prompt templates
+   cat prompts/CustomerDocs/search_response.md
+   
+   # Test with different queries
+   ctx run CustomerDocs "What are your policies?"
+   ```
 
-# View detailed logs
-ctx logs --level=debug
-```
+### Performance Optimization
+
+1. **Model Warmup**
+   ```bash
+   # Pre-download models for faster startup
+   ctx models warmup
+   ```
+
+2. **Vector Store Optimization**
+   ```bash
+   # Optimize vector store
+   ctx memory optimize --provider=sqlite --component=CustomerDocs
+   ```
 
 ## Next Steps
 
-- Add more sophisticated tools (database lookups, API calls)
-- Implement conversation memory for multi-turn interactions
-- Add authentication and multi-tenancy
-- Create custom prompt templates for your domain 
+- **Add more documents** to expand knowledge base
+- **Customize prompts** for better responses
+- **Add business rules** for compliance
+- **Set up monitoring** for production deployment
+- **Migrate to production** providers when ready
+
+## Resources
+
+- [Getting Started Guide](../docs/guides/getting-started.md)
+- [CLI Reference](../docs/cli.md)
+- [Model Providers](../docs/model_providers.md)
+- [Memory Management](../docs/memory.md) 

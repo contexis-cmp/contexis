@@ -2,27 +2,19 @@
   "results": [
     {
       "suite": "unit",
-      "passed": false,
-      "threshold": 80,
-      "output_path": "tests/reports/go_unit.txt",
-      "profile_path": "/Users/jedfordseculles/Projects/contexis/tests/coverage/unit.out",
-      "error": "exit status 1; coverage 0.0% \u003c 80%"
+      "passed": true,
+      "output_path": "/Users/jedfordseculles/Projects/cmp-concepts/contexis/tests/reports/go_unit.txt"
     },
     {
       "suite": "integration",
-      "passed": false,
-      "threshold": 70,
-      "output_path": "tests/reports/go_integration.txt",
-      "profile_path": "/Users/jedfordseculles/Projects/contexis/tests/coverage/integration.out",
-      "error": "exit status 1; coverage 0.0% \u003c 70%"
+      "passed": true,
+      "output_path": "/Users/jedfordseculles/Projects/cmp-concepts/contexis/tests/reports/go_integration.txt"
     },
     {
       "suite": "e2e",
-      "passed": false,
-      "threshold": 60,
-      "output_path": "tests/reports/go_e2e.txt",
-      "profile_path": "/Users/jedfordseculles/Projects/contexis/tests/coverage/e2e.out",
-      "error": "exit status 1; coverage 0.0% \u003c 60%"
+      "passed": true,
+      "output_path": "/Users/jedfordseculles/Projects/cmp-concepts/contexis/tests/reports/go_e2e.txt",
+      "error": "no test packages found (suite may be empty)"
     }
   ]
 }

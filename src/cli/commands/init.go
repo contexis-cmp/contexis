@@ -28,6 +28,8 @@ This command will create:
 	RunE: runInit,
 }
 
+func init() {}
+
 type ProjectConfig struct {
 	Name        string
 	Description string
@@ -40,30 +42,23 @@ func runInit(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 	projectName := args[0]
 
-	// Initialize logger
-	if err := logger.InitLogger("info", "json"); err != nil {
-		return fmt.Errorf("failed to initialize logger: %w", err)
-	}
+	// Use colored logger (already initialized in main.go)
 
-	log := logger.WithContext(ctx).With(
-		zap.String("project_name", projectName),
-		zap.String("operation", "init"),
-	)
-
-	// Log operation start
-	defer logger.LogOperation(ctx, "project_init",
-		zap.String("project_name", projectName))()
+	// Log operation start with colored logging
+	operationName := "project_init"
+	done := logger.LogOperationColored(ctx, operationName,
+		zap.String("project_name", projectName))
 
 	// Validate project name
 	if err := validateProjectName(projectName); err != nil {
-		log.Error("project name validation failed", zap.Error(err))
+		logger.LogErrorColored(ctx, "project name validation failed", err)
 		return fmt.Errorf("invalid project name: %w", err)
 	}
 
 	// Create project directory with secure permissions
 	projectPath := filepath.Join(".", projectName)
 	if err := os.MkdirAll(projectPath, 0750); err != nil {
-		log.Error("failed to create project directory", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to create project directory", err)
 		return fmt.Errorf("failed to create project directory: %w", err)
 	}
 
@@ -90,54 +85,59 @@ func runInit(cmd *cobra.Command, args []string) error {
 		"scripts",
 	}
 
+	logger.LogInfo(ctx, "Creating project directory structure")
 	for _, dir := range dirs {
 		dirPath := filepath.Join(projectPath, dir)
 		if err := os.MkdirAll(dirPath, 0750); err != nil {
-			log.Error("failed to create directory", zap.String("directory", dir), zap.Error(err))
+			logger.LogErrorColored(ctx, "failed to create directory", err, zap.String("directory", dir))
 			return fmt.Errorf("failed to create directory %s: %w", dir, err)
 		}
+		logger.LogDebug(ctx, "Created directory", zap.String("path", dir))
 	}
 
 	// Create configuration files
+	logger.LogInfo(ctx, "Creating configuration files")
 	if err := createConfigFiles(projectPath, config); err != nil {
-		log.Error("failed to create config files", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to create config files", err)
 		return fmt.Errorf("failed to create config files: %w", err)
 	}
 
 	// Create basic templates
+	logger.LogInfo(ctx, "Creating basic templates")
 	if err := createBasicTemplates(projectPath, config); err != nil {
-		log.Error("failed to create templates", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to create templates", err)
 		return fmt.Errorf("failed to create templates: %w", err)
 	}
 
 	// Create test files
+	logger.LogInfo(ctx, "Creating test files")
 	if err := createTestFiles(projectPath, config); err != nil {
-		log.Error("failed to create test files", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to create test files", err)
 		return fmt.Errorf("failed to create test files: %w", err)
 	}
 
 	// Create documentation
+	logger.LogInfo(ctx, "Creating documentation")
 	if err := createDocumentation(projectPath, config); err != nil {
-		log.Error("failed to create documentation", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to create documentation", err)
 		return fmt.Errorf("failed to create documentation: %w", err)
 	}
 
 	// Create scripts
+	logger.LogInfo(ctx, "Creating scripts and requirements")
 	if err := createScripts(projectPath, config); err != nil {
-		log.Error("failed to create scripts", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to create scripts", err)
 		return fmt.Errorf("failed to create scripts: %w", err)
 	}
 
-	log.Info("project created successfully",
-		zap.String("project_path", projectPath),
-		zap.String("project_name", projectName))
+	// Complete the operation
+	done()
 
-	fmt.Printf(" Successfully created CMP project: %s\n", projectName)
-	fmt.Printf(" Project structure created at: %s\n", projectPath)
-	fmt.Printf("\n Next steps:\n")
-	fmt.Printf("  cd %s\n", projectName)
-	fmt.Printf("  ctx generate rag MyFirstRAG --db=sqlite --embeddings=openai\n")
-	fmt.Printf("  ctx test\n")
+	// Show project structure
+	showProjectStructure(projectPath, projectName)
+
+	// Show development flow
+	showDevelopmentFlow(projectName)
 
 	return nil
 }
@@ -173,7 +173,7 @@ func createConfigFiles(projectPath string, config ProjectConfig) error {
 		return err
 	}
 
-	// Create development.yaml
+	// Create development.yaml (local-first defaults with production hints)
 	devConfig := `environment: development
 
 # Database Configuration
@@ -182,31 +182,32 @@ database:
   path: ./data/development.db
   pool_size: 10
 
-# AI Provider Configuration
+# AI Provider Configuration (Local by default)
+# To switch to production providers (e.g., OpenAI), replace this section accordingly.
 providers:
-  openai:
-    api_key: ${OPENAI_API_KEY}
-    model: gpt-4o-mini
+  local:
+    # Local text generation model
+    model: microsoft/Phi-3-mini-4k-instruct   # For production, use: openai.gpt-4o-mini or similar
     temperature: 0.1
     max_tokens: 1000
-  
-  anthropic:
-    api_key: ${ANTHROPIC_API_KEY}
-    model: claude-3-sonnet-20240229
-    temperature: 0.1
-    max_tokens: 1000
+    device: auto            # auto, cpu, cuda
+    load_in_8bit: false     # set true to save memory
+    load_in_4bit: false     # set true to save memory
 
-# Embeddings Configuration
+# Embeddings Configuration (Local Sentence Transformers)
 embeddings:
-  provider: openai
-  model: text-embedding-3-small
-  dimensions: 1536
+  provider: sentence-transformers   # For production, set provider: openai
+  model: all-MiniLM-L6-v2
+  dimensions: 384
+  device: auto
 
-# Vector Database Configuration
+# Vector Database Configuration (Local Chroma with SQLite)
 vector_db:
   provider: chroma
   path: ./data/embeddings
   collection_name: development_knowledge
+  persist_directory: ./data/chroma
+  anonymized_telemetry: false
 
 # Testing Configuration
 testing:
@@ -225,7 +226,27 @@ features:
   hot_reload: true
   debug_mode: true
   mock_providers: false
-  enable_telemetry: false`
+  enable_telemetry: false
+  local_models: true
+  offline_mode: true
+
+# Model Download Configuration
+model_cache:
+  directory: ./data/models
+  auto_download: true
+  verify_checksums: true
+
+# ---
+# Production Hints:
+# To use OpenAI in production, configure like:
+# providers:
+#   openai:
+#     api_key: ${OPENAI_API_KEY}
+#     model: gpt-4o-mini
+# embeddings:
+#   provider: openai
+#   model: text-embedding-3-small
+`
 
 	devConfigPath := filepath.Join(projectPath, "config", "environments", "development.yaml")
 	if err := os.WriteFile(devConfigPath, []byte(devConfig), 0644); err != nil {
@@ -329,41 +350,152 @@ testing:
 	}
 
 	// Create default prompt template
-	defaultPrompt := `# Response Template
+	defaultPrompt := `# Default Response
 
-Based on the user query: {{ user_query }}
-
-## Context Information
-{{#if conversation_history}}
-Previous conversation: {{ conversation_history }}
-{{/if}}
-
-## Knowledge Base Results
-{{#each knowledge_results}}
-- **Source**: {{ source }}
-- **Content**: {{ content }}
-- **Relevance**: {{ relevance_score }}
-{{/each}}
-
-## Response Guidelines
-- **Tone**: Helpful and informative
-- **Format**: Clear, structured response
-- **Max Tokens**: 500
-- **Include**: Relevant information, next steps if needed
-
-## Response
-
-{{ response_text }}
-
-{{#if confidence_score}}
-**Confidence**: {{ confidence_score }}
-{{/if}}`
+Provide a helpful and concise answer using available knowledge.
+`
 
 	promptPath := filepath.Join(projectPath, "prompts", "default_response.md")
 	return os.WriteFile(promptPath, []byte(defaultPrompt), 0644)
 }
 
 func createTestFiles(projectPath string, config ProjectConfig) error {
+	// Create test subdirectories
+	testDirs := []string{"unit", "integration", "e2e", "coverage", "reports", "fixtures"}
+	for _, dir := range testDirs {
+		dirPath := filepath.Join(projectPath, "tests", dir)
+		if err := os.MkdirAll(dirPath, 0750); err != nil {
+			return err
+		}
+	}
+
+	// Create test configuration
+	testConfig := `# CMP Framework Test Configuration
+
+# Test Suite Configuration
+test_suites:
+  unit:
+    enabled: true
+    timeout: 30s
+    parallel: true
+    coverage_threshold: 80
+    
+  integration:
+    enabled: true
+    timeout: 120s
+    parallel: false
+    coverage_threshold: 70
+    
+  e2e:
+    enabled: true
+    timeout: 300s
+    parallel: false
+    coverage_threshold: 60
+    
+  performance:
+    enabled: false
+    timeout: 600s
+    parallel: false
+    
+  security:
+    enabled: true
+    timeout: 60s
+    parallel: false
+
+# Test Categories
+test_categories:
+  - name: "agent_generator"
+    description: "Tests for agent generation functionality"
+    suites: ["unit", "integration"]
+    
+  - name: "cli_commands"
+    description: "Tests for CLI command functionality"
+    suites: ["unit", "integration"]
+    
+  - name: "rag_generator"
+    description: "Tests for RAG generation functionality"
+    suites: ["unit", "integration"]
+    
+  - name: "workflow_generator"
+    description: "Tests for workflow generation functionality"
+    suites: ["unit", "integration"]
+    
+  - name: "core_components"
+    description: "Tests for core CMP components"
+    suites: ["unit", "integration"]
+    
+  - name: "security"
+    description: "Security and privacy tests"
+    suites: ["security"]
+    
+  - name: "performance"
+    description: "Performance and load tests"
+    suites: ["performance", "e2e"]
+
+# Test Data Configuration
+test_data:
+  fixtures_dir: "tests/unit/fixtures"
+  temp_dir: "tests/temp"
+  cleanup_after: true
+  
+# Coverage Configuration
+coverage:
+  enabled: true
+  output_format: "html"
+  output_dir: "tests/coverage"
+  exclude_patterns:
+    - "*/vendor/*"
+    - "*/testdata/*"
+    - "*/mocks/*"
+    - "*/examples/*"
+
+# Reporting Configuration
+reporting:
+  enabled: true
+  output_format: ["text", "json", "html"]
+  output_dir: "tests/reports"
+  include_failures: true
+  include_skipped: true
+
+# Environment Configuration
+environments:
+  test:
+    variables:
+      CMP_ENV: "test"
+      CMP_LOG_LEVEL: "debug"
+      CMP_TEMP_DIR: "tests/temp"
+      
+  integration:
+    variables:
+      CMP_ENV: "integration"
+      CMP_LOG_LEVEL: "info"
+      CMP_TEMP_DIR: "tests/temp"
+
+# Test Timeouts
+timeouts:
+  short: 5s
+  medium: 30s
+  long: 120s
+  very_long: 300s
+
+# Test Retries
+retries:
+  enabled: true
+  max_attempts: 3
+  backoff_multiplier: 2.0
+  initial_delay: 1s
+
+# Parallel Execution
+parallel:
+  enabled: true
+  max_workers: 4
+  test_timeout: 30s`
+
+	testConfigPath := filepath.Join(projectPath, "tests", "test_config.yaml")
+	if err := os.WriteFile(testConfigPath, []byte(testConfig), 0644); err != nil {
+		return err
+	}
+
 	// Create drift detection test
 	driftTest := `import pytest
 from contexis.testing.drift import DriftDetector
@@ -491,30 +623,42 @@ ctx deploy --target=docker
 }
 
 func createScripts(projectPath string, config ProjectConfig) error {
-	// Create requirements.txt
-	requirements := `# Core dependencies
-contexis>=0.1.14
-pydantic>=2.0.0
-pyyaml>=6.0
-click>=8.0.0
-rich>=13.0.0
+	// Create requirements.txt (local-first defaults; production providers can be added as needed)
+	requirements := `# Local-first development stack (no external APIs required)
 
-# AI providers
-openai>=1.0.0
-anthropic>=0.7.0
+# Local AI Models
+transformers>=4.35.0
+torch>=2.0.0
+accelerate>=0.20.0
+safetensors>=0.4.0
+tokenizers>=0.15.0
 
-# Vector databases
+# Vector Database (SQLite backend)
 chromadb>=0.4.0
 sentence-transformers>=2.2.0
 
-# Testing
+# Local Embeddings
+numpy>=1.24.0
+scikit-learn>=1.3.0
+
+# Core utilities
+pydantic>=2.4.0
+pyyaml>=6.0
+click>=8.0.0
+rich>=13.0.0
+structlog>=23.0.0
+
+# Development tools
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.0.0
 pytest>=7.0.0
 pytest-asyncio>=0.21.0
 
-# Development
-black>=23.0.0
-isort>=5.12.0
-flake8>=6.0.0`
+# To switch to production providers, add e.g.:
+# openai>=1.0.0
+# anthropic>=0.7.0
+`
 
 	requirementsPath := filepath.Join(projectPath, "requirements.txt")
 	if err := os.WriteFile(requirementsPath, []byte(requirements), 0644); err != nil {
@@ -522,30 +666,125 @@ flake8>=6.0.0`
 	}
 
 	// Create .env.example
-	envExample := `# AI Provider Keys
-OPENAI_API_KEY=your_openai_api_key_here
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
+	envExample := `# Contexis Environment
+# Local-first defaults (no external API keys needed)
 
-# Database Configuration (for production)
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=cmp_app
-DB_USER=cmp_user
-DB_PASSWORD=your_password_here
+# Environment
+CMP_ENV=development
 
-# Vector Database (for production)
-PINECONE_API_KEY=your_pinecone_api_key_here
-PINECONE_ENVIRONMENT=us-west1-gcp
-PINECONE_INDEX=your_index_name
+# Local Model Settings
+CMP_LOCAL_MODELS=true
+CMP_OFFLINE_MODE=true
 
-# Application Settings
-LOG_LEVEL=debug
-ENVIRONMENT=development`
+# Model Cache
+CMP_MODEL_CACHE_DIR=./data/models
+
+# Database
+CMP_DB_PROVIDER=sqlite
+CMP_DB_PATH=./data/development/development.db
+
+# Vector Database
+CMP_VECTOR_DB_PROVIDER=chroma
+CMP_VECTOR_DB_PATH=./data/embeddings
+CMP_CHROMA_PERSIST_DIR=./data/chroma
+
+# Logging
+CMP_LOG_LEVEL=debug
+CMP_LOG_FORMAT=json
+
+# Development Features
+CMP_HOT_RELOAD=true
+CMP_DEBUG_MODE=true
+CMP_MOCK_PROVIDERS=false
+CMP_ENABLE_TELEMETRY=false
+
+# ---
+# Production Hints (uncomment and configure to switch providers)
+# OPENAI_API_KEY=your_openai_api_key_here
+# ANTHROPIC_API_KEY=your_anthropic_api_key_here
+`
 
 	envExamplePath := filepath.Join(projectPath, ".env.example")
-	return os.WriteFile(envExamplePath, []byte(envExample), 0644)
+	if err := os.WriteFile(envExamplePath, []byte(envExample), 0644); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func getCurrentTimestamp() string {
 	return time.Now().UTC().Format(time.RFC3339)
+}
+
+// showProjectStructure displays the created project structure
+func showProjectStructure(projectPath, projectName string) {
+	fmt.Printf("\n")
+	logger.LogSuccess(context.Background(), "Project created successfully",
+		zap.String("project_name", projectName),
+		zap.String("project_path", projectPath))
+
+	fmt.Printf("\n📁 Project Structure:\n")
+	fmt.Printf("  %s/\n", projectName)
+	fmt.Printf("  ├── 📄 README.md\n")
+	fmt.Printf("  ├── 📄 requirements.txt\n")
+	fmt.Printf("  ├── 📄 .env.example\n")
+	fmt.Printf("  ├── 📄 context.lock.json\n")
+	fmt.Printf("  ├── 📁 contexts/\n")
+	fmt.Printf("  │   └── 📄 default_agent.ctx\n")
+	fmt.Printf("  ├── 📁 memory/\n")
+	fmt.Printf("  │   ├── 📁 documents/\n")
+	fmt.Printf("  │   └── 📁 embeddings/\n")
+	fmt.Printf("  ├── 📁 prompts/\n")
+	fmt.Printf("  │   └── 📄 default_response.md\n")
+	fmt.Printf("  ├── 📁 tools/\n")
+	fmt.Printf("  ├── 📁 tests/\n")
+	fmt.Printf("  │   ├── 📄 test_drift.py\n")
+	fmt.Printf("  │   └── 📄 test_correctness.py\n")
+	fmt.Printf("  ├── 📁 config/\n")
+	fmt.Printf("  │   └── 📁 environments/\n")
+	fmt.Printf("  │       ├── 📄 development.yaml\n")
+	fmt.Printf("  │       └── 📄 production.yaml\n")
+	fmt.Printf("  ├── 📁 docs/\n")
+	fmt.Printf("  └── 📁 scripts/\n")
+}
+
+// showDevelopmentFlow displays the development workflow
+func showDevelopmentFlow(projectName string) {
+	fmt.Printf("\n🚀 Development Flow (Local-first):\n")
+	fmt.Printf("\n1️⃣  Navigate to your project:\n")
+	fmt.Printf("   cd %s\n", projectName)
+
+	fmt.Printf("\n2️⃣  Set up your environment:\n")
+	fmt.Printf("   cp .env.example .env\n")
+	fmt.Printf("   # Local defaults enabled. No API keys needed.\n")
+
+	fmt.Printf("\n3️⃣  Install dependencies:\n")
+	fmt.Printf("   pip install -r requirements.txt\n")
+	fmt.Printf("   # This will download local models as needed (Phi-3.5-Mini, Sentence Transformers).\n")
+
+	fmt.Printf("\n4️⃣  Create your first RAG system:\n")
+	fmt.Printf("   ctx generate rag MyFirstRAG --db=sqlite --embeddings=sentence-transformers\n")
+
+	fmt.Printf("\n5️⃣  Add knowledge to your system:\n")
+	fmt.Printf("   echo 'Your company policies here...' > memory/documents/policies.txt\n")
+	fmt.Printf("   ctx memory ingest --provider=sqlite --component=MyFirstRAG --input=memory/documents/policies.txt\n")
+
+	fmt.Printf("\n6️⃣  Test your system:\n")
+	fmt.Printf("   ctx test\n")
+	fmt.Printf("   ctx run MyFirstRAG \"What are your policies?\"\n")
+
+	fmt.Printf("\n7️⃣  Start development server:\n")
+	fmt.Printf("   ctx serve --addr :8000\n")
+
+	fmt.Printf("\n💡 Switching to production providers later is easy: update config/environments/development.yaml to set provider 'openai' and export OPENAI_API_KEY.\n")
+
+	fmt.Printf("\n📚 Next Steps:\n")
+	fmt.Printf("   • Customize contexts/ in contexts/\n")
+	fmt.Printf("   • Add prompts in prompts/\n")
+	fmt.Printf("   • Create tools in tools/\n")
+	fmt.Printf("   • Configure AI providers in config/environments/\n")
+	fmt.Printf("   • Run tests with ctx test\n")
+	fmt.Printf("   • Deploy with ctx deploy\n")
+
+	fmt.Printf("\n🎉 Happy building! Check out docs/ for more information.\n")
 }

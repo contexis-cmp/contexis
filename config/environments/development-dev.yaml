@@ -1,0 +1,59 @@
+environment: development-dev
+
+# Database Configuration
+database:
+  provider: sqlite
+  path: ./data/development.db
+  pool_size: 10
+
+# AI Provider Configuration - Local Phi-3.5-Mini
+providers:
+  local:
+    model: microsoft/Phi-3-mini-4k-instruct
+    temperature: 0.1
+    max_tokens: 1000
+    device: auto  # auto, cpu, cuda
+    load_in_8bit: false  # set to true for memory optimization
+    load_in_4bit: false  # set to true for memory optimization
+
+# Embeddings Configuration - Local Sentence Transformers
+embeddings:
+  provider: local
+  model: all-MiniLM-L6-v2  # Fast, lightweight embeddings
+  dimensions: 384
+  device: auto
+
+# Vector Database Configuration - Local Chroma with SQLite
+vector_db:
+  provider: chroma
+  path: ./data/embeddings
+  collection_name: development_knowledge
+  persist_directory: ./data/chroma
+  anonymized_telemetry: false
+
+# Testing Configuration
+testing:
+  drift_threshold: 0.85
+  similarity_threshold: 0.8
+  max_test_duration: 300s
+
+# Logging Configuration
+logging:
+  level: debug
+  format: json
+  output: stdout
+
+# Development Features
+features:
+  hot_reload: true
+  debug_mode: true
+  mock_providers: false
+  enable_telemetry: false
+  local_models: true
+  offline_mode: true
+
+# Model Download Configuration
+model_cache:
+  directory: ./data/models
+  auto_download: true
+  verify_checksums: true

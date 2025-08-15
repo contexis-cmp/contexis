@@ -16,3 +16,9 @@ type Params struct {
 type Provider interface {
 	Generate(ctx context.Context, input string, params Params) (string, error)
 }
+
+// NewLocalProviderFromEnv returns a Provider backed by a local Python process
+// when local-first variables are enabled. Implementation provided in local_provider.go.
+func NewLocalProviderFromEnv() (Provider, error) {
+	return newLocalPythonProviderFromEnv()
+}

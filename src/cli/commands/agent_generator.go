@@ -95,7 +95,7 @@ func GenerateAgent(ctx context.Context, name, tools, memory string) error {
 		DriftThreshold: 0.85,
 	}
 
-	log.Info("generating agent",
+	logger.LogInfo(ctx, "Generating agent",
 		zap.String("name", name),
 		zap.Strings("tools", toolList),
 		zap.String("memory", memory))
@@ -111,48 +111,55 @@ func GenerateAgent(ctx context.Context, name, tools, memory string) error {
 		fmt.Sprintf("tests/%s", name),
 	}
 
+	logger.LogInfo(ctx, "Creating agent directory structure")
 	for _, dir := range agentDirs {
 		if err := os.MkdirAll(dir, 0750); err != nil {
-			log.Error("failed to create directory", zap.String("directory", dir), zap.Error(err))
+			logger.LogErrorColored(ctx, "failed to create directory", err, zap.String("directory", dir))
 			return fmt.Errorf("failed to create directory %s: %w", dir, err)
 		}
+		logger.LogDebug(ctx, "Created directory", zap.String("path", dir))
 	}
 
 	// Generate agent components
+	logger.LogInfo(ctx, "Generating agent context")
 	if err := generateAgentContext(ctx, config); err != nil {
-		log.Error("failed to generate agent context", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to generate agent context", err)
 		return fmt.Errorf("failed to generate agent context: %w", err)
 	}
 
+	logger.LogInfo(ctx, "Generating agent prompts")
 	if err := generateAgentPrompts(ctx, config); err != nil {
-		log.Error("failed to generate agent prompts", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to generate agent prompts", err)
 		return fmt.Errorf("failed to generate agent prompts: %w", err)
 	}
 
+	logger.LogInfo(ctx, "Generating agent tools")
 	if err := generateAgentTools(ctx, config); err != nil {
-		log.Error("failed to generate agent tools", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to generate agent tools", err)
 		return fmt.Errorf("failed to generate agent tools: %w", err)
 	}
 
+	logger.LogInfo(ctx, "Generating agent tests")
 	if err := generateAgentTests(ctx, config); err != nil {
-		log.Error("failed to generate agent tests", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to generate agent tests", err)
 		return fmt.Errorf("failed to generate agent tests: %w", err)
 	}
 
+	logger.LogInfo(ctx, "Generating agent memory configuration")
 	if err := generateAgentMemory(ctx, config); err != nil {
-		log.Error("failed to generate agent memory", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to generate agent memory", err)
 		return fmt.Errorf("failed to generate agent memory: %w", err)
 	}
 
+	logger.LogInfo(ctx, "Generating agent requirements")
 	if err := generateAgentRequirements(ctx, config); err != nil {
-		log.Error("failed to generate agent requirements", zap.Error(err))
+		logger.LogErrorColored(ctx, "failed to generate agent requirements", err)
 		return fmt.Errorf("failed to generate agent requirements: %w", err)
 	}
 
-	log.Info("agent generation completed successfully",
-		zap.String("name", name),
-		zap.Strings("tools", toolList),
-		zap.String("memory", memory))
+	// Show generated structure and development flow
+	showAgentStructure(name, config)
+	showAgentDevelopmentFlow(name, config)
 
 	return nil
 }
@@ -541,4 +548,69 @@ func validateAgentName(name string) error {
 		return fmt.Errorf("agent name should not contain special characters")
 	}
 	return nil
+}
+
+// showAgentStructure displays the generated agent structure
+func showAgentStructure(name string, config AgentConfig) {
+	fmt.Printf("\n")
+	logger.LogSuccess(context.Background(), "Agent generated successfully",
+		zap.String("name", name),
+		zap.Strings("tools", config.Tools),
+		zap.String("memory", config.MemoryType))
+
+	fmt.Printf("\n🤖 Generated Agent Structure:\n")
+	fmt.Printf("  contexts/%s/\n", name)
+	fmt.Printf("  ├── 📄 %s.ctx\n", name)
+	fmt.Printf("  ├── 📁 memory/%s/\n", name)
+	fmt.Printf("  │   ├── 📄 memory_config.yaml\n")
+	fmt.Printf("  │   ├── 📁 episodic/\n")
+	fmt.Printf("  │   └── 📁 user_preferences/\n")
+	fmt.Printf("  ├── 📁 prompts/%s/\n", name)
+	fmt.Printf("  │   └── 📄 agent_response.md\n")
+	fmt.Printf("  ├── 📁 tools/%s/\n", name)
+	fmt.Printf("  │   ├── 📄 api.py\n")
+	fmt.Printf("  │   └── 📄 requirements.txt\n")
+	fmt.Printf("  └── 📁 tests/%s/\n", name)
+	fmt.Printf("      └── 📄 agent_behavior.yaml\n")
+}
+
+// showAgentDevelopmentFlow displays the agent development workflow
+func showAgentDevelopmentFlow(name string, config AgentConfig) {
+	fmt.Printf("\n🚀 Agent Development Flow:\n")
+
+	fmt.Printf("\n1️⃣  Test your agent:\n")
+	fmt.Printf("   ctx test %s\n", name)
+	fmt.Printf("   ctx test --behavior --component=%s\n", name)
+
+	fmt.Printf("\n2️⃣  Start a conversation:\n")
+	fmt.Printf("   ctx run %s \"Hello, can you help me?\"\n", name)
+	fmt.Printf("   ctx run %s \"What tools do you have available?\"\n", name)
+
+	fmt.Printf("\n3️⃣  Start development server:\n")
+	fmt.Printf("   ctx serve --addr :8000\n")
+
+	fmt.Printf("\n4️⃣  Customize your agent:\n")
+	fmt.Printf("   # Edit the context file\n")
+	fmt.Printf("   nano contexts/%s/%s.ctx\n", name, name)
+	fmt.Printf("   \n")
+	fmt.Printf("   # Modify prompts\n")
+	fmt.Printf("   nano prompts/%s/agent_response.md\n", name)
+	fmt.Printf("   \n")
+	fmt.Printf("   # Add custom tools\n")
+	fmt.Printf("   nano tools/%s/api.py\n", name)
+
+	fmt.Printf("\n5️⃣  Monitor agent behavior:\n")
+	fmt.Printf("   # Check drift detection\n")
+	fmt.Printf("   ctx test --drift-detection --component=%s\n", name)
+	fmt.Printf("   \n")
+	fmt.Printf("   # View behavior reports\n")
+	fmt.Printf("   cat tests/reports/behavior_%s.json\n", name)
+
+	fmt.Printf("\n📚 Configuration Details:\n")
+	fmt.Printf("   • Tools: %s\n", strings.Join(config.Tools, ", "))
+	fmt.Printf("   • Memory: %s\n", config.MemoryType)
+	fmt.Printf("   • Context: contexts/%s/%s.ctx\n", name, name)
+	fmt.Printf("   • Memory Config: memory/%s/memory_config.yaml\n", name)
+
+	fmt.Printf("\n🎉 Your agent is ready! Start conversations and customize as needed.\n")
 }
