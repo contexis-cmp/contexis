@@ -2,7 +2,7 @@
 
 This directory contains comprehensive tests for the CMP (Context-Memory-Prompt) framework, following Test-Driven Development (TDD) principles.
 
-## ️ Test Architecture
+## Test Architecture
 
 ### Test Structure
 ```

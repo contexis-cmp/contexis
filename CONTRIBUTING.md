@@ -11,7 +11,7 @@ Contexis follows a **Context-Memory-Prompt (CMP)** architecture that treats AI c
 - **Security First**: Security and privacy are non-negotiable
 - **Developer Experience**: Tools should be intuitive and powerful
 
-## ️ Architecture Overview
+## Architecture Overview
 
 ### Core Components
 
@@ -273,7 +273,7 @@ Brief description of the changes
 - [ ] Guides updated
 ```
 
-## ️ Versioning
+## Versioning
 
 We follow [Semantic Versioning](https://semver.org/) (SemVer):
 

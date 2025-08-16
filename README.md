@@ -2,7 +2,7 @@
 
 A framework for building reproducible AI applications using the **Context-Memory-Prompt (CMP)** architecture. Contexis treats AI components as version-controlled, first-class citizens, bringing architectural discipline to AI application engineering.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install Contexis
 
@@ -40,7 +40,7 @@ ctx run MyFirstRAG "What is your return policy?"
 
 **That's it!** Your AI application is now running with local models (Phi-3.5-Mini + Chroma + Sentence Transformers) - no external API calls needed.
 
-## 🎯 Key Features
+## Key Features
 
 ### **Local-First Development**
 - **Out-of-the-box local models**: Phi-3.5-Mini for text generation, Sentence Transformers for embeddings
@@ -65,7 +65,7 @@ ctx run MyFirstRAG "What is your return policy?"
 - **Monitoring**: Prometheus metrics and OpenTelemetry tracing
 - **Kubernetes**: Helm charts and deployment manifests
 
-## 📚 Documentation
+## Documentation
 
 - **[Getting Started Guide](docs/guides/getting-started.md)** - Complete walkthrough
 - **[CLI Reference](docs/cli.md)** - All available commands
@@ -73,7 +73,7 @@ ctx run MyFirstRAG "What is your return policy?"
 - **[Deployment Guide](docs/deployment.md)** - Production deployment
 - **[Security Guide](docs/security.md)** - Security features and configuration
 
-## 🔧 Available Commands
+## Available Commands
 
 ```bash
 # Project Management
@@ -98,7 +98,7 @@ ctx context validate <name>     # Validate context files
 ctx context reload              # Reload context cache
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ### Local Development Stack
 ```
@@ -125,7 +125,7 @@ vector_db:
   api_key: ${PINECONE_API_KEY}
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run comprehensive tests
@@ -138,7 +138,7 @@ ctx test --drift-detection --component=MyFirstRAG
 ctx test --correctness --rules=./tests/business_rules.yaml
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Local Development
 ```bash
@@ -159,7 +159,7 @@ helm install contexis ./charts/contexis-app \
   --set replicas=3
 ```
 
-## 🔒 Security
+## Security
 
 Enable security features:
 ```bash
@@ -169,7 +169,7 @@ export CMP_PI_ENFORCEMENT=true
 export CMP_REQUIRE_CITATION=true
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -177,11 +177,11 @@ export CMP_REQUIRE_CITATION=true
 4. Add tests
 5. Submit a pull request
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-## 🆘 Support
+## Support
 
 - **Documentation**: [docs.contexis.dev](https://docs.contexis.dev)
 - **Issues**: [GitHub Issues](https://github.com/contexis-cmp/contexis/issues)

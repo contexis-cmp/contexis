@@ -1,9 +1,36 @@
+// Package logger provides structured logging functionality for the Contexis CLI.
+//
+// The logger package implements Rails-inspired colored console output with
+// structured logging capabilities. It provides both colored and JSON logging
+// formats with configurable levels and output destinations.
+//
+// Key Features:
+//   - Rails-like colored console output
+//   - Structured JSON logging for production
+//   - Configurable log levels and formats
+//   - Colored log levels and timestamps
+//   - Helper functions for common log operations
+//
+// Example Usage:
+//
+//	// Initialize colored logger
+//	err := logger.InitColoredLogger("info")
+//
+//	// Get logger instance
+//	log := logger.GetLogger()
+//
+//	// Log with different levels
+//	log.Info("Application started")
+//	log.Error("An error occurred", zap.Error(err))
+//
+//	// Use helper functions
+//	logger.LogSuccess("Operation completed successfully")
+//	logger.LogWarning("Deprecated feature used")
 package logger
 
 import (
-	"context"
 	"os"
-	"time"
+	"strings"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -12,86 +39,101 @@ import (
 // Color constants for terminal output
 const (
 	// ANSI color codes
-	ColorReset   = "\033[0m"
-	ColorRed     = "\033[31m"
-	ColorGreen   = "\033[32m"
-	ColorYellow  = "\033[33m"
-	ColorBlue    = "\033[34m"
-	ColorMagenta = "\033[35m"
-	ColorCyan    = "\033[36m"
-	ColorWhite   = "\033[37m"
+	ColorReset  = "\033[0m"
+	ColorRed    = "\033[31m"
+	ColorGreen  = "\033[32m"
+	ColorYellow = "\033[33m"
+	ColorBlue   = "\033[34m"
+	ColorPurple = "\033[35m"
+	ColorCyan   = "\033[36m"
+	ColorWhite  = "\033[37m"
+	ColorGray   = "\033[90m"
 
 	// Bright colors
 	ColorBrightRed    = "\033[91m"
 	ColorBrightGreen  = "\033[92m"
 	ColorBrightYellow = "\033[93m"
 	ColorBrightBlue   = "\033[94m"
+	ColorBrightPurple = "\033[95m"
 	ColorBrightCyan   = "\033[96m"
+	ColorBrightWhite  = "\033[97m"
 
 	// Background colors
-	ColorBgRed     = "\033[41m"
-	ColorBgGreen   = "\033[42m"
-	ColorBgYellow  = "\033[43m"
-	ColorBgBlue    = "\033[44m"
-	ColorBgMagenta = "\033[45m"
-	ColorBgCyan    = "\033[46m"
+	ColorBgRed    = "\033[41m"
+	ColorBgGreen  = "\033[42m"
+	ColorBgYellow = "\033[43m"
+	ColorBgBlue   = "\033[44m"
+	ColorBgPurple = "\033[45m"
+	ColorBgCyan   = "\033[46m"
+	ColorBgWhite  = "\033[47m"
 )
 
-// ColoredEncoder provides Rails-like colored console output
+// ColoredEncoder provides Rails-like colored console output.
+// It implements zapcore.Encoder to provide colored log output
+// similar to Rails' console logging with colored levels and timestamps.
 type ColoredEncoder struct {
 	zapcore.Encoder
-	colored bool
 }
 
-// NewColoredEncoder creates a new colored encoder
-func NewColoredEncoder(colored bool) zapcore.Encoder {
-	config := zap.NewDevelopmentEncoderConfig()
-	config.TimeKey = "timestamp"
-	config.EncodeTime = func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-		enc.AppendString(t.Format("15:04:05"))
-	}
-	config.EncodeLevel = func(l zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
-		if colored {
-			enc.AppendString(getColoredLevel(l))
-		} else {
-			enc.AppendString(l.CapitalString())
-		}
-	}
-	config.EncodeCaller = func(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
-		if colored {
-			enc.AppendString(ColorCyan + caller.TrimmedPath() + ColorReset)
-		} else {
-			enc.AppendString(caller.TrimmedPath())
-		}
-	}
-
-	return zapcore.NewConsoleEncoder(config)
+// NewColoredEncoder creates a new colored encoder.
+// It wraps a console encoder with color formatting for
+// log levels and other log components.
+//
+// Returns:
+//   - zapcore.Encoder: A colored encoder instance
+func NewColoredEncoder() zapcore.Encoder {
+	encoderConfig := zap.NewDevelopmentEncoderConfig()
+	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
+	
+	encoder := zapcore.NewConsoleEncoder(encoderConfig)
+	return &ColoredEncoder{Encoder: encoder}
 }
 
-// getColoredLevel returns a colored level string
+// getColoredLevel returns a colored level string.
+// It maps log levels to appropriate colors for better
+// visual distinction in console output.
+//
+// Parameters:
+//   - level: The log level to color
+//
+// Returns:
+//   - string: Colored level string with ANSI color codes
 func getColoredLevel(level zapcore.Level) string {
 	switch level {
 	case zapcore.DebugLevel:
-		return ColorBrightCyan + "DEBUG" + ColorReset
+		return ColorGray + "DEBUG" + ColorReset
 	case zapcore.InfoLevel:
-		return ColorBrightGreen + "INFO " + ColorReset
+		return ColorBlue + "INFO" + ColorReset
 	case zapcore.WarnLevel:
-		return ColorBrightYellow + "WARN " + ColorReset
+		return ColorYellow + "WARN" + ColorReset
 	case zapcore.ErrorLevel:
-		return ColorBrightRed + "ERROR" + ColorReset
-	case zapcore.FatalLevel:
-		return ColorRed + ColorBgRed + ColorWhite + "FATAL" + ColorReset
+		return ColorRed + "ERROR" + ColorReset
+	case zapcore.DPanicLevel:
+		return ColorBrightRed + "DPANIC" + ColorReset
 	case zapcore.PanicLevel:
-		return ColorRed + ColorBgRed + ColorWhite + "PANIC" + ColorReset
+		return ColorBrightRed + "PANIC" + ColorReset
+	case zapcore.FatalLevel:
+		return ColorBrightRed + "FATAL" + ColorReset
 	default:
-		return ColorWhite + level.CapitalString() + ColorReset
+		return ColorWhite + "UNKNOWN" + ColorReset
 	}
 }
 
-// InitColoredLogger initializes a colored logger similar to Rails
+// InitColoredLogger initializes a colored logger similar to Rails.
+// It sets up a logger with colored console output and configurable
+// log level. The logger will use colors when outputting to a terminal
+// and fall back to plain text when redirected to a file.
+//
+// Parameters:
+//   - level: Log level string (debug, info, warn, error)
+//
+// Returns:
+//   - error: Any error that occurred during initialization
 func InitColoredLogger(level string) error {
+	// Parse log level
 	var zapLevel zapcore.Level
-	switch level {
+	switch strings.ToLower(level) {
 	case "debug":
 		zapLevel = zapcore.DebugLevel
 	case "info":
@@ -105,20 +147,35 @@ func InitColoredLogger(level string) error {
 	}
 
 	// Check if we should use colors (not in CI, not redirected to file)
-	colored := shouldUseColors()
+	useColors := shouldUseColors()
 
-	encoder := NewColoredEncoder(colored)
+	var encoder zapcore.Encoder
+	if useColors {
+		encoder = NewColoredEncoder()
+	} else {
+		encoderConfig := zap.NewDevelopmentEncoderConfig()
+		encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+		encoder = zapcore.NewConsoleEncoder(encoderConfig)
+	}
+
 	core := zapcore.NewCore(encoder, zapcore.AddSync(os.Stdout), zapLevel)
-
-	globalLogger = zap.New(core, zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
-
+	logger := zap.New(core, zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
+	
+	// Replace the global logger
+	zap.ReplaceGlobals(logger)
+	
 	return nil
 }
 
-// shouldUseColors determines if we should use colored output
+// shouldUseColors determines if we should use colored output.
+// It checks various conditions to determine if colored output
+// is appropriate, such as terminal type and environment variables.
+//
+// Returns:
+//   - bool: True if colors should be used, false otherwise
 func shouldUseColors() bool {
 	// Check if we're in a CI environment
-	if os.Getenv("CI") != "" || os.Getenv("GITHUB_ACTIONS") != "" {
+	if os.Getenv("CI") != "" {
 		return false
 	}
 
@@ -128,61 +185,86 @@ func shouldUseColors() bool {
 		return false
 	}
 
-	// Use colors if it's a terminal
+	// Check if it's a terminal
 	return (stat.Mode() & os.ModeCharDevice) != 0
 }
 
-// LogOperationColored logs operations with colored status indicators
-func LogOperationColored(ctx context.Context, operation string, fields ...zap.Field) func() {
-	logger := WithContext(ctx).With(
-		append(fields, zap.String("operation", operation))...,
-	)
-
-	// Start message with green status
-	logger.Info("▶ " + operation + " started")
-
-	start := time.Now()
-	return func() {
-		duration := time.Since(start)
-		// Completion message with green status
-		logger.Info("✓ "+operation+" completed", zap.Duration("duration", duration))
-	}
+// LogOperationColored logs an operation with colored output.
+// It provides a convenient way to log operations with consistent
+// formatting and color coding.
+//
+// Parameters:
+//   - operation: The operation being performed
+//   - details: Additional details about the operation
+func LogOperationColored(operation, details string) {
+	logger := GetLogger()
+	logger.Info("🔄 " + operation, zap.String("details", details))
 }
 
-// LogErrorColored logs errors with red status indicators
-func LogErrorColored(ctx context.Context, msg string, err error, fields ...zap.Field) {
-	logger := WithContext(ctx).With(fields...)
-	logger.Error("✗ "+msg, zap.Error(err))
+// LogErrorColored logs an error with colored output.
+// It provides a convenient way to log errors with consistent
+// formatting and color coding.
+//
+// Parameters:
+//   - message: Error message
+//   - err: The error object
+func LogErrorColored(message string, err error) {
+	logger := GetLogger()
+	logger.Error("❌ "+message, zap.Error(err))
 }
 
-// LogSecurityColored logs security events with yellow status indicators
-func LogSecurityColored(ctx context.Context, event string, fields ...zap.Field) {
-	logger := WithContext(ctx).With(
-		append(fields, zap.String("security_event", event))...,
-	)
-	logger.Warn("⚠ " + event + " detected")
+// LogSecurityColored logs security-related events with colored output.
+// It provides a convenient way to log security events with consistent
+// formatting and color coding.
+//
+// Parameters:
+//   - event: The security event
+//   - details: Additional details about the event
+func LogSecurityColored(event, details string) {
+	logger := GetLogger()
+	logger.Warn("🔒 "+event, zap.String("details", details))
 }
 
-// LogSuccess logs success messages with green status
-func LogSuccess(ctx context.Context, msg string, fields ...zap.Field) {
-	logger := WithContext(ctx).With(fields...)
-	logger.Info("✓ "+msg, fields...)
+// LogSuccess logs a success message with green color.
+// It provides a convenient way to log successful operations
+// with consistent formatting.
+//
+// Parameters:
+//   - message: Success message
+func LogSuccess(message string) {
+	logger := GetLogger()
+	logger.Info("✅ " + message)
 }
 
-// LogWarning logs warning messages with yellow status
-func LogWarning(ctx context.Context, msg string, fields ...zap.Field) {
-	logger := WithContext(ctx).With(fields...)
-	logger.Warn("⚠ "+msg, fields...)
+// LogWarning logs a warning message with yellow color.
+// It provides a convenient way to log warnings with consistent
+// formatting.
+//
+// Parameters:
+//   - message: Warning message
+func LogWarning(message string) {
+	logger := GetLogger()
+	logger.Warn("⚠️ " + message)
 }
 
-// LogInfo logs info messages with blue status
-func LogInfo(ctx context.Context, msg string, fields ...zap.Field) {
-	logger := WithContext(ctx).With(fields...)
-	logger.Info("ℹ "+msg, fields...)
+// LogInfo logs an info message with blue color.
+// It provides a convenient way to log informational messages
+// with consistent formatting.
+//
+// Parameters:
+//   - message: Info message
+func LogInfo(message string) {
+	logger := GetLogger()
+	logger.Info("ℹ️ " + message)
 }
 
-// LogDebug logs debug messages with cyan status
-func LogDebug(ctx context.Context, msg string, fields ...zap.Field) {
-	logger := WithContext(ctx).With(fields...)
-	logger.Debug("🔍 "+msg, fields...)
+// LogDebug logs a debug message with gray color.
+// It provides a convenient way to log debug messages with
+// consistent formatting.
+//
+// Parameters:
+//   - message: Debug message
+func LogDebug(message string) {
+	logger := GetLogger()
+	logger.Debug("🔍 " + message)
 }

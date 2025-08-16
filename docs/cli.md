@@ -29,6 +29,9 @@ ctx serve --addr :8000
 
 # Pre-download local models (recommended for first run)
 ctx models warmup
+
+# Migrate to production (when ready)
+ctx migrate local-to-production --provider=openai
 ```
 
 ## Context Operations
@@ -72,6 +75,24 @@ ctx test --drift-detection --component CustomerDocs
 
 # Run with coverage
 ctx test --all --coverage
+```
+
+## Migration
+
+```bash
+# Migrate from local to production
+ctx migrate local-to-production --provider=openai
+ctx migrate local-to-production --provider=anthropic
+ctx migrate local-to-production --provider=huggingface
+
+# Migrate back to local development
+ctx migrate production-to-local
+
+# Validate configuration
+ctx migrate validate
+
+# Dry run (see what would change)
+ctx migrate local-to-production --provider=openai --dry-run
 ```
 
 ## Deployment
