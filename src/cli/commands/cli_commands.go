@@ -124,7 +124,7 @@ func GetVersionCommand() *cobra.Command {
 		Use:   "version",
 		Short: "Show version information",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Contexis CMP Framework v0.1.14")
+			fmt.Println("Contexis CMP Framework v0.2.0")
 		},
 	}
 

@@ -162,7 +162,7 @@ business_rules:
 
 # Drift Detection Configuration
 drift_detection:
-  baseline_date: "2025-08-16"
+  baseline_date: "2025-08-17"
   check_frequency: "daily"
   alert_threshold: 0.15  # 15% drift threshold
   

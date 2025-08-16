@@ -20,10 +20,10 @@ func GeneratePlugin(_ context.Context, name string) error {
 	// Write minimal manifest
 	manifest := fmt.Sprintf(`{
   "name": "%s",
-  "version": "0.1.14",
+  "version": "0.2.0",
   "description": "Custom CMP plugin",
   "capabilities": [],
-  "compatibility": {"cmp_min": "0.1.14"}
+  "compatibility": {"cmp_min": "0.2.0"}
 }
 `, name)
 	if err := os.WriteFile(filepath.Join(dst, "plugin.json"), []byte(manifest), 0o644); err != nil {

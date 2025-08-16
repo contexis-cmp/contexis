@@ -65,7 +65,7 @@ func generateRAG(ctx context.Context, name, dbType, embeddings string) error {
 			logger.LogErrorColored(ctx, "failed to create directory", err, zap.String("directory", dir))
 			return fmt.Errorf("failed to create directory %s: %w", dir, err)
 		}
-		logger.LogDebug(ctx, "Created directory", zap.String("path", dir))
+		logger.LogDebugWithContext(ctx, "Created directory", zap.String("path", dir))
 	}
 
 	// Generate RAG components

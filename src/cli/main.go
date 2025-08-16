@@ -48,7 +48,7 @@ var rootCmd = &cobra.Command{
 	
 The Context-Memory-Prompt (CMP) architecture treats AI components as version-controlled,
 first-class citizens, bringing architectural discipline to AI application engineering.`,
-	Version: "0.1.14",
+	Version: "0.2.0",
 }
 
 // init initializes the CLI by adding all subcommands to the root command.
@@ -210,6 +210,6 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Show version information",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Contexis CMP Framework v0.1.14")
+		fmt.Println("Contexis CMP Framework v0.2.0")
 	},
 }

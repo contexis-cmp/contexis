@@ -144,7 +144,7 @@ func NewHandlerWithProvider(root string, provider runtimemodel.Provider) http.Ha
 
 	mux.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewEncoder(w).Encode(map[string]string{
-			"version": "0.1.14",
+			"version": "0.2.0",
 		})
 	})
 

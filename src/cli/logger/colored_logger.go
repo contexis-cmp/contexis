@@ -29,8 +29,10 @@
 package logger
 
 import (
+	"context"
 	"os"
 	"strings"
+	"time"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -194,11 +196,18 @@ func shouldUseColors() bool {
 // formatting and color coding.
 //
 // Parameters:
+//   - ctx: Context for request tracking
 //   - operation: The operation being performed
-//   - details: Additional details about the operation
-func LogOperationColored(operation, details string) {
-	logger := GetLogger()
-	logger.Info("🔄 " + operation, zap.String("details", details))
+//   - fields: Additional structured fields
+func LogOperationColored(ctx context.Context, operation string, fields ...zap.Field) func() {
+	log := WithContext(ctx)
+	log.Info("🔄 "+operation, fields...)
+	
+	start := time.Now()
+	return func() {
+		duration := time.Since(start)
+		log.Info("✅ "+operation+" completed", zap.Duration("duration", duration))
+	}
 }
 
 // LogErrorColored logs an error with colored output.
@@ -206,11 +215,14 @@ func LogOperationColored(operation, details string) {
 // formatting and color coding.
 //
 // Parameters:
+//   - ctx: Context for request tracking
 //   - message: Error message
 //   - err: The error object
-func LogErrorColored(message string, err error) {
-	logger := GetLogger()
-	logger.Error("❌ "+message, zap.Error(err))
+//   - fields: Additional structured fields
+func LogErrorColored(ctx context.Context, message string, err error, fields ...zap.Field) {
+	log := WithContext(ctx)
+	allFields := append(fields, zap.Error(err))
+	log.Error("❌ "+message, allFields...)
 }
 
 // LogSecurityColored logs security-related events with colored output.
@@ -230,10 +242,12 @@ func LogSecurityColored(event, details string) {
 // with consistent formatting.
 //
 // Parameters:
+//   - ctx: Context for request tracking
 //   - message: Success message
-func LogSuccess(message string) {
-	logger := GetLogger()
-	logger.Info("✅ " + message)
+//   - fields: Additional structured fields
+func LogSuccess(ctx context.Context, message string, fields ...zap.Field) {
+	log := WithContext(ctx)
+	log.Info("✅ "+message, fields...)
 }
 
 // LogWarning logs a warning message with yellow color.
@@ -252,10 +266,12 @@ func LogWarning(message string) {
 // with consistent formatting.
 //
 // Parameters:
-//   - message: Info message
-func LogInfo(message string) {
-	logger := GetLogger()
-	logger.Info("ℹ️ " + message)
+//   - ctx: Context for request tracking
+//   - message: Info message  
+//   - fields: Additional structured fields
+func LogInfo(ctx context.Context, message string, fields ...zap.Field) {
+	log := WithContext(ctx)
+	log.Info("ℹ️ "+message, fields...)
 }
 
 // LogDebug logs a debug message with gray color.
@@ -267,4 +283,10 @@ func LogInfo(message string) {
 func LogDebug(message string) {
 	logger := GetLogger()
 	logger.Debug("🔍 " + message)
+}
+
+// LogDebugWithContext logs a debug message with context support.
+func LogDebugWithContext(ctx context.Context, message string, fields ...zap.Field) {
+	log := WithContext(ctx)
+	log.Debug("🔍 "+message, fields...)
 }

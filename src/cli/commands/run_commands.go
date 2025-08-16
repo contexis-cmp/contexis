@@ -255,7 +255,7 @@ func sendQuery(ctx context.Context, addr string, req RunRequest, debug bool, tim
 
 	if debug {
 		logger.LogInfo(ctx, "Sending request", zap.String("url", "http://"+addr+"/api/v1/chat"))
-		logger.LogDebug(ctx, "Request payload", zap.String("data", string(jsonData)))
+		logger.LogDebugWithContext(ctx, "Request payload", zap.String("data", string(jsonData)))
 	}
 
 	// Create HTTP request
@@ -282,7 +282,7 @@ func sendQuery(ctx context.Context, addr string, req RunRequest, debug bool, tim
 
 	if debug {
 		logger.LogInfo(ctx, "Response received", zap.Int("status", resp.StatusCode))
-		logger.LogDebug(ctx, "Response body", zap.String("body", string(body)))
+		logger.LogDebugWithContext(ctx, "Response body", zap.String("body", string(body)))
 	}
 
 	// Handle errors

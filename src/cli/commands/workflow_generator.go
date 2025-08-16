@@ -128,7 +128,7 @@ func GenerateWorkflow(ctx context.Context, name, steps string) error {
 			logger.LogErrorColored(ctx, "failed to create workflow directory", err, zap.String("dir", dir))
 			return fmt.Errorf("failed to create workflow directory %s: %w", dir, err)
 		}
-		logger.LogDebug(ctx, "Created directory", zap.String("path", dir))
+		logger.LogDebugWithContext(ctx, "Created directory", zap.String("path", dir))
 	}
 
 	// Generate workflow components
@@ -244,7 +244,13 @@ func generateWorkflowDefinition(ctx context.Context, config WorkflowConfig) erro
 	workflowPath := fmt.Sprintf("workflows/%s/%s.yaml", config.Name, config.Name)
 
 	// Read template
-	templatePath := "templates/workflow/workflow_definition.yaml"
+	templateRel := "templates/workflow/workflow_definition.yaml"
+	templatePath, terr := resolveTemplatePath(templateRel)
+	if terr != nil {
+		log.Error("failed to resolve workflow template path", zap.Error(terr))
+		return fmt.Errorf("failed to resolve workflow template path: %w", terr)
+	}
+	
 	templateContent, err := os.ReadFile(templatePath)
 	if err != nil {
 		log.Error("failed to read workflow template", zap.String("path", templatePath), zap.Error(err))
@@ -283,7 +289,13 @@ func generateWorkflowContext(ctx context.Context, config WorkflowConfig) error {
 	contextPath := fmt.Sprintf("contexts/%s/workflow_coordinator.ctx", config.Name)
 
 	// Read template
-	templatePath := "templates/workflow/workflow_coordinator.ctx"
+	templateRel := "templates/workflow/workflow_coordinator.ctx"
+	templatePath, terr := resolveTemplatePath(templateRel)
+	if terr != nil {
+		log.Error("failed to resolve workflow context template path", zap.Error(terr))
+		return fmt.Errorf("failed to resolve workflow context template path: %w", terr)
+	}
+	
 	templateContent, err := os.ReadFile(templatePath)
 	if err != nil {
 		log.Error("failed to read workflow context template", zap.String("path", templatePath), zap.Error(err))
@@ -323,7 +335,12 @@ func generateWorkflowPrompts(ctx context.Context, config WorkflowConfig) error {
 		promptPath := fmt.Sprintf("prompts/%s/step_templates/%s.md", config.Name, step.Name)
 
 		// Read template
-		templatePath := fmt.Sprintf("templates/workflow/step_%s.md", step.Type)
+		templateRel := fmt.Sprintf("templates/workflow/step_%s.md", step.Type)
+		templatePath, terr := resolveTemplatePath(templateRel)
+		if terr != nil {
+			log.Error("failed to resolve step template path", zap.Error(terr))
+			return fmt.Errorf("failed to resolve step template path: %w", terr)
+		}
 		templateContent, err := os.ReadFile(templatePath)
 		if err != nil {
 			log.Error("failed to read step template", zap.String("path", templatePath), zap.Error(err))
@@ -364,7 +381,12 @@ func generateWorkflowMemory(ctx context.Context, config WorkflowConfig) error {
 	memoryPath := fmt.Sprintf("memory/%s/workflow_state.yaml", config.Name)
 
 	// Read template
-	templatePath := "templates/workflow/workflow_state.yaml"
+	templateRel := "templates/workflow/workflow_state.yaml"
+	templatePath, terr := resolveTemplatePath(templateRel)
+	if terr != nil {
+		log.Error("failed to resolve workflow state template path", zap.Error(terr))
+		return fmt.Errorf("failed to resolve workflow state template path: %w", terr)
+	}
 	templateContent, err := os.ReadFile(templatePath)
 	if err != nil {
 		log.Error("failed to read workflow state template", zap.String("path", templatePath), zap.Error(err))
@@ -403,7 +425,12 @@ func generateWorkflowTests(ctx context.Context, config WorkflowConfig) error {
 	testPath := fmt.Sprintf("tests/%s/workflow_integration.py", config.Name)
 
 	// Read template
-	templatePath := "templates/workflow/workflow_integration.py"
+	templateRel := "templates/workflow/workflow_integration.py"
+	templatePath, terr := resolveTemplatePath(templateRel)
+	if terr != nil {
+		log.Error("failed to resolve workflow test template path", zap.Error(terr))
+		return fmt.Errorf("failed to resolve workflow test template path: %w", terr)
+	}
 	templateContent, err := os.ReadFile(templatePath)
 	if err != nil {
 		log.Error("failed to read workflow test template", zap.String("path", templatePath), zap.Error(err))
@@ -501,3 +528,4 @@ func showWorkflowDevelopmentFlow(name string, config WorkflowConfig) {
 
 	fmt.Printf("\n🎉 Your workflow is ready! Start testing and customizing.\n")
 }
+
