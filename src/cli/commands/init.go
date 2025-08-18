@@ -665,43 +665,57 @@ pytest-asyncio>=0.21.0
 		return err
 	}
 
-	// Create .env.example
-	envExample := `# Contexis Environment
-# Local-first defaults (no external API keys needed)
+	// Create .env.example with comprehensive variables (commented where appropriate)
+	envExample := `# Contexis Environment (.env)
+# Local-first defaults (no external API keys needed). Uncomment to override.
 
-# Environment
-CMP_ENV=development
+# --- General ---
+# CMP_ENV=development
+# CMP_PROJECT_ROOT=./
+# CMP_LOG_LEVEL=debug
+# CMP_LOG_FORMAT=json
 
-# Local Model Settings
-CMP_LOCAL_MODELS=true
-CMP_OFFLINE_MODE=true
+# --- Local-first Provider ---
+# CMP_LOCAL_MODELS=true
+# CMP_OFFLINE_MODE=true
+# CMP_PYTHON_BIN=.venv/bin/python
+# CMP_LOCAL_TIMEOUT_SECONDS=600
+# CMP_LOCAL_MODEL_ID=microsoft/Phi-3-mini-4k-instruct
+# CMP_MODEL_CACHE_DIR=./data/models
 
-# Model Cache
-CMP_MODEL_CACHE_DIR=./data/models
+# --- Server ---
+# CMP_AUTH_ENABLED=false
+# CMP_PI_ENFORCEMENT=false
+# CMP_REQUIRE_CITATION=false
+# CMP_TENANT_ID=
 
-# Database
-CMP_DB_PROVIDER=sqlite
-CMP_DB_PATH=./data/development/development.db
+# --- Memory / Vector DB ---
+# CMP_DB_PROVIDER=sqlite
+# CMP_DB_PATH=./data/development/development.db
+# CMP_VECTOR_DB_PROVIDER=chroma
+# CMP_VECTOR_DB_PATH=./data/embeddings
+# CMP_CHROMA_PERSIST_DIR=./data/chroma
 
-# Vector Database
-CMP_VECTOR_DB_PROVIDER=chroma
-CMP_VECTOR_DB_PATH=./data/embeddings
-CMP_CHROMA_PERSIST_DIR=./data/chroma
+# --- Security / Policies ---
+# CMP_OOB_REQUIRED_ACTIONS=delete_user,wire_transfer
+# CMP_PII_MODE=redact   # redact|block|allow
+# CMP_EPISODIC_KEY=changeme
+# CMP_API_KEYS=       # comma-separated list of apiKeyId:secret
+# CMP_API_TOKENS=     # comma-separated list of tokenId:secret
 
-# Logging
-CMP_LOG_LEVEL=debug
-CMP_LOG_FORMAT=json
+# --- Hugging Face (optional) ---
+# HF_TOKEN=
+# HF_MODEL_ID=
+# HF_ENDPOINT=
 
-# Development Features
-CMP_HOT_RELOAD=true
-CMP_DEBUG_MODE=true
-CMP_MOCK_PROVIDERS=false
-CMP_ENABLE_TELEMETRY=false
+# --- Production: OpenAI / Anthropic (optional) ---
+# OPENAI_API_KEY=
+# ANTHROPIC_API_KEY=
 
-# ---
-# Production Hints (uncomment and configure to switch providers)
-# OPENAI_API_KEY=your_openai_api_key_here
-# ANTHROPIC_API_KEY=your_anthropic_api_key_here
+# --- Integrations (optional) ---
+# PINECONE_API_KEY=
+# PINECONE_ENVIRONMENT=
+# PINECONE_INDEX=
 `
 
 	envExamplePath := filepath.Join(projectPath, ".env.example")

@@ -89,6 +89,7 @@ func init() {
 	rootCmd.AddCommand(commands.GetHFCommand())
 	rootCmd.AddCommand(commands.GetModelsCommand())
 	rootCmd.AddCommand(commands.GetMigrateCommand())
+	rootCmd.AddCommand(commands.GetSetupCommand())
 }
 
 // main is the entry point for the Contexis CLI application.

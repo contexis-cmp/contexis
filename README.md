@@ -72,6 +72,7 @@ ctx run MyFirstRAG "What is your return policy?"
 - **[API Reference](docs/api/README.md)** - HTTP API documentation
 - **[Deployment Guide](docs/deployment.md)** - Production deployment
 - **[Security Guide](docs/security.md)** - Security features and configuration
+ - **[Environment Variables](docs/config/environment-variables.md)** - Runtime configuration reference
 
 ## Available Commands
 

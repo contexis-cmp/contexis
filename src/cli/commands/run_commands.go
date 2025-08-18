@@ -6,9 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -33,7 +35,14 @@ type RunResponse struct {
 	Rendered string `json:"rendered"`
 }
 
-// GetRunCommand returns the run command for direct query execution
+// GetRunCommand returns the `run` command.
+//
+// The `run` command executes a one-off query against a context. If a server
+// is not already running at the provided `--addr`, it starts a temporary
+// server in the background using local-first defaults, sends the request,
+// then shuts the server down. It auto-detects `.venv/bin/python`, sets
+// `CMP_LOCAL_MODELS=true`, and exports `CMP_PROJECT_ROOT` to ensure the local
+// provider and templates resolve correctly.
 func GetRunCommand() *cobra.Command {
 	var (
 		addr       string
@@ -127,8 +136,24 @@ Examples:
 	return cmd
 }
 
-// executeQuery handles the actual query execution
+// executeQuery starts a server if necessary, then sends the query and streams the response.
+// It ensures local-first env defaults and project-root-aware resolution for contexts and prompts.
 func executeQuery(ctx context.Context, projectRoot, addr string, req RunRequest, debug bool, timeout int) error {
+	// Ensure environment defaults for local-first and project root
+	if os.Getenv("CMP_PROJECT_ROOT") == "" {
+		_ = os.Setenv("CMP_PROJECT_ROOT", projectRoot)
+	}
+	if os.Getenv("CMP_LOCAL_MODELS") == "" {
+		_ = os.Setenv("CMP_LOCAL_MODELS", "true")
+	}
+	// Auto-detect project virtualenv python if not explicitly set
+	if os.Getenv("CMP_PYTHON_BIN") == "" {
+		cand := filepath.Join(projectRoot, ".venv", "bin", "python")
+		if _, err := os.Stat(cand); err == nil {
+			_ = os.Setenv("CMP_PYTHON_BIN", cand)
+		}
+	}
+
 	// Check if server is already running
 	if isServerRunning(addr) {
 		if debug {
@@ -265,6 +290,14 @@ func sendQuery(ctx context.Context, addr string, req RunRequest, debug bool, tim
 	}
 
 	httpReq.Header.Set("Content-Type", "application/json")
+	// Set forwarded tenant from env if present
+	if v := os.Getenv("CMP_TENANT_ID"); v != "" {
+		httpReq.Header.Set("X-Tenant-ID", v)
+	}
+	// Add Host if addr is not localhost (avoid some proxies misrouting)
+	if host, port, err := net.SplitHostPort(strings.TrimPrefix(addr, "http://")); err == nil && host != "localhost" && host != "127.0.0.1" {
+		httpReq.Host = fmt.Sprintf("%s:%s", host, port)
+	}
 
 	// Send request
 	client := &http.Client{Timeout: time.Duration(timeout) * time.Second}

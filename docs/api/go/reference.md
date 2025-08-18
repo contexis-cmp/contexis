@@ -161,6 +161,7 @@ import "github.com/contexis-cmp/contexis/src/cli/commands"
 - [func GetRootCommand\(\) \*cobra.Command](<#GetRootCommand>)
 - [func GetRunCommand\(\) \*cobra.Command](<#GetRunCommand>)
 - [func GetServeCommand\(\) \*cobra.Command](<#GetServeCommand>)
+- [func GetSetupCommand\(\) \*cobra.Command](<#GetSetupCommand>)
 - [func GetVersionCommand\(\) \*cobra.Command](<#GetVersionCommand>)
 - [func GetWorkerCommand\(\) \*cobra.Command](<#GetWorkerCommand>)
 - [func GetWorkflowCommand\(\) \*cobra.Command](<#GetWorkflowCommand>)
@@ -322,13 +323,18 @@ func GetLockCommand() *cobra.Command
 
 
 <a name="GetMemoryCommand"></a>
-## func [GetMemoryCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/memory_commands.go#L17>)
+## func [GetMemoryCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/memory_commands.go#L23>)
 
 ```go
 func GetMemoryCommand() *cobra.Command
 ```
 
-GetMemoryCommand returns the parent memory command with subcommands.
+GetMemoryCommand returns the \`memory\` command with subcommands for ingest, seed, search, and optimize.
+
+Notable DX helpers:
+
+- \`ctx memory seed \-\-component \<Name\>\`: bulk\-ingests all supported documents under memory/\<Name\>/documents
+- \`ctx memory ingest \-\-all \-\-component \<Name\>\`: same as seed, inline flag
 
 <a name="GetMigrateCommand"></a>
 ## func [GetMigrateCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/migrate.go#L14>)
@@ -394,22 +400,47 @@ func GetRootCommand() *cobra.Command
 GetRootCommand returns the root command
 
 <a name="GetRunCommand"></a>
-## func [GetRunCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/run_commands.go#L37>)
+## func [GetRunCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/run_commands.go#L46>)
 
 ```go
 func GetRunCommand() *cobra.Command
 ```
 
-GetRunCommand returns the run command for direct query execution
+GetRunCommand returns the \`run\` command.
+
+The \`run\` command executes a one\-off query against a context. If a server is not already running at the provided \`\-\-addr\`, it starts a temporary server in the background using local\-first defaults, sends the request, then shuts the server down. It auto\-detects \`.venv/bin/python\`, sets \`CMP\_LOCAL\_MODELS=true\`, and exports \`CMP\_PROJECT\_ROOT\` to ensure the local provider and templates resolve correctly.
 
 <a name="GetServeCommand"></a>
-## func [GetServeCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/serve_commands.go#L8>)
+## func [GetServeCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/serve_commands.go#L20>)
 
 ```go
 func GetServeCommand() *cobra.Command
 ```
 
+GetServeCommand returns the \`serve\` command.
 
+The \`serve\` command runs the Contexis HTTP server with sensible local\-first defaults. It auto\-detects a project virtualenv \(\`.venv/bin/python\`\) to use for the local Python provider, sets \`CMP\_LOCAL\_MODELS=true\` when unset, and exports \`CMP\_PROJECT\_ROOT\` to the current working directory for resolving contexts, prompts and memory paths. A warning is printed if \`contexts/\` is not found at the project root.
+
+<a name="GetSetupCommand"></a>
+## func [GetSetupCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/setup_command.go#L27>)
+
+```go
+func GetSetupCommand() *cobra.Command
+```
+
+GetSetupCommand returns the \`setup\` command.
+
+The \`setup\` command bootstraps a local\-first Contexis project by:
+
+1. Creating a Python virtual environment at \`.venv/\` \(if missing\)
+2. Upgrading pip and installing required Python dependencies \(transformers, torch, sentence\-transformers\)
+3. Optionally warming up a local model so the first inference is fast
+
+Flags:
+
+- \`\-\-model\-id\` \(default: \`sshleifer/tiny\-gpt2\`\) model to warm
+- \`\-\-no\-warmup\` to skip the warmup step
+- \`\-\-timeout\-seconds\` timeout for warmup execution
 
 <a name="GetVersionCommand"></a>
 ## func [GetVersionCommand](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/cli_commands.go#L122>)
@@ -635,7 +666,7 @@ type ResourceLimits struct {
 ```
 
 <a name="RunRequest"></a>
-## type [RunRequest](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/run_commands.go#L21-L29>)
+## type [RunRequest](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/run_commands.go#L23-L31>)
 
 RunRequest represents the request structure for the run command
 
@@ -652,7 +683,7 @@ type RunRequest struct {
 ```
 
 <a name="RunResponse"></a>
-## type [RunResponse](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/run_commands.go#L32-L34>)
+## type [RunResponse](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/commands/run_commands.go#L34-L36>)
 
 RunResponse represents the response structure for the run command
 
@@ -1217,14 +1248,15 @@ logger.LogWarning("Deprecated feature used")
 - [func InitColoredLogger\(level string\) error](<#InitColoredLogger>)
 - [func InitLogger\(level string, format string\) error](<#InitLogger>)
 - [func LogDebug\(message string\)](<#LogDebug>)
+- [func LogDebugWithContext\(ctx context.Context, message string, fields ...zap.Field\)](<#LogDebugWithContext>)
 - [func LogError\(ctx context.Context, msg string, err error, fields ...zap.Field\)](<#LogError>)
-- [func LogErrorColored\(message string, err error\)](<#LogErrorColored>)
-- [func LogInfo\(message string\)](<#LogInfo>)
+- [func LogErrorColored\(ctx context.Context, message string, err error, fields ...zap.Field\)](<#LogErrorColored>)
+- [func LogInfo\(ctx context.Context, message string, fields ...zap.Field\)](<#LogInfo>)
 - [func LogOperation\(ctx context.Context, operation string, fields ...zap.Field\) func\(\)](<#LogOperation>)
-- [func LogOperationColored\(operation, details string\)](<#LogOperationColored>)
+- [func LogOperationColored\(ctx context.Context, operation string, fields ...zap.Field\) func\(\)](<#LogOperationColored>)
 - [func LogSecurity\(ctx context.Context, event string, fields ...zap.Field\)](<#LogSecurity>)
 - [func LogSecurityColored\(event, details string\)](<#LogSecurityColored>)
-- [func LogSuccess\(message string\)](<#LogSuccess>)
+- [func LogSuccess\(ctx context.Context, message string, fields ...zap.Field\)](<#LogSuccess>)
 - [func LogWarning\(message string\)](<#LogWarning>)
 - [func NewColoredEncoder\(\) zapcore.Encoder](<#NewColoredEncoder>)
 - [func WithContext\(ctx context.Context\) \*zap.Logger](<#WithContext>)
@@ -1279,7 +1311,7 @@ func GetLogger() *zap.Logger
 GetLogger returns the global logger
 
 <a name="InitColoredLogger"></a>
-## func [InitColoredLogger](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L133>)
+## func [InitColoredLogger](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L135>)
 
 ```go
 func InitColoredLogger(level string) error
@@ -1305,7 +1337,7 @@ func InitLogger(level string, format string) error
 InitLogger initializes the global logger
 
 <a name="LogDebug"></a>
-## func [LogDebug](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L267>)
+## func [LogDebug](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L283>)
 
 ```go
 func LogDebug(message string)
@@ -1317,6 +1349,15 @@ Parameters:
 
 - message: Debug message
 
+<a name="LogDebugWithContext"></a>
+## func [LogDebugWithContext](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L289>)
+
+```go
+func LogDebugWithContext(ctx context.Context, message string, fields ...zap.Field)
+```
+
+LogDebugWithContext logs a debug message with context support.
+
 <a name="LogError"></a>
 ## func [LogError](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/logger.go#L123>)
 
@@ -1327,31 +1368,35 @@ func LogError(ctx context.Context, msg string, err error, fields ...zap.Field)
 LogError logs an error with context
 
 <a name="LogErrorColored"></a>
-## func [LogErrorColored](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L211>)
+## func [LogErrorColored](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L222>)
 
 ```go
-func LogErrorColored(message string, err error)
+func LogErrorColored(ctx context.Context, message string, err error, fields ...zap.Field)
 ```
 
 LogErrorColored logs an error with colored output. It provides a convenient way to log errors with consistent formatting and color coding.
 
 Parameters:
 
+- ctx: Context for request tracking
 - message: Error message
 - err: The error object
+- fields: Additional structured fields
 
 <a name="LogInfo"></a>
-## func [LogInfo](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L256>)
+## func [LogInfo](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L272>)
 
 ```go
-func LogInfo(message string)
+func LogInfo(ctx context.Context, message string, fields ...zap.Field)
 ```
 
 LogInfo logs an info message with blue color. It provides a convenient way to log informational messages with consistent formatting.
 
 Parameters:
 
+- ctx: Context for request tracking
 - message: Info message
+- fields: Additional structured fields
 
 <a name="LogOperation"></a>
 ## func [LogOperation](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/logger.go#L108>)
@@ -1363,18 +1408,19 @@ func LogOperation(ctx context.Context, operation string, fields ...zap.Field) fu
 LogOperation logs the start and completion of an operation
 
 <a name="LogOperationColored"></a>
-## func [LogOperationColored](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L199>)
+## func [LogOperationColored](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L202>)
 
 ```go
-func LogOperationColored(operation, details string)
+func LogOperationColored(ctx context.Context, operation string, fields ...zap.Field) func()
 ```
 
 LogOperationColored logs an operation with colored output. It provides a convenient way to log operations with consistent formatting and color coding.
 
 Parameters:
 
+- ctx: Context for request tracking
 - operation: The operation being performed
-- details: Additional details about the operation
+- fields: Additional structured fields
 
 <a name="LogSecurity"></a>
 ## func [LogSecurity](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/logger.go#L129>)
@@ -1386,7 +1432,7 @@ func LogSecurity(ctx context.Context, event string, fields ...zap.Field)
 LogSecurity logs security\-related events
 
 <a name="LogSecurityColored"></a>
-## func [LogSecurityColored](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L223>)
+## func [LogSecurityColored](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L235>)
 
 ```go
 func LogSecurityColored(event, details string)
@@ -1400,20 +1446,22 @@ Parameters:
 - details: Additional details about the event
 
 <a name="LogSuccess"></a>
-## func [LogSuccess](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L234>)
+## func [LogSuccess](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L248>)
 
 ```go
-func LogSuccess(message string)
+func LogSuccess(ctx context.Context, message string, fields ...zap.Field)
 ```
 
 LogSuccess logs a success message with green color. It provides a convenient way to log successful operations with consistent formatting.
 
 Parameters:
 
+- ctx: Context for request tracking
 - message: Success message
+- fields: Additional structured fields
 
 <a name="LogWarning"></a>
-## func [LogWarning](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L245>)
+## func [LogWarning](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L259>)
 
 ```go
 func LogWarning(message string)
@@ -1426,7 +1474,7 @@ Parameters:
 - message: Warning message
 
 <a name="NewColoredEncoder"></a>
-## func [NewColoredEncoder](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L84>)
+## func [NewColoredEncoder](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L86>)
 
 ```go
 func NewColoredEncoder() zapcore.Encoder
@@ -1457,7 +1505,7 @@ func WithFields(fields ...zap.Field) *zap.Logger
 WithFields returns a logger with additional fields
 
 <a name="ColoredEncoder"></a>
-## type [ColoredEncoder](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L74-L76>)
+## type [ColoredEncoder](<https://github.com/contexis-cmp/contexis/blob/main/src/cli/logger/colored_logger.go#L76-L78>)
 
 ColoredEncoder provides Rails\-like colored console output. It implements zapcore.Encoder to provide colored log output similar to Rails' console logging with colored levels and timestamps.
 
